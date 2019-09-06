@@ -1,0 +1,19 @@
+{
+  "name": "squasher",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Erwin Heitzman",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^3.0.1",
+    "inquirer": "^7.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^3.6.2"
+  }
+}

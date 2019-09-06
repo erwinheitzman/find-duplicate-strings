@@ -5,7 +5,12 @@ Squasher
 
 ## Getting started
 
-While under development use it like so:
+First compile the code like so:
+```shell
+npm run build
+```
+
+Then (while under development) run it like so:
 ```shell
 node ./cli.js -r
 ```

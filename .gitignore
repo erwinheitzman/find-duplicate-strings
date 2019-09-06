@@ -1,1 +1,14 @@
-node_modules
+# Dependency directories
+node_modules/
+
+# nyc coverage directories
+coverage/
+
+# vscode
+.vscode/
+
+# compiled code
+dist/
+
+# OSX
+.DS_Store

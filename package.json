@@ -2,9 +2,13 @@
   "name": "squasher",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "cli/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "compile": "npm run clean && tsc",
+    "clean": "rm -rf dist coverage .tmp",
+    "lint": "eslint ./src/**/*.ts",
+    "pretest": "if test \"$CI\" = \"\" ; then rm -rf .tmp ; fi && node test-data/setup.js",
+    "test": "jest"
   },
   "keywords": [],
   "author": "Erwin Heitzman",
@@ -14,6 +18,13 @@
     "inquirer": "^7.0.0"
   },
   "devDependencies": {
+    "@types/inquirer": "^6.5.0",
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.4",
+    "@typescript-eslint/eslint-plugin": "^2.1.0",
+    "@typescript-eslint/parser": "^2.1.0",
+    "eslint": "^6.3.0",
+    "jest": "^24.9.0",
     "typescript": "^3.6.2"
   }
 }

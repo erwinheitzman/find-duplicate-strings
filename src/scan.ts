@@ -1,20 +1,18 @@
-const fs = require('fs');
-const path = require('path');
-const program = require('commander');
+import { readdirSync, readFileSync, statSync } from 'fs';
+import { resolve } from 'path';
 
-// TODO: use console.table for the output
-// TODO: make recursive
-
-function foo(_line) {
-    let i = 0;
+function foo(_line: string) {
     const len = _line.length;
+    const singleQuoteCharCode = 34;
+    const doubleQuoteCharCode = 39;
 
+    let i = 0;
     let str = '';
     let activeSingle = false;
     let activeDouble = false;
 
     for (; i < len; i++) {
-        if (_line[i].charCodeAt() === 34 && activeSingle === false) {
+        if (_line.charCodeAt(i) === 34 && activeSingle === false) {
             if (activeDouble === true) {
                 if (str.length > 0) {
                     if (findings[str]) {
@@ -32,7 +30,7 @@ function foo(_line) {
             continue;
         }
 
-        if (_line[i].charCodeAt() === 39 && activeDouble === false) {
+        if (_line.charCodeAt(i) === 39 && activeDouble === false) {
             if (activeSingle === true) {
                 if (str.length > 0) {
                     if (findings[str]) {
@@ -57,17 +55,17 @@ function foo(_line) {
     }
 }
 
-const findings = {};
+const findings: { [key: string]: number; } = {};
 
-module.exports = function getFiles(dirPath) {
-    fs.readdirSync(dirPath).forEach((filePath) => {
-        const fullPath = path.resolve(dirPath, filePath);
+export function getFiles(dirPath: string) {
+    readdirSync(dirPath).forEach((filePath) => {
+        const fullPath = resolve(dirPath, filePath);
 
-        if (fs.statSync(fullPath).isDirectory()) {
+        if (statSync(fullPath).isDirectory()) {
             return getFiles(fullPath);
         }
 
-        const file = fs.readFileSync(fullPath, 'utf8');
+        const file = readFileSync(fullPath, 'utf8');
 
         file.split('\n').forEach((line) => {
             foo(line);

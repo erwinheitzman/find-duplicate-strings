@@ -1,0 +1,19 @@
+{
+	"compilerOptions": {
+		"resolveJsonModule": true,
+		"target": "es5",
+		"module": "commonjs",
+		"outDir": "./dist",
+		"removeComments": true,
+		"strict": true,
+		"types": [
+			"node",
+			"jest"
+		],
+		"esModuleInterop": true
+	},
+	"exclude": [
+		"node_modules",
+		"**/*.test.ts"
+	]
+}

@@ -5,9 +5,9 @@
   "main": "cli/index.js",
   "scripts": {
     "compile": "npm run clean && tsc",
-    "clean": "rm -rf dist coverage .tmp",
-    "lint": "eslint ./src/**/*.ts",
-    "pretest": "if test \"$CI\" = \"\" ; then rm -rf .tmp ; fi && node test-data/setup.js",
+    "clean": "rm -rf dist coverage",
+		"lint": "eslint ./src/**/*.ts",
+		"pretest": "npm run lint",
     "test": "jest"
   },
   "keywords": [],
@@ -20,11 +20,11 @@
   "devDependencies": {
     "@types/inquirer": "^6.5.0",
     "@types/jest": "^24.0.18",
-    "@types/node": "^12.7.4",
-    "@typescript-eslint/eslint-plugin": "^2.1.0",
-    "@typescript-eslint/parser": "^2.1.0",
-    "eslint": "^6.3.0",
-    "jest": "^24.9.0",
-    "typescript": "^3.6.2"
+    "@types/node": "^12.7.7",
+    "@typescript-eslint/eslint-plugin": "^2.3.1",
+    "@typescript-eslint/parser": "^2.3.1",
+    "eslint": "^6.4.0",
+    "ts-jest": "^24.1.0",
+    "typescript": "^3.6.3"
   }
 }

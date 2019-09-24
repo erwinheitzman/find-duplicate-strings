@@ -5,41 +5,44 @@ const findings: { [key: string]: number; } = {};
 
 function scanLine(data: string) {
 	const states = { 'single': false, 'double': false };
-    const len = data.length;
-
-	function storeFinding(type: 'single' | 'double') {
-		if (states[type] === true) {
-			if (str.length > 0) {
-				if (findings[str]) {
-					findings[str]++;
-				} else {
-					findings[str] = 1;
-				}
-			}
-			str = '';
-			states[type] = false;
-		} else {
-			states[type] = true;
-		}
-	}
 
 	let i = 0;
-	let str = '';
+	let characterSet = '';
 
-    for (; i < len; i++) {
+	const storeFinding = (finding: string) => {
+		if (finding.length > 0) {
+			if (findings[finding]) {
+				findings[finding]++;
+			} else {
+				findings[finding] = 1;
+			}
+		}
+	};
+
+    for (; i < data.length; i++) {
 		if (data.charCodeAt(i) === 34 && states['single'] === false) {
-			storeFinding('double');
-			return;
+			states['double'] = !states['double'];
+
+			if (states['double'] === false) {
+				storeFinding(characterSet);
+				characterSet = '';
+			}
+			continue;
         }
 
         if (data.charCodeAt(i) === 39 && states['double'] === false) {
-			storeFinding('single');
-			return;
+			states['single'] = !states['single'];
+
+			if (states['single'] === false) {
+				storeFinding(characterSet);
+				characterSet = '';
+			}
+			continue;
 		}
 
 		if (states['double'] === true || states['single'] === true) {
-			str += data[i];
-			return;
+			characterSet += data[i];
+			continue;
         }
     }
 }

@@ -54,7 +54,7 @@ function run() {
                 return;
             }
 
-            throw new Error('sdfsdf');
+            throw new Error(`File format not supported`);
         });
     });
 }

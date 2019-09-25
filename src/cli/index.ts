@@ -55,7 +55,7 @@ function run(): void {
 						const data: { [key: string]: string } = {};
 
 						Object.keys(findings).forEach((finding, i) => {
-							data[`string${i}`] = `${finding}`;
+							data[`string${i}`] = finding;
 						});
 
 						writeFileSync(filePath, JSON.stringify(data, null, 2), 'utf8');

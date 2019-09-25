@@ -4,7 +4,7 @@ import { resolve } from 'path';
 const findings: { [key: string]: number; } = {};
 
 function scanLine(data: string) {
-	const states = { 'single': false, 'double': false };
+	const state = { single: false, double: false };
 
 	let i = 0;
 	let characterSet = '';
@@ -20,27 +20,27 @@ function scanLine(data: string) {
 	};
 
     for (; i < data.length; i++) {
-		if (data.charCodeAt(i) === 34 && states['single'] === false) {
-			states['double'] = !states['double'];
+		if (data.charCodeAt(i) === 34 && state.single === false) {
+			state.double = !state.double;
 
-			if (states['double'] === false) {
+			if (state.double === false) {
 				storeFinding(characterSet);
 				characterSet = '';
 			}
 			continue;
         }
 
-        if (data.charCodeAt(i) === 39 && states['double'] === false) {
-			states['single'] = !states['single'];
+        if (data.charCodeAt(i) === 39 && state.double === false) {
+			state.single = !state.single;
 
-			if (states['single'] === false) {
+			if (state.single === false) {
 				storeFinding(characterSet);
 				characterSet = '';
 			}
 			continue;
 		}
 
-		if (states['double'] === true || states['single'] === true) {
+		if (state.double === true || state.single === true) {
 			characterSet += data[i];
 			continue;
         }

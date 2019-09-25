@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync, statSync } from 'fs';
+import { readdirSync, readFileSync, statSync, existsSync } from 'fs';
 import { resolve } from 'path';
 
 const findings: { [key: string]: number; } = {};
@@ -47,19 +47,17 @@ function scanLine(data: string) {
     }
 }
 
-export function getFiles(dirPath: string) {
+export function scanDir(dirPath: string) {
     readdirSync(dirPath).forEach((filePath) => {
         const fullPath = resolve(dirPath, filePath);
 
         if (statSync(fullPath).isDirectory()) {
-            return getFiles(fullPath);
+            return scanDir(fullPath);
         }
 
-        const file = readFileSync(fullPath, 'utf8');
-
-        file.split('\n').forEach((line) => {
-            scanLine(line);
-        });
+        readFileSync(fullPath, 'utf8')
+			.split('\n')
+			.forEach((line) => scanLine(line));
     });
 
     return findings;

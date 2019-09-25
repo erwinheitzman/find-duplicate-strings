@@ -1,6 +1,6 @@
 import { Command } from 'commander';
 import { createPromptModule } from 'inquirer';
-import { getFiles } from '../scan';
+import { scanDir } from '../scan';
 import { resolve } from 'path';
 import { existsSync, writeFileSync } from 'fs';
 
@@ -27,7 +27,7 @@ function run(): void {
 				throw new Error('Directory does not exist, please pass a valid path.');
 			}
 
-			const findings = getFiles(resolvedPath);
+			const findings = scanDir(resolvedPath);
 
 			if (!Object.keys(findings).length) {
 				console.log('No duplicates where found.');

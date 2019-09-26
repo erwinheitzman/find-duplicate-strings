@@ -6,7 +6,7 @@
   "scripts": {
     "compile": "npm run clean && tsc",
     "clean": "rm -rf dist coverage",
-    "lint": "eslint ./src/**/*.ts",
+    "lint": "eslint ./src/**/*.ts --fix",
     "pretest": "npm run lint",
     "test": "jest"
   },

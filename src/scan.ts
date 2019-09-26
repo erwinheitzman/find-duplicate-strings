@@ -1,64 +1,82 @@
 import { readdirSync, readFileSync, statSync, existsSync } from 'fs';
-import { resolve } from 'path';
+import { extname, resolve } from 'path';
+import { Findings } from './findings.interface';
 
-const findings: { [key: string]: number; } = {};
+export class Scanner {
+	private findings: Findings;
 
-function scanLine(data: string) {
-	const state = { single: false, double: false };
+	constructor() {
+		this.findings = {};
+	}
 
-	let i = 0;
-	let characterSet = '';
+	public scanDir(dirPath: string, formats: Array<string>): Findings {
+		this.findings = {};
 
-	const storeFinding = (finding: string) => {
-		if (finding.length > 0) {
-			if (findings[finding]) {
-				findings[finding]++;
-			} else {
-				findings[finding] = 1;
-			}
-		}
-	};
+		const processFiles = (_dirPath: string, _formats: Array<string>) => {
+			readdirSync(_dirPath).forEach((_filePath) => {
+				const fullPath = resolve(_dirPath, _filePath);
 
-    for (; i < data.length; i++) {
-		if (data.charCodeAt(i) === 34 && state.single === false) {
-			state.double = !state.double;
+				if (statSync(fullPath).isDirectory()) {
+					return processFiles(fullPath, _formats);
+				}
 
-			if (state.double === false) {
-				storeFinding(characterSet);
-				characterSet = '';
-			}
-			continue;
-        }
+				const extension = extname(fullPath);
+				const format = extension.substring(1, extension.length);
 
-        if (data.charCodeAt(i) === 39 && state.double === false) {
-			state.single = !state.single;
-
-			if (state.single === false) {
-				storeFinding(characterSet);
-				characterSet = '';
-			}
-			continue;
+				if (_formats.includes(format)) {
+					readFileSync(fullPath, 'utf8')
+						.split('\n')
+						.forEach((line) => this.scanLine(line));
+				}
+			});
 		}
 
-		if (state.double === true || state.single === true) {
-			characterSet += data[i];
-			continue;
-        }
-    }
-}
+		processFiles(dirPath, formats);
 
-export function scanDir(dirPath: string) {
-    readdirSync(dirPath).forEach((filePath) => {
-        const fullPath = resolve(dirPath, filePath);
+		return this.findings;
+	}
 
-        if (statSync(fullPath).isDirectory()) {
-            return scanDir(fullPath);
-        }
+	private scanLine(data: string): void {
+		const state = { single: false, double: false };
 
-        readFileSync(fullPath, 'utf8')
-			.split('\n')
-			.forEach((line) => scanLine(line));
-    });
+		let i = 0;
+		let characterSet = '';
 
-    return findings;
+		const storeFinding = (finding: string) => {
+			if (finding.length > 0) {
+				if (this.findings[finding]) {
+					this.findings[finding]++;
+				} else {
+					this.findings[finding] = 1;
+				}
+			}
+		};
+
+		for (; i < data.length; i++) {
+			if (data.charCodeAt(i) === 34 && state.single === false) {
+				state.double = !state.double;
+
+				if (state.double === false) {
+					storeFinding(characterSet);
+					characterSet = '';
+				}
+				continue;
+			}
+
+			if (data.charCodeAt(i) === 39 && state.double === false) {
+				state.single = !state.single;
+
+				if (state.single === false) {
+					storeFinding(characterSet);
+					characterSet = '';
+				}
+				continue;
+			}
+
+			if (state.double === true || state.single === true) {
+				characterSet += data[i];
+				continue;
+			}
+		}
+	}
 }

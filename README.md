@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/erwinheitzman/squasher.svg?branch=master)](https://travis-ci.org/erwinheitzman/squasher)
+[![codecov](https://codecov.io/gh/erwinheitzman/squasher/branch/master/graph/badge.svg)](https://codecov.io/gh/erwinheitzman/squasher)
+
 Squasher
 ===========
 

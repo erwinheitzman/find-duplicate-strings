@@ -10,7 +10,15 @@
     "pretest": "npm run lint",
     "test": "jest"
   },
-  "keywords": [],
+  "keywords": [
+		"duplicates",
+		"strings",
+		"duplication",
+		"scan",
+		"find",
+		"squash",
+		"squasher"
+	],
   "author": "Erwin Heitzman",
   "license": "MIT",
   "dependencies": {

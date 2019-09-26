@@ -8,7 +8,12 @@ Squasher
 
 ## Getting started
 
-First compile the code like so:
+First clone the repository:
+```shell
+git clone https://github.com/erwinheitzman/squasher.git
+```
+
+Then compile the code like so:
 ```shell
 npm run compile
 ```
@@ -33,7 +38,7 @@ It will output a table containing it's findings:
 └─────────┴────────┘
 ```
 You will be asked to enter the file extensions that you want to scan:
-```
+```shell
 ? Please provide the file extensions you want to scan or leave empty to scan all files
 )O js
 )O ts

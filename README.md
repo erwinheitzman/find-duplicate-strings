@@ -1,21 +1,21 @@
-[![Build Status](https://travis-ci.org/erwinheitzman/squasher.svg?branch=master)](https://travis-ci.org/erwinheitzman/squasher)
-[![codecov](https://codecov.io/gh/erwinheitzman/squasher/branch/master/graph/badge.svg)](https://codecov.io/gh/erwinheitzman/squasher)
+[![Build Status](https://travis-ci.org/erwinheitzman/find-duplicate-strings.svg?branch=master)](https://travis-ci.org/erwinheitzman/find-duplicate-strings)
+[![codecov](https://codecov.io/gh/erwinheitzman/find-duplicate-strings/branch/master/graph/badge.svg)](https://codecov.io/gh/erwinheitzman/find-duplicate-strings)
 
-Squasher
+find-duplicate-strings
 ===========
 
-**Easy to use CLI that will squash any duplicate string values and store them in a external file which can be imported instead**
+**Easy to use CLI that finds duplicate strings in a directory and stores them in a external file for easy reference**
 
 ## Getting started
 
 First clone the repository:
 ```shell
-npm i -g
+npm i -g find-duplicate-strings
 ```
 
 Then run the cli:
 ```shell
-squasher
+find-duplicate-strings
 ```
 
 You will be asked to enter a path to a existing directory to be scanned for duplicate string values:

@@ -1,9 +1,9 @@
 {
-  "name": "squasher",
+  "name": "find-duplicate-strings",
   "version": "1.0.0",
-  "description": "",
+  "description": "Easy to use CLI that finds duplicate strings in a directory and stores them in a external file for easy reference",
   "author": "Erwin Heitzman",
-  "homepage": "https://github.com/erwinheitzman/squasher/blob/master/README.md",
+  "homepage": "https://github.com/erwinheitzman/find-duplicate-strings/blob/master/README.md",
   "license": "MIT",
   "main": "cli/index.js",
   "types": "lib/index.d.ts",
@@ -18,19 +18,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/erwinheitzman/squasher.git"
+    "url": "git+https://github.com/erwinheitzman/find-duplicate-strings.git"
   },
   "keywords": [
+    "duplicate",
     "duplicates",
     "strings",
     "duplication",
     "scan",
     "find",
-    "squash",
-    "squasher"
+    "find-duplicate-strings"
   ],
   "bugs": {
-    "url": "https://github.com/erwinheitzman/squasher/issues"
+    "url": "https://github.com/erwinheitzman/find-duplicate-strings/issues"
   },
   "dependencies": {
     "commander": "^5.1.0",

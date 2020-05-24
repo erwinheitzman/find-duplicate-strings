@@ -1,6 +1,14 @@
-import { readdirSync, readFileSync, statSync, existsSync } from 'fs';
+import { readdirSync, readFileSync, statSync } from 'fs';
 import { extname, resolve } from 'path';
-import { Findings } from './findings.interface';
+
+export interface Findings {
+	[key: string]: Finding;
+}
+
+export interface Finding {
+	count: number;
+	files: Array<string>;
+}
 
 export class Scanner {
 	private findings: Findings;
@@ -26,18 +34,19 @@ export class Scanner {
 				if (_formats.includes(format)) {
 					readFileSync(fullPath, 'utf8')
 						.split('\n')
-						.forEach((line) => this.scanLine(line));
+						.forEach((line) => this.scanLine(line, fullPath));
 				}
 			});
-		}
+		};
 
 		processFiles(dirPath, formats);
 
 		return this.findings;
 	}
 
-	private scanLine(data: string): void {
-		const state = { single: false, double: false };
+	private scanLine(line: string, filePath: string): void {
+		let singleQuote = false;
+		let doubleQuote = false;
 
 		let i = 0;
 		let characterSet = '';
@@ -45,36 +54,62 @@ export class Scanner {
 		const storeFinding = (finding: string) => {
 			if (finding.length > 0) {
 				if (this.findings[finding]) {
-					this.findings[finding]++;
+					this.findings[finding].count++;
+					if (!this.findings[finding].files.includes(filePath)) {
+						this.findings[finding].files.push(resolve(filePath));
+					}
 				} else {
-					this.findings[finding] = 1;
+					this.findings[finding] = { count: 1, files: [filePath] };
+					this.findings[finding].count = 1;
 				}
 			}
 		};
 
-		for (; i < data.length; i++) {
-			if (data.charCodeAt(i) === 34 && state.single === false) {
-				state.double = !state.double;
+		function isCharCodeEscapedAt(line: string, index: number): boolean {
+			if (line.charCodeAt(index - 1) === 92) {
+				if (line.charCodeAt(index - 2) !== 92) {
+					return true;
+				} else {
+					return isCharCodeEscapedAt(line, index - 2);
+				}
+			}
 
-				if (state.double === false) {
+			return false;
+		}
+
+		for (; i < line.length; i++) {
+			if (line.charCodeAt(i) === 34 && singleQuote === false) {
+				if (isCharCodeEscapedAt(line, i) === true) {
+					characterSet += line[i];
+					continue;
+				}
+
+				doubleQuote = !doubleQuote;
+
+				if (doubleQuote === false) {
 					storeFinding(characterSet);
 					characterSet = '';
 				}
 				continue;
 			}
 
-			if (data.charCodeAt(i) === 39 && state.double === false) {
-				state.single = !state.single;
+			if (line.charCodeAt(i) === 39 && doubleQuote === false) {
+				if (isCharCodeEscapedAt(line, i) === true) {
+					characterSet += line[i];
+					continue;
+				}
 
-				if (state.single === false) {
+				singleQuote = !singleQuote;
+
+				if (singleQuote === false) {
 					storeFinding(characterSet);
 					characterSet = '';
 				}
 				continue;
 			}
 
-			if (state.double === true || state.single === true) {
-				characterSet += data[i];
+			if (doubleQuote === true || singleQuote === true) {
+				characterSet += line[i];
 				continue;
 			}
 		}

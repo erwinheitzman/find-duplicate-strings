@@ -8,7 +8,7 @@ coverage/
 .vscode/
 
 # compiled code
-dist/
+lib/
 
 # OSX
 .DS_Store

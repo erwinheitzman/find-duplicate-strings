@@ -1,4 +1,5 @@
 import { Scanner } from './scan';
+import { resolve } from 'path';
 
 const scanner = new Scanner();
 
@@ -34,161 +35,153 @@ describe('scanDir', () => {
 	});
 });
 
+const dataOneJs = resolve(__dirname, '..', 'data\\one.js');
+const dataTwoJs = resolve(__dirname, '..', 'data\\two.js');
+const dataThreeTs = resolve(__dirname, '..', 'data\\three.ts');
+const dataFourJson = resolve(__dirname, '..', 'data\\four.json');
+const dataSubdirOneJs = resolve(__dirname, '..', 'data\\subdir\\one.js');
+const dataSubdirTwoJs = resolve(__dirname, '..', 'data\\subdir\\two.js');
+const dataSubdirThreeTs = resolve(__dirname, '..', 'data\\subdir\\three.ts');
+const dataSubdirFourJson = resolve(__dirname, '..', 'data\\subdir\\four.json');
+
 const getJsOutput = () => ({
 	foo: {
 		count: 6,
-		files: [
-			'C:\\dev\\squasher\\data\\one.js',
-			'C:\\dev\\squasher\\data\\subdir\\one.js',
-			'C:\\dev\\squasher\\data\\subdir\\two.js',
-			'C:\\dev\\squasher\\data\\two.js',
-		],
+		files: [dataOneJs, dataSubdirOneJs, dataSubdirTwoJs, dataTwoJs],
 	},
 	bar: {
 		count: 6,
-		files: [
-			'C:\\dev\\squasher\\data\\one.js',
-			'C:\\dev\\squasher\\data\\subdir\\one.js',
-			'C:\\dev\\squasher\\data\\subdir\\two.js',
-			'C:\\dev\\squasher\\data\\two.js',
-		],
+		files: [dataOneJs, dataSubdirOneJs, dataSubdirTwoJs, dataTwoJs],
 	},
 	"'foo' \\'bar\\' baz": {
 		count: 1,
-		files: ['C:\\dev\\squasher\\data\\subdir\\one.js'],
+		files: [dataSubdirOneJs],
 	},
 	"'foo'' \\\\ \\\"bar\\\" baz": {
 		count: 1,
-		files: ['C:\\dev\\squasher\\data\\subdir\\one.js'],
+		files: [dataSubdirOneJs],
 	},
 	unique: {
 		count: 2,
-		files: ['C:\\dev\\squasher\\data\\subdir\\two.js', 'C:\\dev\\squasher\\data\\two.js'],
+		files: [dataSubdirTwoJs, dataTwoJs],
 	},
 });
 
 const getTsOuput = () => ({
 	foo: {
 		count: 4,
-		files: ['C:\\dev\\squasher\\data\\subdir\\three.ts', 'C:\\dev\\squasher\\data\\three.ts'],
+		files: [dataSubdirThreeTs, dataThreeTs],
 	},
 	bar: {
 		count: 4,
-		files: ['C:\\dev\\squasher\\data\\subdir\\three.ts', 'C:\\dev\\squasher\\data\\three.ts'],
+		files: [dataSubdirThreeTs, dataThreeTs],
 	},
 	unique: {
 		count: 4,
-		files: ['C:\\dev\\squasher\\data\\subdir\\three.ts', 'C:\\dev\\squasher\\data\\three.ts'],
+		files: [dataSubdirThreeTs, dataThreeTs],
 	},
 });
 
 const getJsonOutput = () => ({
 	one: {
 		count: 2,
-		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+		files: [dataFourJson, dataSubdirFourJson],
 	},
 	bar: {
 		count: 4,
-		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+		files: [dataFourJson, dataSubdirFourJson],
 	},
 	two: {
 		count: 2,
-		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+		files: [dataFourJson, dataSubdirFourJson],
 	},
 	foo: {
 		count: 2,
-		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+		files: [dataFourJson, dataSubdirFourJson],
 	},
 	three: {
 		count: 2,
-		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+		files: [dataFourJson, dataSubdirFourJson],
 	},
 	four: {
 		count: 2,
-		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+		files: [dataFourJson, dataSubdirFourJson],
 	},
 	baz: {
 		count: 2,
-		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+		files: [dataFourJson, dataSubdirFourJson],
 	},
 	five: {
 		count: 2,
-		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+		files: [dataFourJson, dataSubdirFourJson],
 	},
 	unique: {
 		count: 2,
-		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+		files: [dataFourJson, dataSubdirFourJson],
 	},
 });
 
 const getAllOutput = () => ({
 	one: {
 		count: 2,
-		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+		files: [dataFourJson, dataSubdirFourJson],
 	},
 	bar: {
 		count: 14,
 		files: [
-			'C:\\dev\\squasher\\data\\four.json',
-			'C:\\dev\\squasher\\data\\one.js',
-			'C:\\dev\\squasher\\data\\subdir\\four.json',
-			'C:\\dev\\squasher\\data\\subdir\\one.js',
-			'C:\\dev\\squasher\\data\\subdir\\three.ts',
-			'C:\\dev\\squasher\\data\\subdir\\two.js',
-			'C:\\dev\\squasher\\data\\three.ts',
-			'C:\\dev\\squasher\\data\\two.js',
+			dataFourJson,
+			dataOneJs,
+			dataSubdirFourJson,
+			dataSubdirOneJs,
+			dataSubdirThreeTs,
+			dataSubdirTwoJs,
+			dataThreeTs,
+			dataTwoJs,
 		],
 	},
 	two: {
 		count: 2,
-		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+		files: [dataFourJson, dataSubdirFourJson],
 	},
 	foo: {
 		count: 12,
 		files: [
-			'C:\\dev\\squasher\\data\\four.json',
-			'C:\\dev\\squasher\\data\\one.js',
-			'C:\\dev\\squasher\\data\\subdir\\four.json',
-			'C:\\dev\\squasher\\data\\subdir\\one.js',
-			'C:\\dev\\squasher\\data\\subdir\\three.ts',
-			'C:\\dev\\squasher\\data\\subdir\\two.js',
-			'C:\\dev\\squasher\\data\\three.ts',
-			'C:\\dev\\squasher\\data\\two.js',
+			dataFourJson,
+			dataOneJs,
+			dataSubdirFourJson,
+			dataSubdirOneJs,
+			dataSubdirThreeTs,
+			dataSubdirTwoJs,
+			dataThreeTs,
+			dataTwoJs,
 		],
 	},
 	three: {
 		count: 2,
-		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+		files: [dataFourJson, dataSubdirFourJson],
 	},
 	four: {
 		count: 2,
-		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+		files: [dataFourJson, dataSubdirFourJson],
 	},
 	baz: {
 		count: 2,
-		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+		files: [dataFourJson, dataSubdirFourJson],
 	},
 	five: {
 		count: 2,
-		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+		files: [dataFourJson, dataSubdirFourJson],
 	},
 	unique: {
 		count: 8,
-		files: [
-			'C:\\dev\\squasher\\data\\four.json',
-			'C:\\dev\\squasher\\data\\subdir\\four.json',
-			'C:\\dev\\squasher\\data\\subdir\\three.ts',
-			'C:\\dev\\squasher\\data\\subdir\\two.js',
-			'C:\\dev\\squasher\\data\\three.ts',
-			'C:\\dev\\squasher\\data\\two.js',
-		],
+		files: [dataFourJson, dataSubdirFourJson, dataSubdirThreeTs, dataSubdirTwoJs, dataThreeTs, dataTwoJs],
 	},
 	"'foo' \\'bar\\' baz": {
 		count: 1,
-		files: ['C:\\dev\\squasher\\data\\subdir\\one.js'],
+		files: [dataSubdirOneJs],
 	},
 	"'foo'' \\\\ \\\"bar\\\" baz": {
 		count: 1,
-		files: ['C:\\dev\\squasher\\data\\subdir\\one.js'],
+		files: [dataSubdirOneJs],
 	},
 });

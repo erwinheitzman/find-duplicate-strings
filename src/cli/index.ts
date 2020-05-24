@@ -34,8 +34,6 @@ export const outputFindings = (findings: Findings): void => {
 	}
 
 	prompt([QUESTIONS.WRITE]).then(({ writePath }: Answers) => {
-		console.log(findings);
-
 		const filePath = resolve(process.cwd(), writePath);
 		const data = JSON.stringify(findings, null, 2);
 		writeFileSync(`${filePath}.json`, data, { encoding: 'utf8' });

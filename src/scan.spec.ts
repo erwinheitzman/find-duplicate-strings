@@ -1,5 +1,5 @@
 import { Scanner } from './scan';
-import { resolve } from 'path';
+import { resolve, normalize } from 'path';
 
 const scanner = new Scanner();
 
@@ -35,14 +35,14 @@ describe('scanDir', () => {
 	});
 });
 
-const dataOneJs = resolve(__dirname, '..', 'data\\one.js');
-const dataTwoJs = resolve(__dirname, '..', 'data\\two.js');
-const dataThreeTs = resolve(__dirname, '..', 'data\\three.ts');
-const dataFourJson = resolve(__dirname, '..', 'data\\four.json');
-const dataSubdirOneJs = resolve(__dirname, '..', 'data\\subdir\\one.js');
-const dataSubdirTwoJs = resolve(__dirname, '..', 'data\\subdir\\two.js');
-const dataSubdirThreeTs = resolve(__dirname, '..', 'data\\subdir\\three.ts');
-const dataSubdirFourJson = resolve(__dirname, '..', 'data\\subdir\\four.json');
+const dataOneJs = resolve(__dirname, '..', 'data', 'one.js');
+const dataTwoJs = resolve(__dirname, '..', 'data', 'two.js');
+const dataThreeTs = resolve(__dirname, '..', 'data', 'three.ts');
+const dataFourJson = resolve(__dirname, '..', 'data', 'four.json');
+const dataSubdirOneJs = resolve(__dirname, '..', 'data', 'subdir', 'one.js');
+const dataSubdirTwoJs = resolve(__dirname, '..', 'data', 'subdir', 'two.js');
+const dataSubdirThreeTs = resolve(__dirname, '..', 'data', 'subdir', 'three.ts');
+const dataSubdirFourJson = resolve(__dirname, '..', 'data', 'subdir', 'four.json');
 
 const getJsOutput = () => ({
 	foo: {

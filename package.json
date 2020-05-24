@@ -1,12 +1,13 @@
 {
   "name": "find-duplicate-strings",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Easy to use CLI that finds duplicate strings in a directory and stores them in a external file for easy reference",
   "author": "Erwin Heitzman",
   "homepage": "https://github.com/erwinheitzman/find-duplicate-strings/blob/master/README.md",
   "license": "MIT",
   "main": "cli/index.js",
-  "types": "lib/index.d.ts",
+  "types": "cli/index.d.ts",
+  "bin": "cli/index.js",
   "files": [
     "/lib"
   ],

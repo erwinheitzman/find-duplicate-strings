@@ -17,21 +17,20 @@ export class Scanner {
 		this.findings = {};
 	}
 
-	public scanDir(dirPath: string, formats: Array<string>): Findings {
+	public scanDir(dirPath: string, extensions: Array<string>): Findings {
 		this.findings = {};
 
-		const processFiles = (_dirPath: string, _formats: Array<string>) => {
+		const processFiles = (_dirPath: string, _extensions: Array<string>) => {
 			readdirSync(_dirPath).forEach((_filePath) => {
 				const fullPath = resolve(_dirPath, _filePath);
 
 				if (statSync(fullPath).isDirectory()) {
-					return processFiles(fullPath, _formats);
+					return processFiles(fullPath, _extensions);
 				}
 
-				const extension = extname(fullPath);
-				const format = extension.substring(1, extension.length);
+				const extension = extname(fullPath).substr(1);
 
-				if (_formats.includes(format)) {
+				if (_extensions.includes(extension)) {
 					readFileSync(fullPath, 'utf8')
 						.split('\n')
 						.forEach((line) => this.scanLine(line, fullPath));
@@ -39,7 +38,7 @@ export class Scanner {
 			});
 		};
 
-		processFiles(dirPath, formats);
+		processFiles(dirPath, extensions);
 
 		return this.findings;
 	}

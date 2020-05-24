@@ -3,29 +3,11 @@ import { createPromptModule, Answers } from 'inquirer';
 import { Scanner, Findings } from '../scan';
 import { resolve } from 'path';
 import { existsSync, writeFileSync } from 'fs';
+import questions from './questions.json';
 
 const scanner = new Scanner();
 const program = new Command();
 const prompt = createPromptModule();
-
-const QUESTIONS = {
-	SCAN: {
-		name: 'scanPath',
-		message: 'Please provide a directory to scan for duplicate values.',
-		type: 'input',
-	},
-	FORMATS: {
-		name: 'formats',
-		message: 'Please provide the file extensions you want to scan or leave empty to scan all files',
-		choices: ['js', 'ts', 'json'],
-		type: 'checkbox',
-	},
-	WRITE: {
-		name: 'writePath',
-		message: 'Please provide a filepath to store the values.',
-		type: 'input',
-	},
-};
 
 export const outputFindings = (findings: Findings): void => {
 	if (!Object.keys(findings).length) {
@@ -33,7 +15,7 @@ export const outputFindings = (findings: Findings): void => {
 		return;
 	}
 
-	prompt([QUESTIONS.WRITE]).then(({ writePath }: Answers) => {
+	prompt([questions.write]).then(({ writePath }: Answers) => {
 		const filePath = resolve(process.cwd(), writePath);
 		const data = JSON.stringify(findings, null, 2);
 		writeFileSync(`${filePath}.json`, data, { encoding: 'utf8' });
@@ -41,17 +23,17 @@ export const outputFindings = (findings: Findings): void => {
 };
 
 export const filterFileFormats = ({ scanPath }: Answers): Promise<Answers> => {
-	return prompt([QUESTIONS.FORMATS]).then(({ formats }) => ({ formats, scanPath }));
+	return prompt([questions.extensions]).then(({ extensions }) => ({ extensions, scanPath }));
 };
 
-export const scanDirAndLogFindings = ({ formats, scanPath }: Answers): Findings => {
+export const scanDirAndLogFindings = ({ extensions, scanPath }: Answers): Findings => {
 	const resolvedPath = resolve(process.cwd(), scanPath);
 
 	if (!existsSync(resolvedPath)) {
 		throw new Error('Directory does not exist, please pass a valid path.');
 	}
 
-	const findings = scanner.scanDir(resolvedPath, formats);
+	const findings = scanner.scanDir(resolvedPath, extensions);
 
 	if (Object.keys(findings).length) {
 		console.table(findings, ['count']);
@@ -61,7 +43,7 @@ export const scanDirAndLogFindings = ({ formats, scanPath }: Answers): Findings 
 };
 
 export function run(): void {
-	prompt([QUESTIONS.SCAN])
+	prompt([questions.scan])
 		.then(filterFileFormats)
 		.then(scanDirAndLogFindings)
 		.then(outputFindings)

@@ -1,6 +1,6 @@
 import { Command } from 'commander';
 import { createPromptModule, Answers } from 'inquirer';
-import { Scanner, Findings, Finding } from '../scan';
+import { Scanner, Findings } from '../scan';
 import { resolve } from 'path';
 import { existsSync, writeFileSync } from 'fs';
 

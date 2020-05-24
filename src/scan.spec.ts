@@ -1,5 +1,5 @@
 import { Scanner } from './scan';
-import { resolve, normalize } from 'path';
+import { resolve } from 'path';
 
 const scanner = new Scanner();
 

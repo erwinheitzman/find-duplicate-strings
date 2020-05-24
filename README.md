@@ -10,33 +10,31 @@ Squasher
 
 First clone the repository:
 ```shell
-git clone https://github.com/erwinheitzman/squasher.git
+npm i -g
 ```
 
-Then compile the code like so:
+Then run the cli:
 ```shell
-npm run compile
+squasher
 ```
 
-Then (while under development) run it like so:
-```shell
-node ./dist/cli/index.js -r
-```
-You will be asked to enter a path to a existing directory to be scanned for duplicate string values (answer `./data` for now):
+You will be asked to enter a path to a existing directory to be scanned for duplicate string values:
 ```shell
 ? Please provide a directory to scan for duplicate values.
 ./data
 ```
+
 It will output a table containing it's findings:
 ```shell
 ┌─────────┬────────┐
-│ (index) │ Values │
+│ (index) │ counts │
 ├─────────┼────────┤
 │   foo   │   6    │
 │   bar   │   6    │
 │ unique  │   2    │
 └─────────┴────────┘
 ```
+
 You will be asked to enter the file extensions that you want to scan:
 ```shell
 ? Please provide the file extensions you want to scan or leave empty to scan all files
@@ -44,17 +42,12 @@ You will be asked to enter the file extensions that you want to scan:
 )O ts
 )O json
 ```
-You will be asked to enter a path to a file that the results can be written to (you can use both `json` and `js` file formats):
-```shell
-? Please provide a filepath to store the values.
-./result.json
-```
-or
-```shell
-? Please provide a filepath to store the values.
-./result.js
-```
 
+You will be asked to enter a path to a file that the results can be written to (json):
+```shell
+? Please provide a filepath to store the values.
+./output
+```
 
 ### License
 

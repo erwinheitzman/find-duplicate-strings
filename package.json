@@ -1,39 +1,66 @@
 {
   "name": "squasher",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "",
+  "author": "Erwin Heitzman",
+  "homepage": "https://github.com/erwinheitzman/squasher/blob/master/README.md",
+  "license": "MIT",
   "main": "cli/index.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "/lib"
+  ],
   "scripts": {
-    "compile": "npm run clean && tsc",
-    "clean": "rm -rf dist coverage",
+    "prepare": "rm -rf lib coverage && tsc",
     "lint": "eslint ./src/**/*.ts --fix",
     "pretest": "npm run lint",
     "test": "jest"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/erwinheitzman/squasher.git"
+  },
   "keywords": [
-		"duplicates",
-		"strings",
-		"duplication",
-		"scan",
-		"find",
-		"squash",
-		"squasher"
-	],
-  "author": "Erwin Heitzman",
-  "license": "MIT",
+    "duplicates",
+    "strings",
+    "duplication",
+    "scan",
+    "find",
+    "squash",
+    "squasher"
+  ],
+  "bugs": {
+    "url": "https://github.com/erwinheitzman/squasher/issues"
+  },
   "dependencies": {
-    "commander": "^3.0.1",
-    "inquirer": "^7.0.0"
+    "commander": "^5.1.0",
+    "inquirer": "^7.1.0"
   },
   "devDependencies": {
     "@types/inquirer": "^6.5.0",
-    "@types/jest": "^24.0.18",
-    "@types/node": "^12.7.8",
-    "@typescript-eslint/eslint-plugin": "^2.3.1",
-    "@typescript-eslint/parser": "^2.3.1",
-    "eslint": "^6.4.0",
-    "jest": "^24.9.0",
-    "ts-jest": "^24.1.0",
-    "typescript": "^3.6.3"
+    "@types/jest": "^25.2.3",
+    "@types/node": "^14.0.5",
+    "@typescript-eslint/eslint-plugin": "^3.0.0",
+    "@typescript-eslint/parser": "^3.0.0",
+    "eslint": "^7.1.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.3",
+    "husky": "^4.2.5",
+    "jest": "^25.5.4",
+    "lint-staged": "^10.2.6",
+    "prettier": "^2.0.5",
+    "ts-jest": "^25.5.1",
+    "typescript": "^3.9.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm t"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts}": [
+      "eslint --fix"
+    ]
   }
 }

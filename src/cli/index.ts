@@ -52,6 +52,6 @@ export function run(): void {
 		});
 }
 
-program.option('-r, run', 'run squisher', run);
+program.action(run);
 
 program.parse(process.argv);

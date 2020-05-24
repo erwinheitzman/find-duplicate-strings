@@ -45,10 +45,12 @@ export class Scanner {
 	}
 
 	private scanLine(line: string, filePath: string): void {
+		const DOUBLE_QUOTES = 34;
+		const SIGNLE_QUOTES = 39;
+		const BACKSLASH = 92;
+
 		let singleQuote = false;
 		let doubleQuote = false;
-
-		let i = 0;
 		let characterSet = '';
 
 		const storeFinding = (finding: string) => {
@@ -65,25 +67,8 @@ export class Scanner {
 			}
 		};
 
-		function isCharCodeEscapedAt(line: string, index: number): boolean {
-			if (line.charCodeAt(index - 1) === 92) {
-				if (line.charCodeAt(index - 2) !== 92) {
-					return true;
-				} else {
-					return isCharCodeEscapedAt(line, index - 2);
-				}
-			}
-
-			return false;
-		}
-
-		for (; i < line.length; i++) {
-			if (line.charCodeAt(i) === 34 && singleQuote === false) {
-				if (isCharCodeEscapedAt(line, i) === true) {
-					characterSet += line[i];
-					continue;
-				}
-
+		for (let i = 0; i < line.length; i++) {
+			if (line.charCodeAt(i) === DOUBLE_QUOTES && line.charCodeAt(i - 1) !== BACKSLASH && singleQuote === false) {
 				doubleQuote = !doubleQuote;
 
 				if (doubleQuote === false) {
@@ -93,12 +78,7 @@ export class Scanner {
 				continue;
 			}
 
-			if (line.charCodeAt(i) === 39 && doubleQuote === false) {
-				if (isCharCodeEscapedAt(line, i) === true) {
-					characterSet += line[i];
-					continue;
-				}
-
+			if (line.charCodeAt(i) === SIGNLE_QUOTES && line.charCodeAt(i - 1) !== BACKSLASH && doubleQuote === false) {
 				singleQuote = !singleQuote;
 
 				if (singleQuote === false) {

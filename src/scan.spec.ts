@@ -4,39 +4,19 @@ const scanner = new Scanner();
 
 describe('scanDir', () => {
 	it('should retrieve all duplicates from ["js"] files', () => {
-		expect(scanner.scanDir('data', ['js'])).toEqual({ bar: 6, foo: 6, unique: 2 });
+		expect(scanner.scanDir('data', ['js'])).toEqual(getJsOutput());
 	});
 
 	it('should retrieve all duplicates from all ["ts"] files', () => {
-		expect(scanner.scanDir('data', ['ts'])).toEqual({ bar: 4, foo: 4, unique: 4 });
+		expect(scanner.scanDir('data', ['ts'])).toEqual(getTsOuput());
 	});
 
 	it('should retrieve all duplicates from all ["json"] files', () => {
-		expect(scanner.scanDir('data', ['json'])).toEqual({
-			one: 2,
-			bar: 4,
-			two: 2,
-			foo: 2,
-			three: 2,
-			four: 2,
-			baz: 2,
-			five: 2,
-			unique: 2,
-		});
+		expect(scanner.scanDir('data', ['json'])).toEqual(getJsonOutput());
 	});
 
 	it('should retrieve all duplicates from all ["js", "ts", "json"] files', () => {
-		expect(scanner.scanDir('data', ['js', 'ts', 'json'])).toEqual({
-			one: 2,
-			bar: 14,
-			two: 2,
-			foo: 12,
-			three: 2,
-			four: 2,
-			baz: 2,
-			five: 2,
-			unique: 8,
-		});
+		expect(scanner.scanDir('data', ['js', 'ts', 'json'])).toEqual(getAllOutput());
 	});
 
 	it('should not return any matches for empty strings', () => {
@@ -52,4 +32,163 @@ describe('scanDir', () => {
 			"no such file or directory, scandir 'does-not-exist'",
 		);
 	});
+});
+
+const getJsOutput = () => ({
+	foo: {
+		count: 6,
+		files: [
+			'C:\\dev\\squasher\\data\\one.js',
+			'C:\\dev\\squasher\\data\\subdir\\one.js',
+			'C:\\dev\\squasher\\data\\subdir\\two.js',
+			'C:\\dev\\squasher\\data\\two.js',
+		],
+	},
+	bar: {
+		count: 6,
+		files: [
+			'C:\\dev\\squasher\\data\\one.js',
+			'C:\\dev\\squasher\\data\\subdir\\one.js',
+			'C:\\dev\\squasher\\data\\subdir\\two.js',
+			'C:\\dev\\squasher\\data\\two.js',
+		],
+	},
+	"'foo' \\'bar\\' baz": {
+		count: 1,
+		files: ['C:\\dev\\squasher\\data\\subdir\\one.js'],
+	},
+	"'foo'' \\\\ \\\"bar\\\" baz": {
+		count: 1,
+		files: ['C:\\dev\\squasher\\data\\subdir\\one.js'],
+	},
+	unique: {
+		count: 2,
+		files: ['C:\\dev\\squasher\\data\\subdir\\two.js', 'C:\\dev\\squasher\\data\\two.js'],
+	},
+});
+
+const getTsOuput = () => ({
+	foo: {
+		count: 4,
+		files: ['C:\\dev\\squasher\\data\\subdir\\three.ts', 'C:\\dev\\squasher\\data\\three.ts'],
+	},
+	bar: {
+		count: 4,
+		files: ['C:\\dev\\squasher\\data\\subdir\\three.ts', 'C:\\dev\\squasher\\data\\three.ts'],
+	},
+	unique: {
+		count: 4,
+		files: ['C:\\dev\\squasher\\data\\subdir\\three.ts', 'C:\\dev\\squasher\\data\\three.ts'],
+	},
+});
+
+const getJsonOutput = () => ({
+	one: {
+		count: 2,
+		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+	},
+	bar: {
+		count: 4,
+		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+	},
+	two: {
+		count: 2,
+		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+	},
+	foo: {
+		count: 2,
+		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+	},
+	three: {
+		count: 2,
+		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+	},
+	four: {
+		count: 2,
+		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+	},
+	baz: {
+		count: 2,
+		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+	},
+	five: {
+		count: 2,
+		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+	},
+	unique: {
+		count: 2,
+		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+	},
+});
+
+const getAllOutput = () => ({
+	one: {
+		count: 2,
+		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+	},
+	bar: {
+		count: 14,
+		files: [
+			'C:\\dev\\squasher\\data\\four.json',
+			'C:\\dev\\squasher\\data\\one.js',
+			'C:\\dev\\squasher\\data\\subdir\\four.json',
+			'C:\\dev\\squasher\\data\\subdir\\one.js',
+			'C:\\dev\\squasher\\data\\subdir\\three.ts',
+			'C:\\dev\\squasher\\data\\subdir\\two.js',
+			'C:\\dev\\squasher\\data\\three.ts',
+			'C:\\dev\\squasher\\data\\two.js',
+		],
+	},
+	two: {
+		count: 2,
+		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+	},
+	foo: {
+		count: 12,
+		files: [
+			'C:\\dev\\squasher\\data\\four.json',
+			'C:\\dev\\squasher\\data\\one.js',
+			'C:\\dev\\squasher\\data\\subdir\\four.json',
+			'C:\\dev\\squasher\\data\\subdir\\one.js',
+			'C:\\dev\\squasher\\data\\subdir\\three.ts',
+			'C:\\dev\\squasher\\data\\subdir\\two.js',
+			'C:\\dev\\squasher\\data\\three.ts',
+			'C:\\dev\\squasher\\data\\two.js',
+		],
+	},
+	three: {
+		count: 2,
+		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+	},
+	four: {
+		count: 2,
+		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+	},
+	baz: {
+		count: 2,
+		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+	},
+	five: {
+		count: 2,
+		files: ['C:\\dev\\squasher\\data\\four.json', 'C:\\dev\\squasher\\data\\subdir\\four.json'],
+	},
+	unique: {
+		count: 8,
+		files: [
+			'C:\\dev\\squasher\\data\\four.json',
+			'C:\\dev\\squasher\\data\\subdir\\four.json',
+			'C:\\dev\\squasher\\data\\subdir\\three.ts',
+			'C:\\dev\\squasher\\data\\subdir\\two.js',
+			'C:\\dev\\squasher\\data\\three.ts',
+			'C:\\dev\\squasher\\data\\two.js',
+		],
+	},
+	"'foo' \\'bar\\' baz": {
+		count: 1,
+		files: ['C:\\dev\\squasher\\data\\subdir\\one.js'],
+	},
+	"'foo'' \\\\ \\\"bar\\\" baz": {
+		count: 1,
+		files: ['C:\\dev\\squasher\\data\\subdir\\one.js'],
+	},
 });

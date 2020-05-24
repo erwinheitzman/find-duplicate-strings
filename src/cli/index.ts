@@ -56,7 +56,7 @@ export const scanDirAndLogFindings = ({ formats, scanPath }: Answers): Findings 
 	const findings = scanner.scanDir(resolvedPath, formats);
 
 	if (Object.keys(findings).length) {
-		console.table(findings);
+		console.table(findings, ['count']);
 	}
 
 	return findings;

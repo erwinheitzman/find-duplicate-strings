@@ -61,7 +61,6 @@ export class Scanner {
 					}
 				} else {
 					this.findings[finding] = { count: 1, files: [filePath] };
-					this.findings[finding].count = 1;
 				}
 			}
 		};

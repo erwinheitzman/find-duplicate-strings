@@ -33,7 +33,7 @@
     "url": "https://github.com/erwinheitzman/squasher/issues"
   },
   "dependencies": {
-    "commander": "^3.0.1",
+    "commander": "^5.1.0",
     "inquirer": "^7.1.0"
   },
   "devDependencies": {

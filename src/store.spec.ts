@@ -57,4 +57,23 @@ describe('Store', () => {
 		// assert
 		expect(Store.getAll()).toEqual([]);
 	});
+
+	it('should throw an error when the key already exists', () => {
+		// arrange
+		Store.add('dummy1', { example: 'example1' });
+
+		// act
+		const result = () => Store.add('dummy1', { example: 'example2' });
+
+		// assert
+		expect(() => result()).toThrowError('Key dummy1 already exists');
+	});
+
+	it("should throw an error when updating a key that doesn't exist", () => {
+		// act
+		const result = () => Store.update('dummy1', { example: 'example2' });
+
+		// assert
+		expect(() => result()).toThrowError('Key dummy1 does not exist');
+	});
 });

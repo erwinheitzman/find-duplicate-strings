@@ -3,7 +3,7 @@ export class Store {
 
 	public static add(key: string, value: unknown): void {
 		if (this.store.has(key)) {
-			throw new Error(`value ${key} already exists`);
+			throw new Error(`Key ${key} already exists`);
 		}
 
 		this.store.set(key, value);
@@ -11,7 +11,7 @@ export class Store {
 
 	static update(key: string, value: unknown): void {
 		if (!this.store.has(key)) {
-			throw new Error(`value ${key} does not exist`);
+			throw new Error(`Key ${key} does not exist`);
 		}
 
 		this.store.set(key, value);

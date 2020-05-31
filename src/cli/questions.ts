@@ -18,7 +18,7 @@ export const questions = {
 	},
 	write: {
 		name: 'writePath',
-		message: 'Please provide a filepath to store the values.',
+		message: 'Please provide a filepath to store the output.',
 		type: 'input',
 	},
 };

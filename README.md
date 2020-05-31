@@ -52,7 +52,7 @@ It will output a table containing it's findings:
 You will be asked to enter a path to a file that the results can be written to (json):
 
 ```bash
-? Please provide a filepath to store the values.
+? Please provide a filepath to store the output.
 ./output
 ```
 

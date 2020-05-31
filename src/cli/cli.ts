@@ -10,13 +10,17 @@ import { questions } from './questions';
 const program = new Command();
 const prompt = createPromptModule();
 
-export const outputFindings = (findings: [string, unknown][]): void => {
+export const outputFindings = (findings: [string, { count: number; files: Array<string> }][]): void => {
 	if (!Object.keys(findings).length) {
 		console.log('No duplicates where found.');
 		return;
 	}
 
-	console.table(findings, ['count']);
+	if (!program.silent) {
+		const consoleOutput = findings.slice(0, 10) as [string, { count: number; files: Array<string> } | string][];
+		consoleOutput.push(['...', '...']);
+		console.table(consoleOutput);
+	}
 
 	prompt([questions.write]).then(({ writePath }: Answers) => {
 		const filePath = resolve(process.cwd(), writePath);
@@ -33,7 +37,11 @@ export const filterFileFormats = ({ exclusions, scanPath }: Answers): Promise<An
 	return prompt([questions.extensions]).then(({ extensions }) => ({ exclusions, extensions, scanPath }));
 };
 
-export const scanDirAndLogFindings = ({ exclusions, extensions, scanPath }: Answers): [string, unknown][] => {
+export const scanDirAndLogFindings = ({
+	exclusions,
+	extensions,
+	scanPath,
+}: Answers): [string, { count: number; files: Array<string> }][] => {
 	const directory = new Directory(scanPath);
 	const files = directory.scan(exclusions, extensions);
 
@@ -41,10 +49,10 @@ export const scanDirAndLogFindings = ({ exclusions, extensions, scanPath }: Answ
 		new File(file).findAndStoreStringValues();
 	}
 
-	const findings = Store.getAll();
+	const findings = Store.getAll() as [string, { count: number; files: Array<string> }][];
 
 	const result = findings.filter(([key, value]) => {
-		return (value as { count: number; files: Array<string> }).count > 1;
+		return value.count > 1;
 	});
 
 	return result;
@@ -60,6 +68,8 @@ export function run(): void {
 			console.error(e);
 		});
 }
+
+program.option('-s, --silent', 'Prevent the CLI from printing messages through the console.');
 
 program.action(run);
 

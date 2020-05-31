@@ -38,15 +38,24 @@ You will be asked to enter the file extensions that you want to scan:
 ? Please provide the file extensions you want to scan or leave empty to scan all files (separated list by ;)
 ```
 
-It will output a table containing it's findings:
+When you aren't running in silent mode it will output a table containing it's first 10 findings:
 
 ```bash
-┌─────────┬────────┐
-│ (index) │ counts │
-├─────────┼────────┤
-│   foo   │   6    │
-│   bar   │   6    │
-└─────────┴────────┘
+┌─────────┬──────────────┬───────────────────────────────┐
+│ (index) │      0       │               1               │
+├─────────┼──────────────┼───────────────────────────────┤
+│    0    │    'one'     │ { count: 2, files: [Array] }  │
+│    1    │    'bar'     │ { count: 15, files: [Array] } │
+│    2    │    'two'     │ { count: 2, files: [Array] }  │
+│    3    │    'foo'     │ { count: 14, files: [Array] } │
+│    4    │   'three'    │ { count: 2, files: [Array] }  │
+│    5    │    'four'    │ { count: 2, files: [Array] }  │
+│    6    │    'baz'     │ { count: 2, files: [Array] }  │
+│    7    │    'five'    │ { count: 2, files: [Array] }  │
+│    8    │   'foobar'   │ { count: 6, files: [Array] }  │
+│    9    │ 'not-unique' │ { count: 2, files: [Array] }  │
+│   10    │    '...'     │             '...'             │
+└─────────┴──────────────┴───────────────────────────────┘
 ```
 
 You will be asked to enter a path to a file that the results can be written to (json):
@@ -55,6 +64,14 @@ You will be asked to enter a path to a file that the results can be written to (
 ? Please provide a filepath to store the output.
 ./output
 ```
+
+## Help
+
+```bash
+find-duplicate-strings --help
+```
+
+Prevent tests from printing messages through the console.
 
 ### License
 

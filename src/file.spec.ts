@@ -1,38 +1,69 @@
-import { Scanner } from './scan';
+import { File } from './file';
+import { Store } from './store';
 import { resolve } from 'path';
 
-const scanner = new Scanner();
+const dataDir = resolve(__dirname, '..', 'data');
 
-describe('scanDir', () => {
-	it('should retrieve all duplicates from ["js"] files', () => {
-		expect(scanner.scanDir('data', ['js'])).toEqual(getJsOutput());
+describe('Directory', () => {
+	it('should return all files matching <"js">', async () => {
+		await new File(resolve(dataDir, '', 'one.js')).findAndStoreStringValues();
+		expect(Store.getAll()).toEqual([
+			resolve(dataDir, 'empty', 'empty-strings.js'),
+			resolve(dataDir, 'one.js'),
+			resolve(dataDir, 'subdir', 'one.js'),
+			resolve(dataDir, 'subdir', 'two.js'),
+			resolve(dataDir, 'two.js'),
+		]);
 	});
 
-	it('should retrieve all duplicates from all ["ts"] files', () => {
-		expect(scanner.scanDir('data', ['ts'])).toEqual(getTsOuput());
-	});
+	// it('should return all files matching <"ts">', () => {
+	// 	expect(directory.scan('data', ['ts'])).toEqual([
+	// 		resolve(dataDir, 'subdir', 'three.ts'),
+	// 		resolve(dataDir, 'three.ts'),
+	// 	]);
+	// });
 
-	it('should retrieve all duplicates from all ["json"] files', () => {
-		expect(scanner.scanDir('data', ['json'])).toEqual(getJsonOutput());
-	});
+	// it('should return all files matching <"json">', () => {
+	// 	expect(directory.scan('data', ['json'])).toEqual([
+	// 		resolve(dataDir, 'four.json'),
+	// 		resolve(dataDir, 'subdir', 'four.json'),
+	// 	]);
+	// });
 
-	it('should retrieve all duplicates from all ["js", "ts", "json"] files', () => {
-		expect(scanner.scanDir('data', ['js', 'ts', 'json'])).toEqual(getAllOutput());
-	});
+	// it('should return all files matching <"js" | "ts" | "json">', () => {
+	// 	expect(directory.scan('data', ['js', 'ts', 'json'])).toEqual([
+	// 		resolve(dataDir, 'empty', 'empty-strings.js'),
+	// 		resolve(dataDir, 'four.json'),
+	// 		resolve(dataDir, 'one.js'),
+	// 		resolve(dataDir, 'subdir', 'four.json'),
+	// 		resolve(dataDir, 'subdir', 'one.js'),
+	// 		resolve(dataDir, 'subdir', 'three.ts'),
+	// 		resolve(dataDir, 'subdir', 'two.js'),
+	// 		resolve(dataDir, 'three.ts'),
+	// 		resolve(dataDir, 'two.js'),
+	// 	]);
+	// });
 
-	it('should not return any matches for empty strings', () => {
-		expect(scanner.scanDir('data/empty', ['js'])).toEqual({});
-	});
+	// it('should return any files when no extensions are passed', () => {
+	// 	expect(directory.scan('data', [])).toEqual([
+	// 		resolve(dataDir, 'empty', 'empty-strings.js'),
+	// 		resolve(dataDir, 'four.json'),
+	// 		resolve(dataDir, 'one.js'),
+	// 		resolve(dataDir, 'subdir', 'four.json'),
+	// 		resolve(dataDir, 'subdir', 'one.js'),
+	// 		resolve(dataDir, 'subdir', 'three.ts'),
+	// 		resolve(dataDir, 'subdir', 'two.js'),
+	// 		resolve(dataDir, 'text.txt'),
+	// 		resolve(dataDir, 'three.ts'),
+	// 		resolve(dataDir, 'two.js'),
+	// 	]);
+	// });
 
-	it('should not return any matches when no valid formats are passed', () => {
-		expect(scanner.scanDir('data', [])).toEqual({});
-	});
-
-	it('should throw an error when the directory does not exist', () => {
-		expect(() => scanner.scanDir('does-not-exist', [])).toThrowError(
-			"no such file or directory, scandir 'does-not-exist'",
-		);
-	});
+	// it('should throw an error when the directory does not exist', () => {
+	// 	expect(() => directory.scan('does-not-exist', [])).toThrowError(
+	// 		'Directory does not exist, please pass a valid path.',
+	// 	);
+	// });
 });
 
 const dataOneJs = resolve(__dirname, '..', 'data', 'one.js');

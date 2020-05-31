@@ -1,19 +1,23 @@
 import { Command } from 'commander';
 import { createPromptModule, Answers } from 'inquirer';
-import { Scanner, Findings } from '../scan';
+import { Directory } from '../directory';
+import { Store } from '../store';
+import { File } from '../file';
 import { resolve } from 'path';
-import { existsSync, writeFileSync } from 'fs';
-import questions from './questions.json';
+import { writeFileSync } from 'fs';
+import { questions } from './questions';
 
-const scanner = new Scanner();
+const directory = new Directory();
 const program = new Command();
 const prompt = createPromptModule();
 
-export const outputFindings = (findings: Findings): void => {
+export const outputFindings = (findings: [string, unknown][]): void => {
 	if (!Object.keys(findings).length) {
 		console.log('No duplicates where found.');
 		return;
 	}
+
+	console.table(findings, ['count']);
 
 	prompt([questions.write]).then(({ writePath }: Answers) => {
 		const filePath = resolve(process.cwd(), writePath);
@@ -22,28 +26,33 @@ export const outputFindings = (findings: Findings): void => {
 	});
 };
 
-export const filterFileFormats = ({ scanPath }: Answers): Promise<Answers> => {
-	return prompt([questions.extensions]).then(({ extensions }) => ({ extensions, scanPath }));
+export const filterDirectories = ({ scanPath }: Answers): Promise<Answers> => {
+	return prompt([questions.exclusions]).then(({ exclusions }) => ({ exclusions, scanPath }));
 };
 
-export const scanDirAndLogFindings = ({ extensions, scanPath }: Answers): Findings => {
-	const resolvedPath = resolve(process.cwd(), scanPath);
+export const filterFileFormats = ({ exclusions, scanPath }: Answers): Promise<Answers> => {
+	return prompt([questions.extensions]).then(({ extensions }) => ({ exclusions, extensions, scanPath }));
+};
 
-	if (!existsSync(resolvedPath)) {
-		throw new Error('Directory does not exist, please pass a valid path.');
+export const scanDirAndLogFindings = ({ exclusions, extensions, scanPath }: Answers): [string, unknown][] => {
+	const files = directory.scan(scanPath, exclusions, extensions);
+
+	for (const file of files) {
+		new File(file).findAndStoreStringValues();
 	}
 
-	const findings = scanner.scanDir(resolvedPath, extensions);
+	const findings = Store.getAll();
 
-	if (Object.keys(findings).length) {
-		console.table(findings, ['count']);
-	}
+	const result = findings.filter(([key, value]) => {
+		return (value as { count: number; files: Array<string> }).count > 1;
+	});
 
-	return findings;
+	return result;
 };
 
 export function run(): void {
 	prompt([questions.scan])
+		.then(filterDirectories)
 		.then(filterFileFormats)
 		.then(scanDirAndLogFindings)
 		.then(outputFindings)

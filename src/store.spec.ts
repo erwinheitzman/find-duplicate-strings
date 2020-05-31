@@ -1,8 +1,6 @@
 import { Store } from './store';
 import { resolve } from 'path';
 
-const dataDir = resolve(__dirname, '..', 'data');
-
 afterEach(() => {
 	Store.clear();
 });

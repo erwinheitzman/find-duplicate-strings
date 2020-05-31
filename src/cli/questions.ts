@@ -12,9 +12,9 @@ export const questions = {
 	},
 	extensions: {
 		name: 'extensions',
-		message: 'Please provide the file extensions you want to scan or leave empty to scan all files',
-		choices: ['js', 'ts', 'json'],
-		type: 'checkbox',
+		message:
+			'Please provide the file extensions you want to scan or leave empty to scan all files (separated list by ;)',
+		type: 'input',
 	},
 	write: {
 		name: 'writePath',

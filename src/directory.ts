@@ -4,9 +4,15 @@ import { resolve, extname } from 'path';
 export class Directory {
 	constructor(private directory: string) {}
 
-	public scan(exclusions: string, extensions: Array<'js' | 'ts' | 'json'>): Array<string> {
+	public scan(exclusions: string, extensions: string): Array<string> {
 		const filesList: Array<string> = [];
 		const exclusionsList = exclusions.split(';');
+		const extensionsList = extensions.split(';').map((extension) => {
+			if (extension.startsWith('.')) {
+				return extension.substr(1, extension.length);
+			}
+			return extension;
+		});
 		const resolvedPath = resolve(process.cwd(), this.directory);
 
 		if (!existsSync(resolvedPath)) {
@@ -26,7 +32,7 @@ export class Directory {
 				}
 
 				const extension = extname(fullPath).substr(1);
-				if (!extensions.length || (extensions as Array<string>).includes(extension)) {
+				if (!extensions.length || extensionsList.includes(extension)) {
 					filesList.push(fullPath);
 				}
 			});

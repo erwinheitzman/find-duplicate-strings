@@ -9,7 +9,7 @@ describe('Directory', () => {
 		const directory = new Directory('data');
 
 		// act
-		const result = directory.scan('', ['js']);
+		const result = directory.scan('', 'js');
 
 		// assert
 		expect(result).toEqual([
@@ -26,7 +26,7 @@ describe('Directory', () => {
 		const directory = new Directory('data');
 
 		// act
-		const result = directory.scan('', ['ts']);
+		const result = directory.scan('', 'ts');
 
 		// assert
 		expect(result).toEqual([resolve(dataDir, 'subdir', 'three.ts'), resolve(dataDir, 'three.ts')]);
@@ -37,7 +37,7 @@ describe('Directory', () => {
 		const directory = new Directory('data');
 
 		// act
-		const result = directory.scan('', ['json']);
+		const result = directory.scan('', 'json');
 
 		// assert
 		expect(result).toEqual([resolve(dataDir, 'four.json'), resolve(dataDir, 'subdir', 'four.json')]);
@@ -48,7 +48,7 @@ describe('Directory', () => {
 		const directory = new Directory('data');
 
 		// act
-		const result = directory.scan('', ['js', 'ts', 'json']);
+		const result = directory.scan('', 'js;ts;json');
 
 		// assert
 		expect(result).toEqual([
@@ -69,7 +69,7 @@ describe('Directory', () => {
 		const directory = new Directory('data');
 
 		// act
-		const result = directory.scan('', []);
+		const result = directory.scan('', '');
 
 		// assert
 		expect(result).toEqual([
@@ -91,7 +91,7 @@ describe('Directory', () => {
 		const directory = new Directory('data');
 
 		// act and assert
-		const result = directory.scan('empty;subdir', []);
+		const result = directory.scan('empty;subdir', '');
 
 		// assert
 		expect(result).toEqual([
@@ -103,12 +103,31 @@ describe('Directory', () => {
 		]);
 	});
 
+	it('should exclude handle extension prefixed with a dot and without', () => {
+		// arrange
+		const directory = new Directory('data');
+
+		// act and assert
+		const result = directory.scan('', 'js;.ts');
+
+		// assert
+		expect(result).toEqual([
+			resolve(dataDir, 'empty', 'empty-strings.js'),
+			resolve(dataDir, 'one.js'),
+			resolve(dataDir, 'subdir', 'one.js'),
+			resolve(dataDir, 'subdir', 'three.ts'),
+			resolve(dataDir, 'subdir', 'two.js'),
+			resolve(dataDir, 'three.ts'),
+			resolve(dataDir, 'two.js'),
+		]);
+	});
+
 	it('should throw an error when the directory does not exist', () => {
 		// arrange
 		const directory = new Directory('does-not-exist');
 
 		// act and assert
-		const result = () => directory.scan('', []);
+		const result = () => directory.scan('', '');
 
 		// assert
 		expect(() => result()).toThrowError('Directory does not exist, please pass a valid path.');

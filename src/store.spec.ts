@@ -1,5 +1,4 @@
 import { Store } from './store';
-import { resolve } from 'path';
 
 afterEach(() => {
 	Store.clear();

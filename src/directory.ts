@@ -6,13 +6,6 @@ export class Directory {
 
 	public scan(exclusions: string, extensions: string): Array<string> {
 		const filesList: Array<string> = [];
-		const exclusionsList = exclusions.split(';');
-		const extensionsList = extensions.split(';').map((extension) => {
-			if (extension.startsWith('.')) {
-				return extension.substr(1, extension.length);
-			}
-			return extension;
-		});
 		const resolvedPath = resolve(process.cwd(), this.directory);
 
 		if (!existsSync(resolvedPath)) {
@@ -24,7 +17,7 @@ export class Directory {
 				const fullPath = resolve(path, file);
 
 				if (statSync(fullPath).isDirectory()) {
-					if (exclusionsList.includes(file)) {
+					if (this.parseStringList(exclusions).includes(file)) {
 						return;
 					}
 
@@ -32,7 +25,7 @@ export class Directory {
 				}
 
 				const extension = extname(fullPath).substr(1);
-				if (!extensions.length || extensionsList.includes(extension)) {
+				if (!extensions.length || this.parseExtensionsStringList(extensions).includes(extension)) {
 					filesList.push(fullPath);
 				}
 			});
@@ -41,5 +34,18 @@ export class Directory {
 		readdirRecursively(resolvedPath);
 
 		return filesList;
+	}
+
+	private parseStringList(stringList: string): Array<string> {
+		return stringList.split(';');
+	}
+
+	private parseExtensionsStringList(stringList: string): Array<string> {
+		return this.parseStringList(stringList).map((extension) => {
+			if (extension.startsWith('.')) {
+				return extension.substr(1, extension.length);
+			}
+			return extension;
+		});
 	}
 }

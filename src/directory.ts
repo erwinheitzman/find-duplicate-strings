@@ -40,8 +40,8 @@ export class Directory {
 		return stringList.split(';');
 	}
 
-	private parseExtensionsStringList(stringList: string): Array<string> {
-		return this.parseStringList(stringList).map((extension) => {
+	private parseExtensionsStringList(extensionsStringList: string): Array<string> {
+		return this.parseStringList(extensionsStringList).map((extension) => {
 			if (extension.startsWith('.')) {
 				return extension.substr(1, extension.length);
 			}

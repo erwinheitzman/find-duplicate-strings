@@ -1,0 +1,2925 @@
+[
+  [
+    "use strict",
+    {
+      "count": 73,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\acceptAlert.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\addCookie.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\back.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\closeWindow.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\createWindow.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\deleteAllCookies.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\deleteCookie.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\deleteSession.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\dismissAlert.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\elementClear.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\elementClick.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\elementSendKeys.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\executeAsyncScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\executeScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElementFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElements.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElementsFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\forward.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getActiveElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getAlertText.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getAllCookies.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementAttribute.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementCSSValue.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementProperty.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementRect.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementTagName.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementText.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getNamedCookie.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getPageSource.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getTimeouts.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getTitle.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getUrl.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getWindowHandle.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getWindowHandles.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getWindowRect.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\isElementEnabled.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\isElementSelected.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\navigateTo.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\newSession.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\performActions.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\refresh.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\releaseActions.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\sendAlertText.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\setTimeouts.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\setWindowRect.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\status.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\switchToFrame.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\switchToParentFrame.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\switchToWindow.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\takeElementScreenshot.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\takeScreenshot.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\elementstore.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\firefox.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\index.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\index.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\scripts\\cleanUpSerializationSelector.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\scripts\\createWindow.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\scripts\\elementClear.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\scripts\\executeAsyncScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\scripts\\executeScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\scripts\\getActiveElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\scripts\\getElementAttribute.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\scripts\\getElementCSSValue.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\scripts\\getElementRect.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\scripts\\getElementTagName.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\scripts\\getElementText.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\scripts\\getUrl.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js"
+      ]
+    }
+  ],
+  [
+    "throw",
+    {
+      "count": 50,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\acceptAlert.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\addCookie.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\back.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\closeWindow.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\createWindow.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\deleteAllCookies.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\deleteCookie.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\deleteSession.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\dismissAlert.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\elementClear.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\elementClick.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\elementSendKeys.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\executeAsyncScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\executeScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElementFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElements.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElementsFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\forward.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getActiveElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getAllCookies.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementAttribute.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementCSSValue.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementProperty.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementTagName.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getNamedCookie.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getTitle.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getUrl.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getWindowHandle.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getWindowHandles.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getWindowRect.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\isElementEnabled.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\isElementSelected.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\navigateTo.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\newSession.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\performActions.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\refresh.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\releaseActions.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\sendAlertText.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\setTimeouts.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\setWindowRect.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\status.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\switchToFrame.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\switchToParentFrame.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\switchToWindow.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\takeElementScreenshot.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\takeScreenshot.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\index.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js"
+      ]
+    }
+  ],
+  [
+    "__esModule",
+    {
+      "count": 73,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\acceptAlert.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\addCookie.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\back.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\closeWindow.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\createWindow.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\deleteAllCookies.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\deleteCookie.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\deleteSession.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\dismissAlert.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\elementClear.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\elementClick.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\elementSendKeys.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\executeAsyncScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\executeScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElementFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElements.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElementsFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\forward.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getActiveElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getAlertText.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getAllCookies.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementAttribute.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementCSSValue.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementProperty.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementRect.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementTagName.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementText.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getNamedCookie.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getPageSource.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getTimeouts.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getTitle.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getUrl.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getWindowHandle.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getWindowHandles.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getWindowRect.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\isElementEnabled.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\isElementSelected.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\navigateTo.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\newSession.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\performActions.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\refresh.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\releaseActions.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\sendAlertText.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\setTimeouts.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\setWindowRect.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\status.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\switchToFrame.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\switchToParentFrame.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\switchToWindow.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\takeElementScreenshot.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\takeScreenshot.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\elementstore.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\firefox.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\index.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\index.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\scripts\\cleanUpSerializationSelector.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\scripts\\createWindow.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\scripts\\elementClear.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\scripts\\executeAsyncScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\scripts\\executeScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\scripts\\getActiveElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\scripts\\getElementAttribute.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\scripts\\getElementCSSValue.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\scripts\\getElementRect.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\scripts\\getElementTagName.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\scripts\\getElementText.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\scripts\\getUrl.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js"
+      ]
+    }
+  ],
+  [
+    "no such alert",
+    {
+      "count": 8,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\acceptAlert.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\dismissAlert.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getAlertText.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\sendAlertText.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\acceptAlert.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\dismissAlert.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getAlertText.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\sendAlertText.js"
+      ]
+    }
+  ],
+  [
+    "name",
+    {
+      "count": 6,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\addCookie.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\addCookie.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "value",
+    {
+      "count": 4,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\addCookie.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\addCookie.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\devtoolsdriver.test.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "Provided cookie object is missing either \"name\" or \"value\" property",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\addCookie.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\addCookie.js"
+      ]
+    }
+  ],
+  [
+    "string",
+    {
+      "count": 23,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\addCookie.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\performActions.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\switchToFrame.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\addCookie.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\performActions.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\switchToFrame.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\devtoolsdriver.test.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "uuid",
+    {
+      "count": 12,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\closeWindow.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\createWindow.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getWindowHandles.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\newSession.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\index.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\closeWindow.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\createWindow.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getWindowHandles.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\newSession.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\index.js"
+      ]
+    }
+  ],
+  [
+    "default",
+    {
+      "count": 25,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\createWindow.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\elementClear.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\elementClick.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\elementSendKeys.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\executeAsyncScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\executeScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getActiveElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementAttribute.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementCSSValue.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementRect.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementTagName.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementText.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getUrl.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\isElementEnabled.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\isElementSelected.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\newSession.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\performActions.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\status.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\firefox.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\index.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\index.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js"
+      ]
+    }
+  ],
+  [
+    "../scripts/createWindow",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\createWindow.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\createWindow.js"
+      ]
+    }
+  ],
+  [
+    "menubar=1,toolbar=1,location=1,resizable=1,scrollbars=1",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\createWindow.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\createWindow.js"
+      ]
+    }
+  ],
+  [
+    "about:blank",
+    {
+      "count": 5,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\createWindow.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\createWindow.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\__mocks__\\puppeteer-core.js"
+      ]
+    }
+  ],
+  [
+    "tab",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\createWindow.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\createWindow.js"
+      ]
+    }
+  ],
+  [
+    "window",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\createWindow.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\createWindow.js"
+      ]
+    }
+  ],
+  [
+    "../scripts/elementClear",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\elementClear.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\elementClear.js"
+      ]
+    }
+  ],
+  [
+    "../utils",
+    {
+      "count": 38,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\elementClear.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\elementClick.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\elementSendKeys.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\executeAsyncScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\executeScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElementFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElements.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElementsFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementAttribute.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementCSSValue.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementProperty.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementRect.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementTagName.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementText.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\switchToFrame.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\takeElementScreenshot.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\firefox.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\elementClear.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\elementClick.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\elementSendKeys.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\executeAsyncScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\executeScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\findElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\findElementFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\findElements.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\findElementsFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getElementAttribute.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getElementCSSValue.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getElementProperty.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getElementRect.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getElementTagName.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getElementText.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\switchToFrame.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\takeElementScreenshot.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\firefox.js"
+      ]
+    }
+  ],
+  [
+    "html",
+    {
+      "count": 20,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\elementClear.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\executeAsyncScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\executeScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getActiveElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementAttribute.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementCSSValue.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementRect.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementTagName.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementText.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getUrl.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\elementClear.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\executeAsyncScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\executeScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getActiveElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getElementAttribute.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getElementCSSValue.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getElementRect.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getElementTagName.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getElementText.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getUrl.js"
+      ]
+    }
+  ],
+  [
+    "./getElementTagName",
+    {
+      "count": 4,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\elementClick.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\isElementSelected.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\elementClick.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\isElementSelected.js"
+      ]
+    }
+  ],
+  [
+    "./executeScript",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\elementClick.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\elementClick.js"
+      ]
+    }
+  ],
+  [
+    "../constants",
+    {
+      "count": 22,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\elementClick.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\executeAsyncScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\executeScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElementFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElements.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElementsFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getActiveElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getWindowRect.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\performActions.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\switchToFrame.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\elementClick.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\executeAsyncScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\executeScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\findElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\findElementFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\findElements.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\findElementsFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getActiveElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getWindowRect.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\performActions.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\switchToFrame.js"
+      ]
+    }
+  ],
+  [
+    "return (function select (elem) { elem.selected = true }).apply(null, arguments)",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\elementClick.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\elementClick.js"
+      ]
+    }
+  ],
+  [
+    "option",
+    {
+      "count": 4,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\elementClick.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\isElementSelected.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\elementClick.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\isElementSelected.js"
+      ]
+    }
+  ],
+  [
+    "dialog",
+    {
+      "count": 7,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\elementClick.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\elementClick.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\devtoolsdriver.test.js"
+      ]
+    }
+  ],
+  [
+    "path",
+    {
+      "count": 14,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\elementSendKeys.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\status.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\firefox.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\elementSendKeys.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\status.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\firefox.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "tagName",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\elementSendKeys.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\elementSendKeys.js"
+      ]
+    }
+  ],
+  [
+    "type",
+    {
+      "count": 5,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\elementSendKeys.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\elementSendKeys.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "INPUT",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\elementSendKeys.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\elementSendKeys.js"
+      ]
+    }
+  ],
+  [
+    "file",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\elementSendKeys.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\elementSendKeys.js"
+      ]
+    }
+  ],
+  [
+    "\\n",
+    {
+      "count": 12,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\elementSendKeys.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\elementSendKeys.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "../scripts/executeAsyncScript",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\executeAsyncScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\executeAsyncScript.js"
+      ]
+    }
+  ],
+  [
+    "script",
+    {
+      "count": 8,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\executeAsyncScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\executeScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getTimeouts.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\executeAsyncScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\executeScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getTimeouts.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js"
+      ]
+    }
+  ],
+  [
+    "return (",
+    {
+      "count": 4,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\executeAsyncScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\executeScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\executeAsyncScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\executeScript.js"
+      ]
+    }
+  ],
+  [
+    "return",
+    {
+      "count": 4,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\executeAsyncScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\executeScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\executeAsyncScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\executeScript.js"
+      ]
+    }
+  ],
+  [
+    "../scripts/executeScript",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\executeScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\executeScript.js"
+      ]
+    }
+  ],
+  [
+    " reason: a browser dialog has opened as result of a executeScript call",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\executeScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\executeScript.js"
+      ]
+    }
+  ],
+  [
+    "${using}",
+    {
+      "count": 8,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElementFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElements.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElementsFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\findElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\findElementFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\findElements.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\findElementsFromElement.js"
+      ]
+    }
+  ],
+  [
+    "link text",
+    {
+      "count": 10,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElementFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElements.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElementsFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\findElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\findElementFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\findElements.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\findElementsFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "xpath",
+    {
+      "count": 30,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElementFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElements.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElementsFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\findElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\findElementFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\findElements.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\findElementsFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "${value}",
+    {
+      "count": 18,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElementFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElements.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElementsFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\findElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\findElementFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\findElements.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\findElementsFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js"
+      ]
+    }
+  ],
+  [
+    "partial link text",
+    {
+      "count": 10,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElementFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElements.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\findElementsFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\findElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\findElementFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\findElements.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\findElementsFromElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "./findElement",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getActiveElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getActiveElement.js"
+      ]
+    }
+  ],
+  [
+    "../scripts/getActiveElement",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getActiveElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getActiveElement.js"
+      ]
+    }
+  ],
+  [
+    "../scripts/cleanUpSerializationSelector",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getActiveElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getActiveElement.js"
+      ]
+    }
+  ],
+  [
+    "no element active",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getActiveElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getActiveElement.js"
+      ]
+    }
+  ],
+  [
+    "css selector",
+    {
+      "count": 15,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getActiveElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getActiveElement.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "../scripts/getElementAttribute",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementAttribute.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getElementAttribute.js"
+      ]
+    }
+  ],
+  [
+    "../scripts/getElementCSSValue",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementCSSValue.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getElementCSSValue.js"
+      ]
+    }
+  ],
+  [
+    "../scripts/getElementRect",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementRect.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getElementRect.js"
+      ]
+    }
+  ],
+  [
+    "../scripts/getElementTagName",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementTagName.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getElementTagName.js"
+      ]
+    }
+  ],
+  [
+    "../scripts/getElementText",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getElementText.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getElementText.js"
+      ]
+    }
+  ],
+  [
+    "implicit",
+    {
+      "count": 8,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getTimeouts.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getTimeouts.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js"
+      ]
+    }
+  ],
+  [
+    "pageLoad",
+    {
+      "count": 13,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getTimeouts.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getTimeouts.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\devtoolsdriver.test.js"
+      ]
+    }
+  ],
+  [
+    "../scripts/getUrl",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\getUrl.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\getUrl.js"
+      ]
+    }
+  ],
+  [
+    "./getElementAttribute",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\isElementEnabled.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\isElementEnabled.js"
+      ]
+    }
+  ],
+  [
+    "disabled",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\isElementEnabled.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\isElementEnabled.js"
+      ]
+    }
+  ],
+  [
+    "./getElementProperty",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\isElementSelected.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\isElementSelected.js"
+      ]
+    }
+  ],
+  [
+    "selected",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\isElementSelected.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\isElementSelected.js"
+      ]
+    }
+  ],
+  [
+    "checked",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\isElementSelected.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\isElementSelected.js"
+      ]
+    }
+  ],
+  [
+    "os",
+    {
+      "count": 8,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\newSession.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\firefox.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\index.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\newSession.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\firefox.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\index.js"
+      ]
+    }
+  ],
+  [
+    "../launcher",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\newSession.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\newSession.js"
+      ]
+    }
+  ],
+  [
+    "../index",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\newSession.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\newSession.js"
+      ]
+    }
+  ],
+  [
+    "/",
+    {
+      "count": 4,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\newSession.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\index.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\newSession.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\index.js"
+      ]
+    }
+  ],
+  [
+    "puppeteer-core/lib/USKeyboardLayout",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\performActions.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\performActions.js"
+      ]
+    }
+  ],
+  [
+    "./getElementRect",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\performActions.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\performActions.js"
+      ]
+    }
+  ],
+  [
+    "key",
+    {
+      "count": 4,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\performActions.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\performActions.js"
+      ]
+    }
+  ],
+  [
+    "pointer",
+    {
+      "count": 6,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\performActions.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\performActions.js"
+      ]
+    }
+  ],
+  [
+    "null",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\performActions.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\performActions.js"
+      ]
+    }
+  ],
+  [
+    "pause",
+    {
+      "count": 4,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\performActions.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\performActions.js"
+      ]
+    }
+  ],
+  [
+    "up",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\performActions.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\performActions.js"
+      ]
+    }
+  ],
+  [
+    "mouse",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\performActions.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\performActions.js"
+      ]
+    }
+  ],
+  [
+    "Currently only \"mouse\" is supported as pointer type",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\performActions.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\performActions.js"
+      ]
+    }
+  ],
+  [
+    "move",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\performActions.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\performActions.js"
+      ]
+    }
+  ],
+  [
+    "number",
+    {
+      "count": 19,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\performActions.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\switchToFrame.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\performActions.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\switchToFrame.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "middle",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\performActions.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\performActions.js"
+      ]
+    }
+  ],
+  [
+    "right",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\performActions.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\performActions.js"
+      ]
+    }
+  ],
+  [
+    "left",
+    {
+      "count": 3,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\performActions.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\performActions.js"
+      ]
+    }
+  ],
+  [
+    "${action.type}",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\performActions.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\performActions.js"
+      ]
+    }
+  ],
+  [
+    "puppeteer-core",
+    {
+      "count": 7,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\status.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\status.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\launcher.test.js"
+      ]
+    }
+  ],
+  [
+    "function",
+    {
+      "count": 6,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\switchToFrame.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\switchToParentFrame.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\switchToFrame.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\switchToParentFrame.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js"
+      ]
+    }
+  ],
+  [
+    "no such frame",
+    {
+      "count": 4,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\switchToFrame.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\switchToFrame.js"
+      ]
+    }
+  ],
+  [
+    "base64",
+    {
+      "count": 4,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\takeElementScreenshot.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\takeScreenshot.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\takeElementScreenshot.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\takeScreenshot.js"
+      ]
+    }
+  ],
+  [
+    "png",
+    {
+      "count": 4,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\takeElementScreenshot.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\commands\\takeScreenshot.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\takeElementScreenshot.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\takeScreenshot.js"
+      ]
+    }
+  ],
+  [
+    "element-6066-11e4-a52e-4f735466cecf",
+    {
+      "count": 6,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "--disable-extensions",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "--disable-background-networking",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "--disable-background-timer-throttling",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "--disable-backgrounding-occluded-windows",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "--disable-sync",
+    {
+      "count": 3,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\launcher.test.js"
+      ]
+    }
+  ],
+  [
+    "--metrics-recording-only",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "--disable-default-apps",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "--mute-audio",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "--no-first-run",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "--disable-hang-monitor",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "--disable-prompt-on-repost",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "--disable-client-side-phishing-detection",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "--password-store=basic",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "--use-mock-keychain",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "--disable-component-extensions-with-background-pages",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "--disable-breakpad",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "--disable-dev-shm-usage",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "--disable-ipc-flooding-protection",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "--disable-renderer-backgrounding",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "--enable-features=NetworkService,NetworkServiceInProcess",
+    {
+      "count": 3,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\launcher.test.js"
+      ]
+    }
+  ],
+  [
+    "--disable-features=site-per-process,TranslateUI,BlinkGenPropertyTrees",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "chrome",
+    {
+      "count": 9,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\devtools.test.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\launcher.test.js"
+      ]
+    }
+  ],
+  [
+    "googlechrome",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "headlesschrome",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "google-chrome",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "chromium",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "firefox",
+    {
+      "count": 14,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\firefox.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\firefox.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\launcher.test.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "ff",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "mozilla",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "mozillafirefox",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "headless firefox",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "headlessfirefox",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "edge",
+    {
+      "count": 9,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\launcher.test.js"
+      ]
+    }
+  ],
+  [
+    "msedge",
+    {
+      "count": 4,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\edge.js"
+      ]
+    }
+  ],
+  [
+    "microsoft-edge",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "microsoftedge",
+    {
+      "count": 4,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\edge.js"
+      ]
+    }
+  ],
+  [
+    "object",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "info",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "tag name",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "data-devtoolsdriver-fetchedElement",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "__executeElement",
+    {
+      "count": 3,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "puppeteer:protocol",
+    {
+      "count": 4,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js"
+      ]
+    }
+  ],
+  [
+    "stale element reference",
+    {
+      "count": 5,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "stale element reference: The element reference is stale; either the element is no longer attached to the DOM, it is not in the current frame context, or the document has been refreshed",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js"
+      ]
+    }
+  ],
+  [
+    "goog:chromeOptions",
+    {
+      "count": 6,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\devtools.test.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\launcher.test.js"
+      ]
+    }
+  ],
+  [
+    "moz:firefoxOptions",
+    {
+      "count": 3,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\launcher.test.js"
+      ]
+    }
+  ],
+  [
+    "ms:edgeOptions",
+    {
+      "count": 3,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\constants.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\launcher.test.js"
+      ]
+    }
+  ],
+  [
+    "fs",
+    {
+      "count": 7,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\devtoolsdriver.test.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "@wdio/logger",
+    {
+      "count": 8,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\index.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\index.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js"
+      ]
+    }
+  ],
+  [
+    "@wdio/utils",
+    {
+      "count": 6,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\index.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\index.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js"
+      ]
+    }
+  ],
+  [
+    "./elementstore",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js"
+      ]
+    }
+  ],
+  [
+    "./utils",
+    {
+      "count": 6,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\index.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\index.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\launcher.js"
+      ]
+    }
+  ],
+  [
+    "./constants",
+    {
+      "count": 8,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\index.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\index.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js"
+      ]
+    }
+  ],
+  [
+    "devtools",
+    {
+      "count": 10,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\index.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\index.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js"
+      ]
+    }
+  ],
+  [
+    "commands",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js"
+      ]
+    }
+  ],
+  [
+    "framenavigated",
+    {
+      "count": 3,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\devtoolsdriver.test.js"
+      ]
+    }
+  ],
+  [
+    "${command}",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js"
+      ]
+    }
+  ],
+  [
+    "command",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js"
+      ]
+    }
+  ],
+  [
+    "most likely because of a navigation",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js"
+      ]
+    }
+  ],
+  [
+    "Command failed due to unfinished page transition, retrying...",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js"
+      ]
+    }
+  ],
+  [
+    "page load timeout",
+    {
+      "count": 3,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\devtoolsdriver.test.js"
+      ]
+    }
+  ],
+  [
+    "load",
+    {
+      "count": 3,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\devtoolsdriver.test.js"
+      ]
+    }
+  ],
+  [
+    "result",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js"
+      ]
+    }
+  ],
+  [
+    "undefined",
+    {
+      "count": 4,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js"
+      ]
+    }
+  ],
+  [
+    "screenshot",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js"
+      ]
+    }
+  ],
+  [
+    "RESULT",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js"
+      ]
+    }
+  ],
+  [
+    "1",
+    {
+      "count": 9,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\commands\\performActions.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\devtoolsdriver.test.js"
+      ]
+    }
+  ],
+  [
+    "document.readyState",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js"
+      ]
+    }
+  ],
+  [
+    "complete",
+    {
+      "count": 6,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\devtoolsdriver.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\devtoolsdriver.test.js"
+      ]
+    }
+  ],
+  [
+    "child_process",
+    {
+      "count": 8,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\firefox.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\firefox.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "/Contents/MacOS/Microsoft Edge",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\edge.js"
+      ]
+    }
+  ],
+  [
+    "/System/Library/Frameworks/CoreServices.framework",
+    {
+      "count": 4,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\firefox.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\firefox.js"
+      ]
+    }
+  ],
+  [
+    "/Versions/A/Frameworks/LaunchServices.framework",
+    {
+      "count": 4,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\firefox.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\firefox.js"
+      ]
+    }
+  ],
+  [
+    "/Versions/A/Support/lsregister",
+    {
+      "count": 4,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\firefox.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\firefox.js"
+      ]
+    }
+  ],
+  [
+    " | grep -i \\'microsoft edge\\\\?.app.*$\\'",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\edge.js"
+      ]
+    }
+  ],
+  [
+    " | awk \\'{$1=\"\"; print $0}\\'",
+    {
+      "count": 4,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\firefox.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\firefox.js"
+      ]
+    }
+  ],
+  [
+    ".app",
+    {
+      "count": 4,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\firefox.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\firefox.js"
+      ]
+    }
+  ],
+  [
+    ".local/share/applications/",
+    {
+      "count": 4,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\firefox.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\firefox.js"
+      ]
+    }
+  ],
+  [
+    "/usr/share/applications/",
+    {
+      "count": 4,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\firefox.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\firefox.js"
+      ]
+    }
+  ],
+  [
+    "PROGRAMFILES(X86)",
+    {
+      "count": 4,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\firefox.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\firefox.js"
+      ]
+    }
+  ],
+  [
+    "^Exec=/.*/(edge)-.*",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\edge.js"
+      ]
+    }
+  ],
+  [
+    "${edgeExecRegex}",
+    {
+      "count": 8,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\firefox.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\firefox.js"
+      ]
+    }
+  ],
+  [
+    "=",
+    {
+      "count": 8,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\firefox.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\firefox.js"
+      ]
+    }
+  ],
+  [
+    "{print $2}",
+    {
+      "count": 8,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\firefox.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\firefox.js"
+      ]
+    }
+  ],
+  [
+    "pipe",
+    {
+      "count": 10,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\firefox.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\firefox.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js"
+      ]
+    }
+  ],
+  [
+    "$1",
+    {
+      "count": 4,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\firefox.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\firefox.js"
+      ]
+    }
+  ],
+  [
+    "/Contents/MacOS/firefox-bin",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\firefox.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\firefox.js"
+      ]
+    }
+  ],
+  [
+    " | grep -i \\'firefox\\\\?.app.*$\\'",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\firefox.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\firefox.js"
+      ]
+    }
+  ],
+  [
+    "^Exec=/.*/(firefox)-.*",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\firefox.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\firefox.js"
+      ]
+    }
+  ],
+  [
+    "./edge",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\index.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\index.js"
+      ]
+    }
+  ],
+  [
+    "./firefox",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\finder\\index.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\index.js"
+      ]
+    }
+  ],
+  [
+    "ua-parser-js",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\index.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\index.js"
+      ]
+    }
+  ],
+  [
+    "@wdio/config",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\index.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\index.js"
+      ]
+    }
+  ],
+  [
+    "./devtoolsdriver",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\index.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\index.js"
+      ]
+    }
+  ],
+  [
+    "./launcher",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\index.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\index.js"
+      ]
+    }
+  ],
+  [
+    "devtools:puppeteer",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\index.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\index.js"
+      ]
+    }
+  ],
+  [
+    "not yet implemented",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\index.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\index.js"
+      ]
+    }
+  ],
+  [
+    "chrome-launcher",
+    {
+      "count": 3,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\launcher.test.js"
+      ]
+    }
+  ],
+  [
+    "puppeteer-core/DeviceDescriptors",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\launcher.js"
+      ]
+    }
+  ],
+  [
+    "./finder",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\launcher.js"
+      ]
+    }
+  ],
+  [
+    "${mobileEmulation.deviceName}",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\launcher.js"
+      ]
+    }
+  ],
+  [
+    ", ",
+    {
+      "count": 4,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js"
+      ]
+    }
+  ],
+  [
+    "--headless",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\launcher.js"
+      ]
+    }
+  ],
+  [
+    "--no-sandbox",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\launcher.js"
+      ]
+    }
+  ],
+  [
+    " ",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\launcher.js"
+      ]
+    }
+  ],
+  [
+    "Couldn\\'t find executable for browser",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\launcher.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\launcher.js"
+      ]
+    }
+  ],
+  [
+    "_blank",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\scripts\\createWindow.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\scripts\\createWindow.js"
+      ]
+    }
+  ],
+  [
+    "script timeout",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\scripts\\executeAsyncScript.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\scripts\\executeAsyncScript.js"
+      ]
+    }
+  ],
+  [
+    "@wdio/protocols",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js"
+      ]
+    }
+  ],
+  [
+    "./scripts/cleanUpSerializationSelector",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js"
+      ]
+    }
+  ],
+  [
+    "${p.name}",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js"
+      ]
+    }
+  ],
+  [
+    "${commandParam.name}",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js"
+      ]
+    }
+  ],
+  [
+    "COMMAND",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js"
+      ]
+    }
+  ],
+  [
+    "failed to find element",
+    {
+      "count": 3,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "Node is detached from document",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js"
+      ]
+    }
+  ],
+  [
+    "  -- ASYNC --",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js"
+      ]
+    }
+  ],
+  [
+    "devtools/node_modules/puppeteer-core",
+    {
+      "count": 3,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "${r}",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js"
+      ]
+    }
+  ],
+  [
+    "element is no longer attached to the DOM, it is not in the current frame context, or the ",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js"
+      ]
+    }
+  ],
+  [
+    "document has been refreshed",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js"
+      ]
+    }
+  ],
+  [
+    "no browser pages found, retrying...",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js"
+      ]
+    }
+  ],
+  [
+    "which",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js"
+      ]
+    }
+  ],
+  [
+    "node_modules",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js"
+      ]
+    }
+  ],
+  [
+    "debug",
+    {
+      "count": 6,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\build\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\utils.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "License",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\firefox.js"
+      ]
+    }
+  ],
+  [
+    "AS IS",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\edge.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\src\\finder\\firefox.js"
+      ]
+    }
+  ],
+  [
+    "../src/launcher",
+    {
+      "count": 3,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\devtools.test.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\launcher.test.js"
+      ]
+    }
+  ],
+  [
+    "trace",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\devtools.test.js"
+      ]
+    }
+  ],
+  [
+    "foobar",
+    {
+      "count": 36,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\devtoolsdriver.test.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\elementStore.test.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\launcher.test.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "elementId",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\devtoolsdriver.test.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "barfoo",
+    {
+      "count": 22,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\devtoolsdriver.test.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\elementStore.test.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "Wrong parameters applied",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\devtoolsdriver.test.js"
+      ]
+    }
+  ],
+  [
+    "123",
+    {
+      "count": 17,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\devtoolsdriver.test.js",
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "some text",
+    {
+      "count": 9,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\devtoolsdriver.test.js"
+      ]
+    }
+  ],
+  [
+    "some value",
+    {
+      "count": 9,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\devtoolsdriver.test.js"
+      ]
+    }
+  ],
+  [
+    "foobar most likely because of a navigation",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\devtoolsdriver.test.js"
+      ]
+    }
+  ],
+  [
+    "loading",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\devtoolsdriver.test.js"
+      ]
+    }
+  ],
+  [
+    "ups",
+    {
+      "count": 4,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\devtoolsdriver.test.js"
+      ]
+    }
+  ],
+  [
+    "/path/to/firefox",
+    {
+      "count": 3,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\launcher.test.js"
+      ]
+    }
+  ],
+  [
+    "/path/to/edge",
+    {
+      "count": 3,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\launcher.test.js"
+      ]
+    }
+  ],
+  [
+    "/foo/bar",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\launcher.test.js"
+      ]
+    }
+  ],
+  [
+    "pptrDebug",
+    {
+      "count": 3,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "description",
+    {
+      "count": 4,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "using",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "required",
+    {
+      "count": 3,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "customParam",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "#body",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "//img",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "Element with selector \"barfoo\" not found",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "sets implicit waits",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "sets implicit waits with xpath",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "foo",
+    {
+      "count": 3,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "/some/file",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\utils.test.js"
+      ]
+    }
+  ],
+  [
+    "Nexus 6P",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\__mocks__\\puppeteer-core.js"
+      ]
+    }
+  ],
+  [
+    "Mozilla/5.0 (Linux; Android 8.0.0; Nexus 6P Build/OPP3.170518.006) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3765.0 Mobile Safari/537.36",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\__mocks__\\puppeteer-core.js"
+      ]
+    }
+  ],
+  [
+    "Nexus 6P landscape",
+    {
+      "count": 2,
+      "files": [
+        "C:\\dev\\wdio6\\packages\\devtools\\tests\\__mocks__\\puppeteer-core.js"
+      ]
+    }
+  ]
+]

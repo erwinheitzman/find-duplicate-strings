@@ -7,7 +7,6 @@ import { resolve } from 'path';
 import { writeFileSync } from 'fs';
 import { questions } from './questions';
 
-const directory = new Directory();
 const program = new Command();
 const prompt = createPromptModule();
 
@@ -35,7 +34,8 @@ export const filterFileFormats = ({ exclusions, scanPath }: Answers): Promise<An
 };
 
 export const scanDirAndLogFindings = ({ exclusions, extensions, scanPath }: Answers): [string, unknown][] => {
-	const files = directory.scan(scanPath, exclusions, extensions);
+	const directory = new Directory(scanPath);
+	const files = directory.scan(exclusions, extensions);
 
 	for (const file of files) {
 		new File(file).findAndStoreStringValues();

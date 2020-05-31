@@ -2,10 +2,12 @@ import { readdirSync, existsSync, statSync } from 'fs';
 import { resolve, extname } from 'path';
 
 export class Directory {
-	public scan(dirPath: string, exclusions: string, extensions: Array<'js' | 'ts' | 'json'>): Array<string> {
+	constructor(private directory: string) {}
+
+	public scan(exclusions: string, extensions: Array<'js' | 'ts' | 'json'>): Array<string> {
 		const filesList: Array<string> = [];
 		const exclusionsList = exclusions.split(';');
-		const resolvedPath = resolve(process.cwd(), dirPath);
+		const resolvedPath = resolve(process.cwd(), this.directory);
 
 		if (!existsSync(resolvedPath)) {
 			throw new Error('Directory does not exist, please pass a valid path.');

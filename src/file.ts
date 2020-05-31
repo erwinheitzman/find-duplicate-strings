@@ -1,6 +1,10 @@
 import { readFileSync } from 'fs';
-import { Finding } from '../typings/finding';
 import { Store } from './store';
+
+export interface Finding {
+	count: number;
+	files: Array<string>;
+}
 
 export class File {
 	private readonly file: string;

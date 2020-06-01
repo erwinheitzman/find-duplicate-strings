@@ -1,72 +1,56 @@
 import { Command } from 'commander';
-import { createPromptModule, Answers } from 'inquirer';
 import { Directory } from '../directory';
 import { Store } from '../store';
 import { File } from '../file';
-import { resolve } from 'path';
-import { writeFileSync } from 'fs';
-import { questions } from './questions';
+import { Finding } from '../ifinding';
+import { DirectoryQuestion, ExclusionsQuestion, ExtensionsQuestion, OutputQuestion } from './questions';
 
+const store = new Store<Finding>();
 const program = new Command();
-const prompt = createPromptModule();
 
-export const outputFindings = (findings: [string, { count: number; files: Array<string> }][]): void => {
-	if (!Object.keys(findings).length) {
-		console.log('No duplicates where found.');
-		return;
-	}
-
+export const outputFindings = (findings: Finding[]): void => {
 	if (!program.silent) {
-		const consoleOutput = findings.slice(0, 10) as [string, { count: number; files: Array<string> } | string][];
+		const consoleOutput: [string, Finding | string][] = findings
+			.slice(0, 10)
+			.map((finding: Finding) => [finding.key, finding]);
+
 		consoleOutput.push(['...', '...']);
 		console.table(consoleOutput);
 	}
-
-	prompt([questions.write]).then(({ writePath }: Answers) => {
-		const filePath = resolve(process.cwd(), writePath);
-		const data = JSON.stringify(findings, null, 2);
-		writeFileSync(`${filePath}.json`, data, { encoding: 'utf8' });
-	});
 };
 
-export const filterDirectories = ({ scanPath }: Answers): Promise<Answers> => {
-	return prompt([questions.exclusions]).then(({ exclusions }) => ({ exclusions, scanPath }));
-};
-
-export const filterFileFormats = ({ exclusions, scanPath }: Answers): Promise<Answers> => {
-	return prompt([questions.extensions]).then(({ extensions }) => ({ exclusions, extensions, scanPath }));
-};
-
-export const scanDirAndLogFindings = ({
-	exclusions,
-	extensions,
-	scanPath,
-}: Answers): [string, { count: number; files: Array<string> }][] => {
-	const directory = new Directory(scanPath);
-	const files = directory.scan(exclusions, extensions);
+export const scanDir = (scanPath: string, exclusions: string[], extensions: string[]): Finding[] => {
+	const directory = new Directory(scanPath, exclusions, extensions);
+	const files = directory.getFiles();
 
 	for (const file of files) {
-		new File(file).findAndStoreStringValues();
+		new File(store, file).getStrings();
 	}
 
-	const findings = Store.getAll() as [string, { count: number; files: Array<string> }][];
+	const findings = store.getAll();
 
-	const result = findings.filter(([key, value]) => {
-		return value.count > 1;
-	});
+	const filteredFindings = findings.filter((value) => value.count > 1);
 
-	return result;
+	return filteredFindings;
 };
 
-export function run(): void {
-	prompt([questions.scan])
-		.then(filterDirectories)
-		.then(filterFileFormats)
-		.then(scanDirAndLogFindings)
-		.then(outputFindings)
-		.catch((e: Error) => {
-			console.error(e);
-		});
+export async function run(): Promise<void> {
+	try {
+		const directory = await new DirectoryQuestion().getAnswer();
+		const exclusions = await new ExclusionsQuestion().getAnswer();
+		const extensions = await new ExtensionsQuestion().getAnswer();
+
+		const findings = scanDir(directory, exclusions, extensions);
+
+		if (!findings.length) {
+			console.log('No duplicates where found.');
+			return;
+		}
+
+		outputFindings(findings);
+	} catch (error) {
+		console.error(error);
+	}
 }
 
 program.option('-s, --silent', 'Prevent the CLI from printing messages through the console.');

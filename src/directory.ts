@@ -2,50 +2,42 @@ import { readdirSync, existsSync, statSync } from 'fs';
 import { resolve, extname } from 'path';
 
 export class Directory {
-	constructor(private directory: string) {}
+	private readonly resolvedDir: string;
 
-	public scan(exclusions: string, extensions: string): Array<string> {
-		const filesList: Array<string> = [];
-		const resolvedPath = resolve(process.cwd(), this.directory);
+	constructor(directory: string, private exclusions: string[], private extensions: string[]) {
+		this.resolvedDir = resolve(process.cwd(), directory);
 
-		if (!existsSync(resolvedPath)) {
+		if (!existsSync(this.resolvedDir)) {
 			throw new Error('Directory does not exist, please pass a valid path.');
 		}
-
-		const readdirRecursively = (path: string): void => {
-			readdirSync(path).forEach((file) => {
-				const fullPath = resolve(path, file);
-
-				if (statSync(fullPath).isDirectory()) {
-					if (this.parseStringList(exclusions).includes(file)) {
-						return;
-					}
-
-					return readdirRecursively(fullPath);
-				}
-
-				const extension = extname(fullPath).substr(1);
-				if (!extensions.length || this.parseExtensionsStringList(extensions).includes(extension)) {
-					filesList.push(fullPath);
-				}
-			});
-		};
-
-		readdirRecursively(resolvedPath);
-
-		return filesList;
 	}
 
-	private parseStringList(stringList: string): Array<string> {
-		return stringList.split(';');
+	public getFiles(): string[] {
+		return this.readdirRecursively(this.resolvedDir);
 	}
 
-	private parseExtensionsStringList(extensionsStringList: string): Array<string> {
-		return this.parseStringList(extensionsStringList).map((extension) => {
-			if (extension.startsWith('.')) {
-				return extension.substr(1, extension.length);
+	private readdirRecursively = (path: string): string[] => {
+		const files: string[] = [];
+
+		readdirSync(path).forEach((file) => {
+			if (this.exclusions.includes(file)) {
+				return;
 			}
-			return extension;
+
+			const fullPath = resolve(path, file);
+
+			if (statSync(fullPath).isDirectory()) {
+				files.push(...this.readdirRecursively(fullPath));
+				return;
+			}
+
+			const extension = extname(fullPath).substr(1);
+
+			if (!this.extensions.length || this.extensions.includes(extension)) {
+				files.push(fullPath);
+			}
 		});
-	}
+
+		return files;
+	};
 }

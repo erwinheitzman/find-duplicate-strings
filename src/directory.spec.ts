@@ -6,10 +6,10 @@ const dataDir = resolve(__dirname, '..', 'data');
 describe('Directory', () => {
 	it('should return all files matching <"js">', () => {
 		// arrange
-		const directory = new Directory('data');
+		const directory = new Directory('data', [''], ['js']);
 
 		// act
-		const result = directory.scan('', 'js');
+		const result = directory.scan();
 
 		// assert
 		expect(result).toEqual([

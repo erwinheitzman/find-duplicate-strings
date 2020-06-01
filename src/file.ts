@@ -1,32 +1,32 @@
 import { readFileSync } from 'fs';
 import { Store } from './store';
+import { Finding } from './ifinding';
 
-export interface Finding {
-	count: number;
-	files: Array<string>;
+enum Character {
+	SINGLE_QUOTE = 39,
+	DOUBLE_QUOTE = 34,
+	BACKSLASH = 92,
 }
 
 export class File {
 	private readonly file: string;
 
-	constructor(private name: string) {
+	constructor(private store: Store<Finding>, private name: string) {
 		this.file = readFileSync(name, 'utf8');
 	}
 
-	public findAndStoreStringValues(): void {
-		const isSingleQuote = (line: string, index: number) => line.charCodeAt(index) === 39;
-		const isDoubleQuote = (line: string, index: number) => line.charCodeAt(index) === 34;
-		const isEscaped = (line: string, index: number) => line.charCodeAt(index - 1) !== 92;
-
-		const lines = this.getLines();
-
-		lines.forEach((line: string) => {
+	public getStrings(): void {
+		this.getLines().forEach((line: string) => {
 			let settingSingleQuoteMatch = false;
 			let settingDoubleQuoteMatch = false;
 			let characterSet = '';
 
 			for (let i = 0; i < line.length; i++) {
-				if (isDoubleQuote(line, i) && isEscaped(line, i) && settingSingleQuoteMatch === false) {
+				if (
+					line.charCodeAt(i) === Character.DOUBLE_QUOTE &&
+					line.charCodeAt(i - 1) !== Character.BACKSLASH &&
+					settingSingleQuoteMatch === false
+				) {
 					settingDoubleQuoteMatch = !settingDoubleQuoteMatch;
 
 					if (settingDoubleQuoteMatch === false) {
@@ -38,7 +38,11 @@ export class File {
 					continue;
 				}
 
-				if (isSingleQuote(line, i) && isEscaped(line, i) && settingDoubleQuoteMatch === false) {
+				if (
+					line.charCodeAt(i) === Character.SINGLE_QUOTE &&
+					line.charCodeAt(i - 1) !== Character.BACKSLASH &&
+					settingDoubleQuoteMatch === false
+				) {
 					settingSingleQuoteMatch = !settingSingleQuoteMatch;
 
 					if (settingSingleQuoteMatch === false) {
@@ -58,8 +62,8 @@ export class File {
 		});
 	}
 
-	private storeMatch(finding: string, file: string) {
-		const value = Store.find(finding) as Finding;
+	private storeMatch(key: string, file: string) {
+		const value = this.store.find(key);
 
 		if (value) {
 			if (!value.files.includes(file)) {
@@ -68,9 +72,9 @@ export class File {
 
 			value.count++;
 
-			Store.update(finding, { count: value.count, files: value.files });
+			this.store.update(key, { key, count: value.count, files: value.files });
 		} else {
-			Store.add(finding, { count: 1, files: [file] });
+			this.store.add(key, { key, count: 1, files: [file] });
 		}
 	}
 

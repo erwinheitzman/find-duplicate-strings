@@ -1,7 +1,7 @@
-export class Store {
-	private static readonly store: Map<string, unknown> = new Map();
+export class Store<T> {
+	private readonly store: Map<string, T> = new Map();
 
-	public static add(key: string, value: unknown): void {
+	public add(key: string, value: T): void {
 		if (this.store.has(key)) {
 			throw new Error(`Key ${key} already exists`);
 		}
@@ -9,7 +9,7 @@ export class Store {
 		this.store.set(key, value);
 	}
 
-	static update(key: string, value: unknown): void {
+	public update(key: string, value: T): void {
 		if (!this.store.has(key)) {
 			throw new Error(`Key ${key} does not exist`);
 		}
@@ -17,22 +17,15 @@ export class Store {
 		this.store.set(key, value);
 	}
 
-	static find(key: string): unknown | null {
+	public find(key: string): T | null {
 		return this.store.get(key) || null;
 	}
 
-	static getAll(): Array<[string, unknown]> {
-		const result = [];
-		const entries = this.store.entries();
-
-		for (const entry of entries) {
-			result.push(entry);
-		}
-
-		return result;
+	public getAll(): T[] {
+		return Array.from(this.store.values());
 	}
 
-	static clear(): void {
+	public clear(): void {
 		this.store.clear();
 	}
 }

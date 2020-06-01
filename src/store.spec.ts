@@ -1,76 +1,70 @@
 import { Store } from './store';
 
-afterEach(() => {
-	Store.clear();
-});
-
 describe('Store', () => {
 	it('should add a value', () => {
 		// arrange
-		Store.add('dummy', { example: 'example' });
+		const store = new Store();
 
 		// act
-		const result = Store.getAll();
+		store.add('dummy', { example: 'example' });
 
 		// assert
-		expect(result).toEqual([['dummy', { example: 'example' }]]);
+		expect(store.getAll()).toEqual([{ example: 'example' }]);
 	});
 
 	it('should add two values', () => {
 		// arrange
-		Store.add('dummy1', { example: 'example1' });
-		Store.add('dummy2', { example: 'example2' });
+		const store = new Store();
 
 		// act
-		const result = Store.getAll();
+		store.add('dummy1', { example: 'example1' });
+		store.add('dummy2', { example: 'example2' });
 
 		// assert
-		expect(result).toEqual([
-			['dummy1', { example: 'example1' }],
-			['dummy2', { example: 'example2' }],
-		]);
+		expect(store.getAll()).toEqual([{ example: 'example1' }, { example: 'example2' }]);
 	});
 
 	it('should find a value', () => {
 		// arrange
-		Store.add('dummy1', { example: 'example1' });
-		Store.add('dummy2', { example: 'example2' });
+		const store = new Store();
 
 		// act
-		const result = Store.find('dummy2');
+		store.add('dummy1', { example: 'example1' });
+		store.add('dummy2', { example: 'example2' });
 
 		// assert
-		expect(result).toEqual({ example: 'example2' });
+		expect(store.find('dummy2')).toEqual({ example: 'example2' });
 	});
 
 	it('should clear all values', () => {
 		// arrange
-		Store.add('dummy1', { example: 'example1' });
-		Store.add('dummy2', { example: 'example2' });
+		const store = new Store();
 
 		// act
-		Store.clear();
+		store.add('dummy1', { example: 'example1' });
+		store.add('dummy2', { example: 'example2' });
+		store.clear();
 
 		// assert
-		expect(Store.getAll()).toEqual([]);
+		expect(store.getAll()).toEqual([]);
 	});
 
 	it('should throw an error when the key already exists', () => {
 		// arrange
-		Store.add('dummy1', { example: 'example1' });
+		const store = new Store();
 
 		// act
-		const result = () => Store.add('dummy1', { example: 'example2' });
+		store.add('dummy1', { example: 'example1' });
 
 		// assert
-		expect(() => result()).toThrowError('Key dummy1 already exists');
+		expect(() => store.add('dummy1', { example: 'example2' })).toThrowError('Key dummy1 already exists');
 	});
 
 	it("should throw an error when updating a key that doesn't exist", () => {
-		// act
-		const result = () => Store.update('dummy1', { example: 'example2' });
+		// arrange
+		const store = new Store();
 
-		// assert
-		expect(() => result()).toThrowError('Key dummy1 does not exist');
+		// act and assert
+		expect(() => store.update('dummy1', { example: 'example2' })).toThrowError('Key dummy1 does not exist');
 	});
 });

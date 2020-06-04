@@ -17,49 +17,53 @@ export class File {
 
 	public getStrings(): void {
 		this.getLines().forEach((line: string) => {
-			let settingSingleQuoteMatch = false;
-			let settingDoubleQuoteMatch = false;
+			let singleQuoteToggle = false;
+			let doubleQuoteToggle = false;
 			let characterSet = '';
 
 			for (let i = 0; i < line.length; i++) {
-				if (
-					line.charCodeAt(i) === Character.DOUBLE_QUOTE &&
-					line.charCodeAt(i - 1) !== Character.BACKSLASH &&
-					settingSingleQuoteMatch === false
-				) {
-					settingDoubleQuoteMatch = !settingDoubleQuoteMatch;
+				if (this.shouldStoreDoubleQuoteString(line, i, singleQuoteToggle)) {
+					doubleQuoteToggle = !doubleQuoteToggle;
 
-					if (settingDoubleQuoteMatch === false) {
-						if (characterSet.length) {
-							this.storeMatch(characterSet, this.name);
-						}
+					if (doubleQuoteToggle === false && characterSet.length) {
+						this.storeMatch(characterSet, this.name);
 						characterSet = '';
 					}
 					continue;
 				}
 
-				if (
-					line.charCodeAt(i) === Character.SINGLE_QUOTE &&
-					line.charCodeAt(i - 1) !== Character.BACKSLASH &&
-					settingDoubleQuoteMatch === false
-				) {
-					settingSingleQuoteMatch = !settingSingleQuoteMatch;
+				if (this.shouldStoreSingleQuoteString(line, i, doubleQuoteToggle)) {
+					singleQuoteToggle = !singleQuoteToggle;
 
-					if (settingSingleQuoteMatch === false) {
-						if (characterSet.length) {
-							this.storeMatch(characterSet, this.name);
-						}
+					if (singleQuoteToggle === false && characterSet.length) {
+						this.storeMatch(characterSet, this.name);
 						characterSet = '';
 					}
 					continue;
 				}
 
-				if (settingDoubleQuoteMatch === true || settingSingleQuoteMatch === true) {
+				if (doubleQuoteToggle === true || singleQuoteToggle === true) {
 					characterSet += line[i];
 					continue;
 				}
 			}
 		});
+	}
+
+	private shouldStoreSingleQuoteString(line: string, index: number, toggle: boolean) {
+		return (
+			line.charCodeAt(index) === Character.SINGLE_QUOTE &&
+			line.charCodeAt(index - 1) !== Character.BACKSLASH &&
+			toggle === false
+		);
+	}
+
+	private shouldStoreDoubleQuoteString(line: string, index: number, toggle: boolean) {
+		return (
+			line.charCodeAt(index) === Character.DOUBLE_QUOTE &&
+			line.charCodeAt(index - 1) !== Character.BACKSLASH &&
+			toggle === false
+		);
 	}
 
 	private storeMatch(key: string, file: string) {

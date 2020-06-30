@@ -17,9 +17,12 @@ export class Output {
 	}
 
 	private outputToConsole(output: Finding[]) {
-		const consoleOutput: [string, Finding | string][] = output
-			.slice(0, 10)
-			.map((finding: Finding) => [finding.key, finding]);
+		const consoleOutput: [string, number | string][] = output.slice(0, 10).map((finding: Finding) => {
+			if (finding.key.length > 32) {
+				finding.key = finding.key.substring(0, 32) + '...';
+			}
+			return [finding.key, finding.count];
+		});
 
 		consoleOutput.push(['...', '...']);
 		console.table(consoleOutput);

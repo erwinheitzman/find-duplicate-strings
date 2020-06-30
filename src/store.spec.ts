@@ -24,6 +24,18 @@ describe('Store', () => {
 		expect(store.getAll()).toEqual([{ example: 'example1' }, { example: 'example2' }]);
 	});
 
+	it('should update a value', () => {
+		// arrange
+		const store = new Store();
+
+		// act
+		store.add('dummy', { example: 'example' });
+		store.update('dummy', { example: 'example1' });
+
+		// assert
+		expect(store.getAll()).toEqual([{ example: 'example1' }]);
+	});
+
 	it('should find a value', () => {
 		// arrange
 		const store = new Store();
@@ -34,6 +46,14 @@ describe('Store', () => {
 
 		// assert
 		expect(store.find('dummy2')).toEqual({ example: 'example2' });
+	});
+
+	it('should return null when the item is not found', () => {
+		// arrange
+		const store = new Store();
+
+		// assert
+		expect(store.find('dummy2')).toEqual(null);
 	});
 
 	it('should clear all values', () => {

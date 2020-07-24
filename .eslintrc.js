@@ -7,5 +7,6 @@ module.exports = {
 	extends: ['plugin:@typescript-eslint/recommended', 'prettier/@typescript-eslint', 'plugin:prettier/recommended'],
 	rules: {
 		'eol-last': ['error', 'always'],
+		'@typescript-eslint/ban-ts-comment': 'off',
 	},
 };

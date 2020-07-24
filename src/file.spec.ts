@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/no-explicit-any: 0 */
+
 import { File } from './file';
 import { resolve } from 'path';
 import { Store } from './store';
@@ -12,6 +14,7 @@ const store = new Store<Finding>();
 let findMock: jest.Mock<any, any>;
 let readFileSyncMock: jest.Mock<any, any>;
 
+const path = resolve(dataDir, 'one.js');
 const dummyFile1 =
 	`describe('', () => {\n` +
 	`    it("", () => {\n` +
@@ -46,10 +49,10 @@ describe('File', () => {
 		// arrange
 		readFileSyncMock.mockReturnValue(dummyFile1);
 		findMock.mockReturnValue(null);
-		const file = new File(store, resolve(dataDir, 'one.js'));
+		const file = new File(store, path);
 		const findingObj = {
 			count: 1,
-			files: ['C:\\dev\\find-duplicate-strings\\data\\one.js'],
+			files: [path],
 			key: 'foo',
 		};
 
@@ -67,10 +70,10 @@ describe('File', () => {
 		// arrange
 		readFileSyncMock.mockReturnValue(dummyFile1);
 		findMock.mockReturnValueOnce({ count: 1, files: [] }).mockReturnValueOnce({ count: 1, files: [] });
-		const file = new File(store, resolve(dataDir, 'one.js'));
+		const file = new File(store, path);
 		const findingObj = {
 			count: 2,
-			files: ['C:\\dev\\find-duplicate-strings\\data\\one.js'],
+			files: [path],
 			key: 'foo',
 		};
 
@@ -88,7 +91,7 @@ describe('File', () => {
 		// arrange
 		readFileSyncMock.mockReturnValue(`describe('', () => {\n` + `    it("", () => {\n` + `    });\n` + `});\n`);
 		findMock.mockReturnValueOnce({ count: 1, files: [] }).mockReturnValueOnce({ count: 1, files: [] });
-		const file = new File(store, resolve(dataDir, 'one.js'));
+		const file = new File(store, path);
 
 		// act
 		file.getStrings();
@@ -103,12 +106,12 @@ describe('File', () => {
 		readFileSyncMock.mockReturnValue(dummyFile2);
 		findMock
 			.mockReturnValueOnce(null)
-			.mockReturnValueOnce({ count: 1, files: ['C:\\dev\\find-duplicate-strings\\data\\one.js'] })
-			.mockReturnValueOnce({ count: 2, files: ['C:\\dev\\find-duplicate-strings\\data\\one.js'] });
-		const file = new File(store, resolve(dataDir, 'one.js'));
+			.mockReturnValueOnce({ count: 1, files: [path] })
+			.mockReturnValueOnce({ count: 2, files: [path] });
+		const file = new File(store, path);
 		const findingObj = {
 			count: 1,
-			files: ['C:\\dev\\find-duplicate-strings\\data\\one.js'],
+			files: [path],
 			key: 'foo',
 		};
 
@@ -127,10 +130,10 @@ describe('File', () => {
 		// arrange
 		readFileSyncMock.mockReturnValue(`const foo = "foo";\n\n` + dummyFile1);
 		findMock.mockReturnValueOnce(null).mockReturnValueOnce({ count: 1, files: [] }).mockReturnValueOnce(null);
-		const file = new File(store, resolve(dataDir, 'one.js'));
+		const file = new File(store, path);
 		const findingObj = {
 			count: 1,
-			files: ['C:\\dev\\find-duplicate-strings\\data\\one.js'],
+			files: [path],
 			key: 'foo',
 		};
 

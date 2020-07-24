@@ -24,7 +24,10 @@ export class Output {
 			return [finding.key, finding.count];
 		});
 
-		consoleOutput.push(['...', '...']);
+		if (output.length > 10) {
+			consoleOutput.push(['...', '...']);
+		}
+
 		console.table(consoleOutput);
 	}
 

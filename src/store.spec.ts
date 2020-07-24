@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/no-explicit-any: 0 */
+
 import { Store } from './store';
 
 describe('Store', () => {

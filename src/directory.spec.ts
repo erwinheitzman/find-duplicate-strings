@@ -1,133 +1,143 @@
-import { Directory } from './directory';
-import { resolve } from 'path';
+/* eslint @typescript-eslint/no-explicit-any: 0 */
 
-const dataDir = resolve(__dirname, '..', 'data');
+import { Directory } from './directory';
+import { readdirSync, existsSync, statSync } from 'fs';
+import { resolve, extname } from 'path';
+
+jest.mock('./store');
+jest.mock('fs');
+jest.mock('path');
+
+let readdirSyncMock: jest.Mock<any, any>;
+let existsSyncMock: jest.Mock<any, any>;
+let statSyncMock: jest.Mock<any, any>;
+let resolveMock: jest.Mock<any, any>;
+let extnameMock: jest.Mock<any, any>;
+
+const dataDir = 'dummy';
+const exclusions: string[] = [];
+const extensions: string[] = [];
 
 describe('Directory', () => {
-	it('should return all files matching <"js">', () => {
-		// // arrange
-		// const directory = new Directory('data', [''], ['js']);
-		// // act
-		// const result = directory.scan();
-		// // assert
-		// expect(result).toEqual([
-		// 	resolve(dataDir, 'empty', 'empty-strings.js'),
-		// 	resolve(dataDir, 'one.js'),
-		// 	resolve(dataDir, 'subdir', 'one.js'),
-		// 	resolve(dataDir, 'subdir', 'two.js'),
-		// 	resolve(dataDir, 'two.js'),
-		// ]);
+	beforeEach(() => {
+		readdirSyncMock = (readdirSync as jest.Mock<any, any>).mockReturnValue(['file1', 'file2']);
+		existsSyncMock = (existsSync as jest.Mock<any, any>).mockReturnValue(true);
+		statSyncMock = (statSync as jest.Mock<any, any>).mockReturnValue({ isDirectory: jest.fn().mockReturnValue(false) });
+		resolveMock = resolve as jest.Mock<any, any>;
+		extnameMock = (extname as jest.Mock<any, any>).mockReturnValue('.txt');
 	});
 
-	// it('should return all files matching <"ts">', () => {
-	// 	// arrange
-	// 	const directory = new Directory('data');
+	afterEach(() => {
+		jest.resetAllMocks();
+		jest.restoreAllMocks();
+		jest.clearAllMocks();
+	});
 
-	// 	// act
-	// 	const result = directory.scan('', 'ts');
+	it('should throw when the directory does not exist', () => {
+		// arrange
+		existsSyncMock.mockReturnValue(false);
 
-	// 	// assert
-	// 	expect(result).toEqual([resolve(dataDir, 'subdir', 'three.ts'), resolve(dataDir, 'three.ts')]);
-	// });
+		// act and assert
+		expect(() => new Directory(dataDir, exclusions, extensions)).toThrowError(
+			'Directory does not exist, please pass a valid path.',
+		);
+	});
 
-	// it('should return all files matching <"json">', () => {
-	// 	// arrange
-	// 	const directory = new Directory('data');
+	it('should return files', () => {
+		// arrange
+		resolveMock.mockReturnValueOnce('dir');
+		resolveMock.mockReturnValueOnce('dir/file1');
+		resolveMock.mockReturnValueOnce('dir/file2');
+		const directory = new Directory(dataDir, exclusions, extensions);
 
-	// 	// act
-	// 	const result = directory.scan('', 'json');
+		// act
+		const files = directory.getFiles();
 
-	// 	// assert
-	// 	expect(result).toEqual([resolve(dataDir, 'four.json'), resolve(dataDir, 'subdir', 'four.json')]);
-	// });
+		// assert
+		expect(files).toEqual(['dir/file1', 'dir/file2']);
+	});
 
-	// it('should return all files matching <"js" | "ts" | "json">', () => {
-	// 	// arrange
-	// 	const directory = new Directory('data');
+	it('should recursively go trough directories', () => {
+		// arrange
+		readdirSyncMock.mockReturnValueOnce(['file1', 'file2']).mockReturnValueOnce(['sub-dir-file1', 'sub-dir-file2']);
+		statSyncMock.mockReturnValue({
+			isDirectory: jest
+				.fn()
+				.mockReturnValueOnce(true)
+				.mockReturnValueOnce(false)
+				.mockReturnValueOnce(false)
+				.mockReturnValueOnce(false),
+		});
+		resolveMock.mockReturnValueOnce('dir');
+		resolveMock.mockReturnValueOnce('dir/sub-dir');
+		resolveMock.mockReturnValueOnce('dir/sub-dir-file1');
+		resolveMock.mockReturnValueOnce('dir/sub-dir-file2');
+		resolveMock.mockReturnValueOnce('dir/file2');
+		const directory = new Directory(dataDir, exclusions, extensions);
 
-	// 	// act
-	// 	const result = directory.scan('', 'js;ts;json');
+		// act
+		const files = directory.getFiles();
 
-	// 	// assert
-	// 	expect(result).toEqual([
-	// 		resolve(dataDir, 'empty', 'empty-strings.js'),
-	// 		resolve(dataDir, 'four.json'),
-	// 		resolve(dataDir, 'one.js'),
-	// 		resolve(dataDir, 'subdir', 'four.json'),
-	// 		resolve(dataDir, 'subdir', 'one.js'),
-	// 		resolve(dataDir, 'subdir', 'three.ts'),
-	// 		resolve(dataDir, 'subdir', 'two.js'),
-	// 		resolve(dataDir, 'three.ts'),
-	// 		resolve(dataDir, 'two.js'),
-	// 	]);
-	// });
+		// assert
+		expect(files).toEqual(['dir/sub-dir-file1', 'dir/sub-dir-file2', 'dir/file2']);
+	});
 
-	// it('should return any files when no extensions are passed', () => {
-	// 	// arrange
-	// 	const directory = new Directory('data');
+	it('should exlude files/directories matching "file1"', () => {
+		// arrange
+		resolveMock.mockReturnValueOnce('dir');
+		// file 1 wil be skipped
+		resolveMock.mockReturnValueOnce('dir/file2');
+		const directory = new Directory(dataDir, ['file1'], extensions);
 
-	// 	// act
-	// 	const result = directory.scan('', '');
+		// act
+		const files = directory.getFiles();
 
-	// 	// assert
-	// 	expect(result).toEqual([
-	// 		resolve(dataDir, 'empty', 'empty-strings.js'),
-	// 		resolve(dataDir, 'four.json'),
-	// 		resolve(dataDir, 'one.js'),
-	// 		resolve(dataDir, 'subdir', 'four.json'),
-	// 		resolve(dataDir, 'subdir', 'one.js'),
-	// 		resolve(dataDir, 'subdir', 'three.ts'),
-	// 		resolve(dataDir, 'subdir', 'two.js'),
-	// 		resolve(dataDir, 'text.txt'),
-	// 		resolve(dataDir, 'three.ts'),
-	// 		resolve(dataDir, 'two.js'),
-	// 	]);
-	// });
+		// assert
+		expect(files).toEqual(['dir/file2']);
+	});
 
-	// it('should exclude directories that are passed as exlusions', () => {
-	// 	// arrange
-	// 	const directory = new Directory('data');
+	it('should return files matching file extension "ts"', () => {
+		// arrange
+		extnameMock.mockReturnValueOnce('.ts').mockReturnValueOnce('.txt');
+		resolveMock.mockReturnValueOnce('dir');
+		resolveMock.mockReturnValueOnce('dir/file1');
+		resolveMock.mockReturnValueOnce('dir/file2');
+		const directory = new Directory(dataDir, exclusions, ['ts']);
 
-	// 	// act and assert
-	// 	const result = directory.scan('empty;subdir', '');
+		// act
+		const files = directory.getFiles();
 
-	// 	// assert
-	// 	expect(result).toEqual([
-	// 		resolve(dataDir, 'four.json'),
-	// 		resolve(dataDir, 'one.js'),
-	// 		resolve(dataDir, 'text.txt'),
-	// 		resolve(dataDir, 'three.ts'),
-	// 		resolve(dataDir, 'two.js'),
-	// 	]);
-	// });
+		// assert
+		expect(files).toEqual(['dir/file1']);
+	});
 
-	// it('should exclude handle extension prefixed with a dot and without', () => {
-	// 	// arrange
-	// 	const directory = new Directory('data');
+	it('should return any files when no extensions are passed', () => {
+		// arrange
+		extnameMock.mockReturnValueOnce('.ts').mockReturnValueOnce('.pdf');
+		resolveMock.mockReturnValueOnce('dir');
+		resolveMock.mockReturnValueOnce('dir/file1');
+		resolveMock.mockReturnValueOnce('dir/file2');
+		const directory = new Directory(dataDir, exclusions, extensions);
 
-	// 	// act and assert
-	// 	const result = directory.scan('', 'js;.ts');
+		// act
+		const files = directory.getFiles();
 
-	// 	// assert
-	// 	expect(result).toEqual([
-	// 		resolve(dataDir, 'empty', 'empty-strings.js'),
-	// 		resolve(dataDir, 'one.js'),
-	// 		resolve(dataDir, 'subdir', 'one.js'),
-	// 		resolve(dataDir, 'subdir', 'three.ts'),
-	// 		resolve(dataDir, 'subdir', 'two.js'),
-	// 		resolve(dataDir, 'three.ts'),
-	// 		resolve(dataDir, 'two.js'),
-	// 	]);
-	// });
+		// assert
+		expect(files).toEqual(['dir/file1', 'dir/file2']);
+	});
 
-	// it('should throw an error when the directory does not exist', () => {
-	// 	// arrange
-	// 	const directory = new Directory('does-not-exist');
+	it('should handle extensions prefixed with and without a dot', () => {
+		// arrange
+		extnameMock.mockReturnValueOnce('ts').mockReturnValueOnce('.pdf');
+		resolveMock.mockReturnValueOnce('dir');
+		resolveMock.mockReturnValueOnce('dir/file1');
+		resolveMock.mockReturnValueOnce('dir/file2');
+		const directory = new Directory(dataDir, exclusions, extensions);
 
-	// 	// act and assert
-	// 	const result = () => directory.scan('', '');
+		// act
+		const files = directory.getFiles();
 
-	// 	// assert
-	// 	expect(() => result()).toThrowError('Directory does not exist, please pass a valid path.');
-	// });
+		// assert
+		expect(files).toEqual(['dir/file1', 'dir/file2']);
+	});
 });

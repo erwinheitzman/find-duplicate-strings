@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/no-explicit-any: 0 */
+
 import { Scanner } from './scanner';
 import {
 	DirectoryQuestion,
@@ -21,10 +23,6 @@ jest.mock('fs');
 let getAll: jest.Mock<any, any>;
 let getStrings: jest.Mock<any, any>;
 let getFiles: jest.Mock<any, any>;
-let output: jest.Mock<any, any>;
-let exclusionsAnswer: jest.Mock<any, any>;
-let extensionsAnswer: jest.Mock<any, any>;
-let dirAnswer: jest.Mock<any, any>;
 let confirmDirAnswer: jest.Mock<any, any>;
 let confirmScannedDirAnswer: jest.Mock<any, any>;
 
@@ -33,12 +31,13 @@ describe('Scanner', () => {
 		getAll = Store.prototype.getAll = jest.fn().mockReturnValue([{ count: 1 }]);
 		getStrings = File.prototype.getStrings = jest.fn();
 		getFiles = Directory.prototype.getFiles = jest.fn().mockReturnValue([]);
-		output = Output.prototype.output = jest.fn();
-		exclusionsAnswer = ExclusionsQuestion.prototype.getAnswer = jest.fn().mockResolvedValue(['yes']);
-		extensionsAnswer = ExtensionsQuestion.prototype.getAnswer = jest.fn().mockResolvedValue(['no']);
-		dirAnswer = DirectoryQuestion.prototype.getAnswer = jest.fn().mockResolvedValue(['dummy']);
 		confirmDirAnswer = ConfirmDirectoryQuestion.prototype.getAnswer = jest.fn().mockResolvedValue(false);
 		confirmScannedDirAnswer = ConfirmScannedDirQuestion.prototype.getAnswer = jest.fn().mockResolvedValue(false);
+
+		ExclusionsQuestion.prototype.getAnswer = jest.fn().mockResolvedValue(['yes']);
+		ExtensionsQuestion.prototype.getAnswer = jest.fn().mockResolvedValue(['no']);
+		DirectoryQuestion.prototype.getAnswer = jest.fn().mockResolvedValue(['dummy']);
+		Output.prototype.output = jest.fn();
 		console.log = jest.fn();
 	});
 

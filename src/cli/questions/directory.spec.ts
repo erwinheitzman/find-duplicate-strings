@@ -30,16 +30,4 @@ describe('File', () => {
 		// assert
 		expect(answer).toEqual('dummy');
 	});
-
-	it('should throw when the answer is not found', async () => {
-		// arrange
-		promptMock.mockResolvedValue({ nope: 'dummy' });
-		const question = new DirectoryQuestion();
-
-		// act
-		const answer = async () => await question.getAnswer();
-
-		// act & assert
-		expect(answer).rejects.toThrowError('Answer not found');
-	});
 });

@@ -15,10 +15,6 @@ export abstract class Question {
 			type: this.type,
 		});
 
-		if (!answer[this.name]) {
-			throw new Error('Answer not found');
-		}
-
 		return answer[this.name];
 	}
 }

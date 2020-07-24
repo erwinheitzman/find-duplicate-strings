@@ -54,16 +54,4 @@ describe('File', () => {
 		// assert
 		expect(answer).toEqual(['dummy1', 'dummy2', 'dummy3']);
 	});
-
-	it('should throw when the answer is not found', async () => {
-		// arrange
-		promptMock.mockResolvedValue({ nope: 'dummy' });
-		const question = new ExtensionsQuestion();
-
-		// act
-		const answer = async () => await question.getAnswer();
-
-		// act & assert
-		expect(answer).rejects.toThrowError('Answer not found');
-	});
 });

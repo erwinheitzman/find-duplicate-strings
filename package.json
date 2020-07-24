@@ -1,6 +1,6 @@
 {
   "name": "find-duplicate-strings",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "Easy to use CLI that finds duplicate strings in a directory and stores them in a external file for easy reference",
   "author": "Erwin Heitzman",
   "homepage": "https://github.com/erwinheitzman/find-duplicate-strings/blob/master/README.md",
@@ -34,24 +34,24 @@
     "url": "https://github.com/erwinheitzman/find-duplicate-strings/issues"
   },
   "dependencies": {
-    "commander": "^5.1.0",
-    "inquirer": "^7.1.0"
+    "commander": "^6.0.0",
+    "inquirer": "^7.3.3"
   },
   "devDependencies": {
-    "@types/inquirer": "^6.5.0",
-    "@types/jest": "^25.2.3",
-    "@types/node": "^14.0.5",
-    "@typescript-eslint/eslint-plugin": "^3.0.0",
-    "@typescript-eslint/parser": "^3.0.0",
-    "eslint": "^7.1.0",
+    "@types/inquirer": "^7.3.0",
+    "@types/jest": "^26.0.7",
+    "@types/node": "^14.0.25",
+    "@typescript-eslint/eslint-plugin": "^3.7.0",
+    "@typescript-eslint/parser": "^3.7.0",
+    "eslint": "^7.5.0",
     "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-prettier": "^3.1.4",
     "husky": "^4.2.5",
-    "jest": "^25.5.4",
-    "lint-staged": "^10.2.6",
+    "jest": "^26.1.0",
+    "lint-staged": "^10.2.11",
     "prettier": "^2.0.5",
-    "ts-jest": "^25.5.1",
-    "typescript": "^3.9.3"
+    "ts-jest": "^26.1.3",
+    "typescript": "^3.9.7"
   },
   "husky": {
     "hooks": {

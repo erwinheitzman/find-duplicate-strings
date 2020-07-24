@@ -7,7 +7,8 @@ export abstract class Question {
 		protected type: keyof QuestionMap = 'input',
 	) {}
 
-	protected async getAnswer(): Promise<unknown> {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	protected async getAnswer(): Promise<any> {
 		const answer = await prompt(<InputQuestion>{
 			name: this.name,
 			message: this.message,

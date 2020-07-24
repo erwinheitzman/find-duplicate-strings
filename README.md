@@ -7,13 +7,13 @@
 
 ## Getting started
 
-First clone the repository:
+Install:
 
 ```bash
 npm i -g find-duplicate-strings
 ```
 
-Then run the cli:
+Run:
 
 ```bash
 find-duplicate-strings
@@ -32,13 +32,19 @@ You can provide any directories that you would like to exclude:
 ? Please provide any directories that you want to skip (separated list by ;) (node_modules)
 ```
 
-You will be asked to enter the file extensions that you want to scan:
+Then you will be asked to enter the file extensions that you want to scan:
 
 ```bash
 ? Please provide the file extensions you want to scan or leave empty to scan all files (separated list by ;)
 ```
 
-When you aren't running in silent mode it will output a table containing it's first 10 findings:
+It will then ask you if you would like to scan any other directories (the results will be stored in a single file):
+
+```bash
+? Would you like to scan another directory? (Y/n)
+```
+
+When done, if you aren't running in silent mode it will output a table containing it's first 10 findings:
 
 ```bash
 ┌─────────┬──────────────┬───────────────────────────────┐
@@ -58,7 +64,7 @@ When you aren't running in silent mode it will output a table containing it's fi
 └─────────┴──────────────┴───────────────────────────────┘
 ```
 
-You will be asked to enter a path to a file that the results can be written to (json):
+Lastly you will be asked to enter a path to a file that the results can be written to (json):
 
 ```bash
 ? Please provide a filepath to store the output.
@@ -67,11 +73,11 @@ You will be asked to enter a path to a file that the results can be written to (
 
 ## Help
 
+Use the help flag to get more information about how to use the CLI.
+
 ```bash
 find-duplicate-strings --help
 ```
-
-Prevent tests from printing messages through the console.
 
 ### License
 

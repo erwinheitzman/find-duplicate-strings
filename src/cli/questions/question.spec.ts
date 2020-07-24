@@ -1,18 +1,10 @@
 /* eslint @typescript-eslint/no-explicit-any: 0 */
 
 import { Question } from './question';
-import { prompt } from 'inquirer';
 
 jest.mock('inquirer');
 
-let promptMock: jest.Mock<any, any>;
-
 describe('File', () => {
-	beforeEach(() => {
-		// @ts-expect-error
-		promptMock = prompt as jest.Mock<any, any>;
-	});
-
 	afterEach(() => {
 		jest.resetAllMocks();
 		jest.restoreAllMocks();

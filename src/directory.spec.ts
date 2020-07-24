@@ -22,7 +22,9 @@ describe('Directory', () => {
 	beforeEach(() => {
 		readdirSyncMock = (readdirSync as jest.Mock<any, any>).mockReturnValue(['file1', 'file2']);
 		existsSyncMock = (existsSync as jest.Mock<any, any>).mockReturnValue(true);
-		statSyncMock = (statSync as jest.Mock<any, any>).mockReturnValue({ isDirectory: jest.fn().mockReturnValue(false) });
+		statSyncMock = (statSync as jest.Mock<any, any>).mockReturnValue({
+			isDirectory: jest.fn().mockReturnValueOnce(true).mockReturnValue(false),
+		});
 		resolveMock = resolve as jest.Mock<any, any>;
 		extnameMock = (extname as jest.Mock<any, any>).mockReturnValue('.txt');
 	});
@@ -43,6 +45,14 @@ describe('Directory', () => {
 		);
 	});
 
+	it('should throw when the path does not point to a directory', () => {
+		// arrange
+		statSyncMock.mockReturnValue({ isDirectory: jest.fn().mockReturnValue(false) });
+
+		// act and assert
+		expect(() => new Directory(dataDir, exclusions, extensions)).toThrowError('Path does not point to a directory.');
+	});
+
 	it('should return files', () => {
 		// arrange
 		resolveMock.mockReturnValueOnce('dir');
@@ -61,12 +71,7 @@ describe('Directory', () => {
 		// arrange
 		readdirSyncMock.mockReturnValueOnce(['file1', 'file2']).mockReturnValueOnce(['sub-dir-file1', 'sub-dir-file2']);
 		statSyncMock.mockReturnValue({
-			isDirectory: jest
-				.fn()
-				.mockReturnValueOnce(true)
-				.mockReturnValueOnce(false)
-				.mockReturnValueOnce(false)
-				.mockReturnValueOnce(false),
+			isDirectory: jest.fn().mockReturnValueOnce(true).mockReturnValueOnce(true).mockReturnValue(false),
 		});
 		resolveMock.mockReturnValueOnce('dir');
 		resolveMock.mockReturnValueOnce('dir/sub-dir');

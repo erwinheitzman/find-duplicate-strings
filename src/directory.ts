@@ -10,6 +10,10 @@ export class Directory {
 		if (!existsSync(this.resolvedDir)) {
 			throw new Error('Directory does not exist, please pass a valid path.');
 		}
+
+		if (!statSync(this.resolvedDir).isDirectory()) {
+			throw new Error('Path does not point to a directory.');
+		}
 	}
 
 	public getFiles(): string[] {

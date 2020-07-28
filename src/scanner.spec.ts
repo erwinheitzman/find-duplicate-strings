@@ -47,23 +47,109 @@ describe('Scanner', () => {
 		jest.clearAllMocks();
 	});
 
-	it('should setup the scanner', async () => {
-		// arrange
-		const scanner = new Scanner(false);
-
+	it('should enable silent mode', async () => {
 		// act
-		const result = await scanner.init();
+		const scanner = new Scanner({ silent: true });
 
 		// assert
-		expect((result as any).exclusions).toEqual(['yes']);
-		expect((result as any).extensions).toEqual(['no']);
-		expect(result instanceof Scanner).toEqual(true);
+		expect(scanner['silent']).toEqual(true);
+	});
+
+	it('should disable silent mode', async () => {
+		// act
+		const scanner = new Scanner({ silent: false });
+
+		// assert
+		expect(scanner['silent']).toEqual(false);
+	});
+
+	it('should set exlusions', async () => {
+		// act
+		const scanner = new Scanner({ exclusions: 'one,two,three' });
+
+		// assert
+		expect(scanner['exclusions']).toEqual(['one', 'two', 'three']);
+	});
+
+	it('should ask a question when exlusions are not provided', async () => {
+		// arrange
+		const scanner = new Scanner({});
+
+		// act
+		await scanner.scan();
+
+		// assert
+		expect(ExclusionsQuestion.prototype.getAnswer).toBeCalledTimes(1);
+	});
+
+	it('should set extensions', async () => {
+		// act
+		const scanner = new Scanner({ extensions: 'one,two,three' });
+
+		// assert
+		expect(scanner['extensions']).toEqual(['one', 'two', 'three']);
+	});
+
+	it('should ask a question when extensions are not provided', async () => {
+		// arrange
+		const scanner = new Scanner({});
+
+		// act
+		await scanner.scan();
+
+		// assert
+		expect(ExtensionsQuestion.prototype.getAnswer).toBeCalledTimes(1);
+	});
+
+	it('should set path', async () => {
+		// arrange
+		const scanner = new Scanner({ path: './some/path' });
+
+		// act
+		await scanner.scan();
+
+		// assert
+		expect(scanner['path']).toEqual('./some/path');
+	});
+
+	it('should not ask a question when the path is provided', async () => {
+		// arrange
+		const scanner = new Scanner({ path: './some/path' });
+
+		// act
+		await scanner.scan();
+
+		// assert
+		expect(DirectoryQuestion.prototype.getAnswer).toBeCalledTimes(0);
+	});
+
+	it('should set path to an empty string when missing', async () => {
+		// arrange
+		const scanner = new Scanner({});
+
+		// act
+		await scanner.scan();
+
+		// assert
+		expect(scanner['path']).toEqual('');
+		expect(DirectoryQuestion.prototype.getAnswer).toBeCalledTimes(1);
+	});
+
+	it('should ask a question when the path is not provided', async () => {
+		// arrange
+		const scanner = new Scanner({});
+
+		// act
+		await scanner.scan();
+
+		// assert
+		expect(DirectoryQuestion.prototype.getAnswer).toBeCalledTimes(1);
 	});
 
 	it('should create a file instance', async () => {
 		// arrange
 		getFiles.mockReturnValue([{}, {}, {}, {}]);
-		const scanner = new Scanner(false);
+		const scanner = new Scanner({});
 
 		// act
 		await scanner.scan();
@@ -75,7 +161,7 @@ describe('Scanner', () => {
 	it('should log a message to the console when no duplicates are found', async () => {
 		// arrange
 		getAll.mockReturnValue([{ count: 1 }]);
-		const scanner = new Scanner(false);
+		const scanner = new Scanner({});
 
 		// act
 		await scanner.scan();
@@ -87,7 +173,7 @@ describe('Scanner', () => {
 	it('should not log a message to the console when duplicates are found', async () => {
 		// arrange
 		getAll.mockReturnValue([{ count: 2 }]);
-		const scanner = new Scanner(false);
+		const scanner = new Scanner({});
 
 		// act
 		await scanner.scan();
@@ -98,7 +184,7 @@ describe('Scanner', () => {
 
 	it('should create an output after running the scan', async () => {
 		// arrange
-		const scanner = new Scanner(false);
+		const scanner = new Scanner({});
 
 		// act
 		await scanner.scan();
@@ -111,7 +197,7 @@ describe('Scanner', () => {
 		// arrange
 		confirmScannedDirAnswer.mockResolvedValue(false);
 		getFiles.mockReturnValue([]);
-		const scanner = new Scanner(false);
+		const scanner = new Scanner({});
 
 		// act
 		await scanner.scan();
@@ -126,7 +212,7 @@ describe('Scanner', () => {
 		// arrange
 		confirmScannedDirAnswer.mockResolvedValueOnce(true).mockResolvedValueOnce(false);
 		getFiles.mockReturnValue([]);
-		const scanner = new Scanner(false);
+		const scanner = new Scanner({});
 
 		// act
 		await scanner.scan();
@@ -139,7 +225,7 @@ describe('Scanner', () => {
 	it('should ask if you want to scan another directory', async () => {
 		// arrange
 		confirmDirAnswer.mockResolvedValueOnce(false);
-		const scanner = new Scanner(false);
+		const scanner = new Scanner({});
 
 		// act
 		await scanner.scan();
@@ -151,7 +237,7 @@ describe('Scanner', () => {
 	it('should re-ask if you want to scan another directory', async () => {
 		// arrange
 		confirmDirAnswer.mockResolvedValueOnce(true).mockResolvedValueOnce(false);
-		const scanner = new Scanner(false);
+		const scanner = new Scanner({});
 
 		// act
 		await scanner.scan();

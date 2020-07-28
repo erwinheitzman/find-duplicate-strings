@@ -29,13 +29,13 @@ You will be asked to enter a path to a existing directory to be scanned for dupl
 You can provide any directories that you would like to exclude:
 
 ```bash
-? Please provide any directories that you want to skip (separated list by ;) (node_modules)
+? Please provide any directories or files that you would like to skip (comma separated list)
 ```
 
 Then you will be asked to enter the file extensions that you want to scan:
 
 ```bash
-? Please provide the file extensions you want to scan or leave empty to scan all files (separated list by ;)
+? Please provide the file extensions you want to scan or leave empty to scan all files (comma separated list)
 ```
 
 It will then ask you if you would like to scan any other directories (the results will be stored in a single file):

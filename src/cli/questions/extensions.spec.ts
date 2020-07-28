@@ -7,7 +7,7 @@ jest.mock('inquirer');
 
 let promptMock: jest.Mock<any, any>;
 
-describe('File', () => {
+describe('Extensions', () => {
 	beforeEach(() => {
 		// @ts-ignore
 		promptMock = prompt as jest.Mock<any, any>;
@@ -31,9 +31,9 @@ describe('File', () => {
 		expect(answer).toEqual(['dummy']);
 	});
 
-	it('should split the answer on a semicolon', async () => {
+	it('should split the answer on a comma', async () => {
 		// arrange
-		promptMock.mockResolvedValue({ extensions: 'dummy1;dummy2;dummy3' });
+		promptMock.mockResolvedValue({ extensions: 'dummy1,dummy2,dummy3' });
 		const question = new ExtensionsQuestion();
 
 		// act
@@ -45,7 +45,7 @@ describe('File', () => {
 
 	it('should remove the dot prefix from the extensions', async () => {
 		// arrange
-		promptMock.mockResolvedValue({ extensions: '.dummy1;dummy2;.dummy3' });
+		promptMock.mockResolvedValue({ extensions: '.dummy1,dummy2,.dummy3' });
 		const question = new ExtensionsQuestion();
 
 		// act

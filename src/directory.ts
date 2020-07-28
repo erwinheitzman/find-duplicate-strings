@@ -2,22 +2,22 @@ import { readdirSync, existsSync, statSync } from 'fs';
 import { resolve, extname } from 'path';
 
 export class Directory {
-	private readonly resolvedDir: string;
+	private readonly path: string;
 
 	constructor(directory: string, private exclusions: string[], private extensions: string[]) {
-		this.resolvedDir = resolve(process.cwd(), directory);
+		this.path = resolve(process.cwd(), directory);
 
-		if (!existsSync(this.resolvedDir)) {
+		if (!existsSync(this.path)) {
 			throw new Error('Directory does not exist, please pass a valid path.');
 		}
 
-		if (!statSync(this.resolvedDir).isDirectory()) {
+		if (!statSync(this.path).isDirectory()) {
 			throw new Error('Path does not point to a directory.');
 		}
 	}
 
 	public getFiles(): string[] {
-		return this.readdirRecursively(this.resolvedDir);
+		return this.readdirRecursively(this.path);
 	}
 
 	private readdirRecursively = (path: string): string[] => {

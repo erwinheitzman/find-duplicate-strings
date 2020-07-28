@@ -19,29 +19,14 @@ Run:
 find-duplicate-strings
 ```
 
-You will be asked to enter a path to a existing directory to be scanned for duplicate string values:
+When no arguments are passed, the CLI will ask you for the required information.
+
+For more information about what arguments and flags are supported, use the -h or --help flag.
+
+Example:
 
 ```bash
-? Please provide a directory to scan for duplicate values.
-./data
-```
-
-You can provide any directories that you would like to exclude:
-
-```bash
-? Please provide any directories that you want to skip (separated list by ;) (node_modules)
-```
-
-Then you will be asked to enter the file extensions that you want to scan:
-
-```bash
-? Please provide the file extensions you want to scan or leave empty to scan all files (separated list by ;)
-```
-
-It will then ask you if you would like to scan any other directories (the results will be stored in a single file):
-
-```bash
-? Would you like to scan another directory? (Y/n)
+find-duplicate-strings . --exclusions node_modules --extensions ts,js -s
 ```
 
 When done, if you aren't running in silent mode it will output a table containing it's first 10 findings:
@@ -64,12 +49,14 @@ When done, if you aren't running in silent mode it will output a table containin
 └─────────┴──────────────┴───────────────────────────────┘
 ```
 
-Lastly you will be asked to enter a path to a file that the results can be written to (json):
+After that, you will be asked to enter a path for a file to be created that the results can be written to (json):
 
 ```bash
 ? Please provide a filepath to store the output.
-./output
+./output/filename
 ```
+
+This will write the output to `./output/filename.json` if the output directory exists.
 
 ## Help
 

@@ -105,6 +105,19 @@ describe('File', () => {
 		]);
 	});
 
+	it('should trim the console output but not the file output', async () => {
+		// arrange
+		findings[1].key = 'some very very very very very long name';
+		const output = new Output(findings, false);
+		const expectedOutput = JSON.stringify(findings, null, 2);
+
+		// act
+		await output.output();
+
+		// assert
+		expect(writeFileSyncMock.mock.calls[0][1]).toEqual(expectedOutput);
+	});
+
 	it('should not output to the console when the "silent" flag is set', async () => {
 		// arrange
 		const output = new Output(findings, true);

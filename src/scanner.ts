@@ -3,6 +3,7 @@ import { Store } from './store';
 import { File } from './file';
 import { Finding } from './ifinding';
 import { Output } from './output';
+import { Extensions } from './extensions';
 import {
 	DirectoryQuestion,
 	ExclusionsQuestion,
@@ -11,37 +12,61 @@ import {
 	ConfirmScannedDirQuestion,
 } from './cli/questions';
 
+interface Options {
+	silent?: boolean;
+	exclusions?: string;
+	extensions?: string;
+	path?: string;
+}
+
+const { removeDotPrefix } = new Extensions();
+
 export class Scanner {
 	private readonly scannedDirs: string[] = [];
 	private readonly store = new Store<Finding>();
-	private exclusions: string[] = [];
-	private extensions: string[] = [];
+	private silent: boolean;
+	private exclusions!: string[];
+	private extensions!: string[];
+	private path: string;
 
-	public constructor(private silent: boolean) {}
+	public constructor(options: Options) {
+		this.path = options.path || '';
+		this.silent = !!options.silent;
 
-	public async init(): Promise<Scanner> {
-		this.exclusions = await new ExclusionsQuestion().getAnswer();
-		this.extensions = await new ExtensionsQuestion().getAnswer();
-		return this;
+		if (options.exclusions) {
+			this.exclusions = options.exclusions.split(',');
+		}
+
+		if (options.extensions) {
+			this.extensions = removeDotPrefix(options.extensions.split(','));
+		}
 	}
 
 	public async scan(): Promise<void> {
-		const dirName = await new DirectoryQuestion().getAnswer();
+		const path = this.path.length ? this.path : await new DirectoryQuestion().getAnswer();
+
+		if (!this.exclusions) {
+			this.exclusions = await new ExclusionsQuestion().getAnswer();
+		}
+
+		if (!this.extensions) {
+			this.extensions = await new ExtensionsQuestion().getAnswer();
+		}
 
 		let shouldScan = true;
 
-		if (this.scannedDirs.includes(dirName)) {
+		if (this.scannedDirs.includes(path)) {
 			shouldScan = await new ConfirmScannedDirQuestion().getAnswer();
 		}
 
 		if (shouldScan) {
-			this.scannedDirs.push(dirName);
-			this.scanDir(dirName);
+			this.scanDir(path);
+			this.scannedDirs.push(path);
 		}
 
-		const scanAnotherDir = await new ConfirmDirectoryQuestion().getAnswer();
+		const continueScanning = await new ConfirmDirectoryQuestion().getAnswer();
 
-		if (scanAnotherDir) {
+		if (continueScanning) {
 			return this.scan();
 		}
 

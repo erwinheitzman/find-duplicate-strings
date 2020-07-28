@@ -31,9 +31,9 @@ describe('File', () => {
 		expect(answer).toEqual(['dummy']);
 	});
 
-	it('should split the answer on a semicolon', async () => {
+	it('should split the answer on a comma', async () => {
 		// arrange
-		promptMock.mockResolvedValue({ exclusions: 'dummy1;dummy2;dummy3' });
+		promptMock.mockResolvedValue({ exclusions: 'dummy1,dummy2,dummy3' });
 		const question = new ExclusionsQuestion();
 
 		// act

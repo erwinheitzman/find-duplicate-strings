@@ -12,7 +12,7 @@
     "/lib"
   ],
   "scripts": {
-    "prepare": "rm -rf lib coverage && tsc",
+    "prepare": "rm -rf lib coverage && tsc --newLine lf",
     "lint": "eslint ./src/**/*.ts --fix",
     "pretest": "npm run lint",
     "test": "jest"

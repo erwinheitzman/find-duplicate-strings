@@ -32,21 +32,21 @@ find-duplicate-strings . --exclusions node_modules --extensions ts,js -s
 When done, if you aren't running in silent mode it will output a table containing it's first 10 findings:
 
 ```bash
-┌─────────┬──────────────┬───────────────────────────────┐
-│ (index) │      0       │               1               │
-├─────────┼──────────────┼───────────────────────────────┤
-│    0    │    'one'     │ { count: 2, files: [Array] }  │
-│    1    │    'bar'     │ { count: 15, files: [Array] } │
-│    2    │    'two'     │ { count: 2, files: [Array] }  │
-│    3    │    'foo'     │ { count: 14, files: [Array] } │
-│    4    │   'three'    │ { count: 2, files: [Array] }  │
-│    5    │    'four'    │ { count: 2, files: [Array] }  │
-│    6    │    'baz'     │ { count: 2, files: [Array] }  │
-│    7    │    'five'    │ { count: 2, files: [Array] }  │
-│    8    │   'foobar'   │ { count: 6, files: [Array] }  │
-│    9    │ 'not-unique' │ { count: 2, files: [Array] }  │
-│   10    │    '...'     │             '...'             │
-└─────────┴──────────────┴───────────────────────────────┘
+┌─────────┬───────────────────────────────────────┬───────┐
+│ (index) │                   0                   │   1   │
+├─────────┼───────────────────────────────────────┼───────┤
+│    0    │             './question'              │  13   │
+│    1    │             './directory'             │   7   │
+│    2    │              './output'               │   9   │
+│    3    │              'inquirer'               │  17   │
+│    4    │               './store'               │   9   │
+│    5    │             './ifinding'              │   7   │
+│    6    │                'File'                 │   8   │
+│    7    │ 'should return the answer when it...' │   6   │
+│    8    │                'dummy'                │  17   │
+│    9    │               'dummy1'                │  10   │
+│   10    │                 '...'                 │       │
+└─────────┴───────────────────────────────────────┴───────┘
 ```
 
 After that, you will be asked to enter a path for a file to be created that the results can be written to (json):

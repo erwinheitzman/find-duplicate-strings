@@ -15,10 +15,10 @@ import { File } from './file';
 
 jest.mock('./cli/questions');
 jest.mock('./directory');
-jest.mock('./output');
 jest.mock('./store');
 jest.mock('./file');
 jest.mock('fs');
+jest.mock('./output', () => ({ Output: jest.fn().mockImplementation(() => ({ output: jest.fn() })) }));
 
 let getAll: jest.Mock<any, any>;
 let getStrings: jest.Mock<any, any>;
@@ -158,7 +158,55 @@ describe('Scanner', () => {
 		expect(getStrings).toHaveBeenCalledTimes(4);
 	});
 
-	it('should log a message to the console when no duplicates are found', async () => {
+	it('should log a message to the console when no results are found', async () => {
+		// arrange
+		getAll.mockReturnValue([]);
+		const scanner = new Scanner({});
+
+		// act
+		await scanner.scan();
+
+		// assert
+		expect(console.log).toHaveBeenCalledWith('No duplicates where found.');
+	});
+
+	it('should not trigger an output when no results are found', async () => {
+		// arrange
+		getAll.mockReturnValue([]);
+		const scanner = new Scanner({});
+
+		// act
+		await scanner.scan();
+
+		// assert
+		expect(Output.prototype.output).not.toHaveBeenCalled();
+	});
+
+	it('should log a message to the console when results are found but the counts are lower then the threshold', async () => {
+		// arrange
+		getAll.mockReturnValue([{ count: 0 }]);
+		const scanner = new Scanner({});
+
+		// act
+		await scanner.scan();
+
+		// assert
+		expect(console.log).toHaveBeenCalledWith('No duplicates where found.');
+	});
+
+	it('should not trigger an output when results are found but the counts are lower then the threshold', async () => {
+		// arrange
+		getAll.mockReturnValue([{ count: 0 }]);
+		const scanner = new Scanner({});
+
+		// act
+		await scanner.scan();
+
+		// assert
+		expect(Output.prototype.output).not.toHaveBeenCalled();
+	});
+
+	it('should log a message to the console when results are found but the counts are equal to the threshold', async () => {
 		// arrange
 		getAll.mockReturnValue([{ count: 1 }]);
 		const scanner = new Scanner({});
@@ -170,7 +218,19 @@ describe('Scanner', () => {
 		expect(console.log).toHaveBeenCalledWith('No duplicates where found.');
 	});
 
-	it('should not log a message to the console when duplicates are found', async () => {
+	it('should not trigger an output when results are found but the counts are equal to the threshold', async () => {
+		// arrange
+		getAll.mockReturnValue([{ count: 1 }]);
+		const scanner = new Scanner({});
+
+		// act
+		await scanner.scan();
+
+		// assert
+		expect(Output.prototype.output).not.toHaveBeenCalled();
+	});
+
+	it('should not log a message to the console when duplicates are found and the counts are higher then the threshold', async () => {
 		// arrange
 		getAll.mockReturnValue([{ count: 2 }]);
 		const scanner = new Scanner({});
@@ -179,18 +239,19 @@ describe('Scanner', () => {
 		await scanner.scan();
 
 		// assert
-		expect(console.log).not.toHaveBeenCalled();
+		expect(console.log).not.toHaveBeenCalledTimes(1);
 	});
 
-	it('should create an output after running the scan', async () => {
+	it('should trigger an output when duplicates are found and the counts are higher then the threshold', async () => {
 		// arrange
+		getAll.mockReturnValue([{ count: 2 }]);
 		const scanner = new Scanner({});
 
 		// act
 		await scanner.scan();
 
 		// assert
-		expect(Output.prototype.output).toBeCalled();
+		expect(Output.prototype.output).toHaveBeenCalledTimes(1);
 	});
 
 	it('should ask if you want to scan the same directory twice', async () => {
@@ -244,5 +305,55 @@ describe('Scanner', () => {
 
 		// assert
 		expect(confirmDirAnswer).toHaveBeenCalledTimes(2);
+	});
+
+	it('should set a threshold when passing threshold as a number', async () => {
+		// arrange
+		getAll.mockReturnValue([{ count: 5 }]);
+		const scanner = new Scanner({ threshold: 3 });
+
+		// act
+		await scanner.scan();
+
+		// assert
+		expect(scanner['threshold']).toEqual(3);
+		expect((Output as jest.Mock<any, any>).mock.calls[0][0]).toEqual([{ count: 5 }]);
+	});
+
+	it('should set a threshold when passing threshold as a string', async () => {
+		// arrange
+		getAll.mockReturnValue([{ count: 5 }]);
+		const scanner = new Scanner({ threshold: '3' });
+
+		// act
+		await scanner.scan();
+
+		// assert
+		expect(scanner['threshold']).toEqual(3);
+		expect((Output as jest.Mock<any, any>).mock.calls[0][0]).toEqual([{ count: 5 }]);
+	});
+
+	it('should set a threshold when passing threshold as a float', async () => {
+		// arrange
+		getAll.mockReturnValue([{ count: 5 }]);
+		const scanner = new Scanner({ threshold: '3.66' });
+
+		// act
+		await scanner.scan();
+
+		// assert
+		expect(scanner['threshold']).toEqual(3);
+		expect((Output as jest.Mock<any, any>).mock.calls[0][0]).toEqual([{ count: 5 }]);
+	});
+
+	it('should set the threshold to 1 by default', async () => {
+		// arrange
+		const scanner = new Scanner({});
+
+		// act
+		await scanner.scan();
+
+		// assert
+		expect(scanner['threshold']).toEqual(1);
 	});
 });

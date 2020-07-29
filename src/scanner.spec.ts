@@ -15,23 +15,10 @@ import { File } from './file';
 
 jest.mock('./cli/questions');
 jest.mock('./directory');
-// jest.mock('./output');
 jest.mock('./store');
 jest.mock('./file');
 jest.mock('fs');
-// jest.mock('./output', () =>
-// 	jest.fn().mockImplementation(() =>
-// 		({ output: () => {} })
-// 	)
-// );
-jest.mock('./output', () => {
-	// Works and lets you check for constructor calls:
-	return {
-		Output: jest.fn().mockImplementation(() => {
-			return { output: jest.fn() };
-		}),
-	};
-});
+jest.mock('./output', () => ({ Output: jest.fn().mockImplementation(() => ({ output: jest.fn() })) }));
 
 let getAll: jest.Mock<any, any>;
 let getStrings: jest.Mock<any, any>;
@@ -51,9 +38,6 @@ describe('Scanner', () => {
 		ExtensionsQuestion.prototype.getAnswer = jest.fn().mockResolvedValue(['no']);
 		DirectoryQuestion.prototype.getAnswer = jest.fn().mockResolvedValue(['dummy']);
 		Output.prototype.output = jest.fn();
-		// return jest.fn().mockImplementation(() => {
-		// 	return {playSoundFile: () => {}};
-		// });
 		console.log = jest.fn();
 	});
 

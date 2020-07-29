@@ -19,7 +19,7 @@ export class Output {
 	private outputToConsole(output: Finding[]) {
 		const outputCopy = JSON.parse(JSON.stringify(output.slice(0, 10)));
 
-		const consoleOutput: [string, number | string][] = outputCopy.map((finding: Finding) => {
+		const consoleOutput: [string, number?][] = outputCopy.map((finding: Finding) => {
 			if (finding.key.length > 32) {
 				finding.key = finding.key.substring(0, 32) + '...';
 			}
@@ -27,7 +27,7 @@ export class Output {
 		});
 
 		if (output.length > 10) {
-			consoleOutput.push(['...', '...']);
+			consoleOutput.push(['...']);
 		}
 
 		console.table(consoleOutput);

@@ -17,6 +17,7 @@ interface Options {
 	exclusions?: string;
 	extensions?: string;
 	path?: string;
+	threshold?: number | string;
 }
 
 const { removeDotPrefix } = new Extensions();
@@ -28,10 +29,12 @@ export class Scanner {
 	private exclusions!: string[];
 	private extensions!: string[];
 	private path: string;
+	private threshold: number;
 
 	public constructor(options: Options) {
 		this.path = options.path || '';
 		this.silent = !!options.silent;
+		this.threshold = typeof options.threshold !== 'undefined' ? parseInt(options.threshold as string, 10) : 1;
 
 		if (options.exclusions) {
 			this.exclusions = options.exclusions.split(',');
@@ -74,6 +77,7 @@ export class Scanner {
 
 		if (!duplicates.length) {
 			console.log('No duplicates where found.');
+			return;
 		}
 
 		await new Output(duplicates, this.silent).output();
@@ -89,6 +93,6 @@ export class Scanner {
 	}
 
 	private getDuplicates(store: Store<Finding>) {
-		return store.getAll().filter((value) => value.count > 1);
+		return store.getAll().filter((value) => value.count > this.threshold);
 	}
 }

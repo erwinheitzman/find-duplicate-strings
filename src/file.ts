@@ -66,20 +66,21 @@ export class File {
 		);
 	}
 
-	private storeMatch(key: string, file: string) {
+	private storeMatch(key: string, file: string): void {
 		const value = this.store.find(key);
 
-		if (value) {
-			if (!value.files.includes(file)) {
-				value.files.push(file);
-			}
-
-			value.count++;
-
-			this.store.update(key, { key, count: value.count, files: value.files });
-		} else {
+		if (!value) {
 			this.store.add(key, { key, count: 1, files: [file] });
+			return;
 		}
+
+		if (!value.files.includes(file)) {
+			value.files.push(file);
+		}
+
+		value.count++;
+
+		this.store.update(key, { key, count: value.count, files: value.files });
 	}
 
 	private getLines(): Array<string> {

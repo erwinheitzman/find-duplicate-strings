@@ -7,7 +7,7 @@ jest.mock('inquirer');
 
 let promptMock: jest.Mock<any, any>;
 
-describe('File', () => {
+describe('Exclusions', () => {
 	beforeEach(() => {
 		// @ts-ignore
 		promptMock = prompt as jest.Mock<any, any>;
@@ -28,18 +28,6 @@ describe('File', () => {
 		const answer = await question.getAnswer();
 
 		// assert
-		expect(answer).toEqual(['dummy']);
-	});
-
-	it('should split the answer on a comma', async () => {
-		// arrange
-		promptMock.mockResolvedValue({ exclusions: 'dummy1,dummy2,dummy3' });
-		const question = new ExclusionsQuestion();
-
-		// act
-		const answer = await question.getAnswer();
-
-		// assert
-		expect(answer).toEqual(['dummy1', 'dummy2', 'dummy3']);
+		expect(answer).toEqual('dummy');
 	});
 });

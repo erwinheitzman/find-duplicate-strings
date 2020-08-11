@@ -28,30 +28,6 @@ describe('Extensions', () => {
 		const answer = await question.getAnswer();
 
 		// assert
-		expect(answer).toEqual(['dummy']);
-	});
-
-	it('should split the answer on a comma', async () => {
-		// arrange
-		promptMock.mockResolvedValue({ extensions: 'dummy1,dummy2,dummy3' });
-		const question = new ExtensionsQuestion();
-
-		// act
-		const answer = await question.getAnswer();
-
-		// assert
-		expect(answer).toEqual(['dummy1', 'dummy2', 'dummy3']);
-	});
-
-	it('should remove the dot prefix from the extensions', async () => {
-		// arrange
-		promptMock.mockResolvedValue({ extensions: '.dummy1,dummy2,.dummy3' });
-		const question = new ExtensionsQuestion();
-
-		// act
-		const answer = await question.getAnswer();
-
-		// assert
-		expect(answer).toEqual(['dummy1', 'dummy2', 'dummy3']);
+		expect(answer).toEqual('dummy');
 	});
 });

@@ -1,12 +1,16 @@
 export class Extensions {
-	public removeDotPrefix(extensions: string[]): string[] {
+	private static removeDotPrefix(str: string) {
+		if (str.startsWith('.')) {
+			return str.substr(1, str.length);
+		}
+		return str;
+	}
+
+	public static process(extensions: string) {
 		return extensions
-			.map((extension: string) => {
-				if (extension.startsWith('.')) {
-					return extension.substr(1, extension.length);
-				}
-				return extension;
-			})
-			.filter((extension: string) => extension);
+			.split(',')
+			.map((extension) => extension.trim())
+			.filter((extension) => extension)
+			.map(this.removeDotPrefix);
 	}
 }

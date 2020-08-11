@@ -3,6 +3,7 @@ import { Store } from './store';
 import { File } from './file';
 import { Finding } from './ifinding';
 import { Output } from './output';
+import { Exclusions } from './exclusions';
 import { Extensions } from './extensions';
 import {
 	DirectoryQuestion,
@@ -21,8 +22,6 @@ interface Options {
 	threshold?: number | string;
 }
 
-const { removeDotPrefix } = new Extensions();
-
 export class Scanner {
 	private readonly scannedDirs: string[] = [];
 	private readonly store = new Store<Finding>();
@@ -34,11 +33,11 @@ export class Scanner {
 
 	public constructor(options: Options) {
 		if (options.exclusions) {
-			this.exclusions = options.exclusions.split(',');
+			this.exclusions = Exclusions.process(options.exclusions);
 		}
 
 		if (options.extensions) {
-			this.extensions = removeDotPrefix(options.extensions.split(','));
+			this.extensions = Extensions.process(options.extensions);
 		}
 
 		if (options.threshold) {
@@ -53,15 +52,18 @@ export class Scanner {
 		const path = this.path.length ? this.path : await new DirectoryQuestion().getAnswer();
 
 		if (!this.exclusions) {
-			this.exclusions = await new ExclusionsQuestion().getAnswer();
+			const answer = await new ExclusionsQuestion().getAnswer();
+			this.exclusions = Exclusions.process(answer);
 		}
 
 		if (!this.extensions) {
-			this.extensions = await new ExtensionsQuestion().getAnswer();
+			const answer = await new ExtensionsQuestion().getAnswer();
+			this.extensions = Extensions.process(answer);
 		}
 
 		if (!this.threshold) {
-			this.threshold = parseInt(await new ThresholdQuestion().getAnswer(), 10);
+			const answer = await new ThresholdQuestion().getAnswer();
+			this.threshold = parseInt(answer, 10);
 		}
 
 		let shouldScan = true;

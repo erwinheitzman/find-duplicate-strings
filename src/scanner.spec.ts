@@ -7,6 +7,7 @@ import {
 	ExtensionsQuestion,
 	ConfirmDirectoryQuestion,
 	ConfirmScannedDirQuestion,
+	ThresholdQuestion,
 } from './cli/questions';
 import { Output } from './output';
 import { Directory } from './directory';
@@ -37,6 +38,7 @@ describe('Scanner', () => {
 		ExclusionsQuestion.prototype.getAnswer = jest.fn().mockResolvedValue(['yes']);
 		ExtensionsQuestion.prototype.getAnswer = jest.fn().mockResolvedValue(['no']);
 		DirectoryQuestion.prototype.getAnswer = jest.fn().mockResolvedValue(['dummy']);
+		ThresholdQuestion.prototype.getAnswer = jest.fn().mockResolvedValue('1');
 		Output.prototype.output = jest.fn();
 		console.log = jest.fn();
 	});
@@ -99,6 +101,56 @@ describe('Scanner', () => {
 
 		// assert
 		expect(ExtensionsQuestion.prototype.getAnswer).toBeCalledTimes(1);
+	});
+
+	it('should set a threshold when passing threshold as a number', async () => {
+		// arrange
+		getAll.mockReturnValue([{ count: 5 }]);
+		const scanner = new Scanner({ threshold: 3 });
+
+		// act
+		await scanner.scan();
+
+		// assert
+		expect(scanner['threshold']).toEqual(3);
+		expect((Output as jest.Mock<any, any>).mock.calls[0][0]).toEqual([{ count: 5 }]);
+	});
+
+	it('should set a threshold when passing threshold as a string', async () => {
+		// arrange
+		getAll.mockReturnValue([{ count: 5 }]);
+		const scanner = new Scanner({ threshold: '3' });
+
+		// act
+		await scanner.scan();
+
+		// assert
+		expect(scanner['threshold']).toEqual(3);
+		expect((Output as jest.Mock<any, any>).mock.calls[0][0]).toEqual([{ count: 5 }]);
+	});
+
+	it('should set a threshold when passing threshold as a float', async () => {
+		// arrange
+		getAll.mockReturnValue([{ count: 5 }]);
+		const scanner = new Scanner({ threshold: '3.66' });
+
+		// act
+		await scanner.scan();
+
+		// assert
+		expect(scanner['threshold']).toEqual(3);
+		expect((Output as jest.Mock<any, any>).mock.calls[0][0]).toEqual([{ count: 5 }]);
+	});
+
+	it('should ask a question when the threshold is not provided', async () => {
+		// arrange
+		const scanner = new Scanner({});
+
+		// act
+		await scanner.scan();
+
+		// assert
+		expect(ThresholdQuestion.prototype.getAnswer).toBeCalledTimes(1);
 	});
 
 	it('should set path', async () => {
@@ -305,55 +357,5 @@ describe('Scanner', () => {
 
 		// assert
 		expect(confirmDirAnswer).toHaveBeenCalledTimes(2);
-	});
-
-	it('should set a threshold when passing threshold as a number', async () => {
-		// arrange
-		getAll.mockReturnValue([{ count: 5 }]);
-		const scanner = new Scanner({ threshold: 3 });
-
-		// act
-		await scanner.scan();
-
-		// assert
-		expect(scanner['threshold']).toEqual(3);
-		expect((Output as jest.Mock<any, any>).mock.calls[0][0]).toEqual([{ count: 5 }]);
-	});
-
-	it('should set a threshold when passing threshold as a string', async () => {
-		// arrange
-		getAll.mockReturnValue([{ count: 5 }]);
-		const scanner = new Scanner({ threshold: '3' });
-
-		// act
-		await scanner.scan();
-
-		// assert
-		expect(scanner['threshold']).toEqual(3);
-		expect((Output as jest.Mock<any, any>).mock.calls[0][0]).toEqual([{ count: 5 }]);
-	});
-
-	it('should set a threshold when passing threshold as a float', async () => {
-		// arrange
-		getAll.mockReturnValue([{ count: 5 }]);
-		const scanner = new Scanner({ threshold: '3.66' });
-
-		// act
-		await scanner.scan();
-
-		// assert
-		expect(scanner['threshold']).toEqual(3);
-		expect((Output as jest.Mock<any, any>).mock.calls[0][0]).toEqual([{ count: 5 }]);
-	});
-
-	it('should set the threshold to 1 by default', async () => {
-		// arrange
-		const scanner = new Scanner({});
-
-		// act
-		await scanner.scan();
-
-		// assert
-		expect(scanner['threshold']).toEqual(1);
 	});
 });

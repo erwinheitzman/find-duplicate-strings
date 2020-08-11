@@ -5,6 +5,8 @@
 
 **Easy to use CLI that finds duplicate strings in a directory and stores them in a external file for easy reference**
 
+Note that this does not find matches in files like grep does, instead it searches for quoted characters. In other words, this tool can be used by development teams that want to know if there's any duplicate string values in their project and if so, where these can be found.
+
 ## Getting started
 
 Install:
@@ -26,7 +28,7 @@ For more information about what arguments and flags are supported, use the -h or
 Example:
 
 ```bash
-find-duplicate-strings . --exclusions node_modules --extensions ts,js -s
+find-duplicate-strings . --exclusions node_modules --extensions ts,js -t 10 -s
 ```
 
 When done, if you aren't running in silent mode it will output a table containing it's first 10 findings:

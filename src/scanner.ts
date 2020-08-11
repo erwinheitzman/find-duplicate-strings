@@ -10,6 +10,7 @@ import {
 	ExtensionsQuestion,
 	ConfirmDirectoryQuestion,
 	ConfirmScannedDirQuestion,
+	ThresholdQuestion,
 } from './cli/questions';
 
 interface Options {
@@ -25,17 +26,13 @@ const { removeDotPrefix } = new Extensions();
 export class Scanner {
 	private readonly scannedDirs: string[] = [];
 	private readonly store = new Store<Finding>();
-	private silent: boolean;
 	private exclusions!: string[];
 	private extensions!: string[];
+	private threshold!: number | string;
+	private silent: boolean;
 	private path: string;
-	private threshold: number;
 
 	public constructor(options: Options) {
-		this.path = options.path || '';
-		this.silent = !!options.silent;
-		this.threshold = typeof options.threshold !== 'undefined' ? parseInt(options.threshold as string, 10) : 1;
-
 		if (options.exclusions) {
 			this.exclusions = options.exclusions.split(',');
 		}
@@ -43,6 +40,13 @@ export class Scanner {
 		if (options.extensions) {
 			this.extensions = removeDotPrefix(options.extensions.split(','));
 		}
+
+		if (options.threshold) {
+			this.threshold = parseInt(options.threshold as string, 10);
+		}
+
+		this.silent = !!options.silent;
+		this.path = options.path || '';
 	}
 
 	public async scan(): Promise<void> {
@@ -54,6 +58,10 @@ export class Scanner {
 
 		if (!this.extensions) {
 			this.extensions = await new ExtensionsQuestion().getAnswer();
+		}
+
+		if (!this.threshold) {
+			this.threshold = parseInt(await new ThresholdQuestion().getAnswer(), 10);
 		}
 
 		let shouldScan = true;

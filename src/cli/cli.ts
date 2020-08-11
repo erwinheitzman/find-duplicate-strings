@@ -16,9 +16,11 @@ program
 	.option('--extensions <items>', 'comma separated list of extensions to scan')
 	.option('-t, --threshold <int>', 'defaults to 1 (when 5, results lower or equal to 5 will be ignored)')
 	.option('-s, --silent', 'prevent CLI from printing messages through the console')
-	.action(async ({ silent, exclusions, extensions, threshold, args }: Options) => {
-		await new Scanner({ silent, exclusions, extensions, threshold, path: args[0] }).scan().catch((err) => {
-			console.error(`Error: ${err.message}`);
-		});
-	})
+	.action(init)
 	.parse(process.argv);
+
+async function init({ silent, exclusions, extensions, threshold, args }: Options) {
+	await new Scanner({ silent, exclusions, extensions, threshold, path: args[0] }).scan().catch((err) => {
+		console.error(`Error: ${err.message}`);
+	});
+}

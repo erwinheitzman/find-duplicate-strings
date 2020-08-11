@@ -35,8 +35,8 @@ describe('Scanner', () => {
 		confirmDirAnswer = ConfirmDirectoryQuestion.prototype.getAnswer = jest.fn().mockResolvedValue(false);
 		confirmScannedDirAnswer = ConfirmScannedDirQuestion.prototype.getAnswer = jest.fn().mockResolvedValue(false);
 
-		ExclusionsQuestion.prototype.getAnswer = jest.fn().mockResolvedValue(['yes']);
-		ExtensionsQuestion.prototype.getAnswer = jest.fn().mockResolvedValue(['no']);
+		ExclusionsQuestion.prototype.getAnswer = jest.fn().mockResolvedValue('dummy-dir');
+		ExtensionsQuestion.prototype.getAnswer = jest.fn().mockResolvedValue('.ts,.js');
 		DirectoryQuestion.prototype.getAnswer = jest.fn().mockResolvedValue(['dummy']);
 		ThresholdQuestion.prototype.getAnswer = jest.fn().mockResolvedValue('1');
 		Output.prototype.output = jest.fn();

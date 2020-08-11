@@ -8,8 +8,7 @@ export class ExclusionsQuestion extends Question {
 		);
 	}
 
-	public async getAnswer(): Promise<string[]> {
-		const answer: string = await super.getAnswer();
-		return answer.split(',');
+	public async getAnswer(): Promise<string> {
+		return super.getAnswer();
 	}
 }

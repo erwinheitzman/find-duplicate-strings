@@ -1,8 +1,6 @@
 import { Question } from './question';
 import { Extensions } from '../../extensions';
 
-const { removeDotPrefix } = new Extensions();
-
 export class ExtensionsQuestion extends Question {
 	public constructor() {
 		super(
@@ -11,8 +9,7 @@ export class ExtensionsQuestion extends Question {
 		);
 	}
 
-	public async getAnswer(): Promise<string[]> {
-		const answer: string = await super.getAnswer();
-		return removeDotPrefix(answer.split(','));
+	public async getAnswer(): Promise<string> {
+		return super.getAnswer();
 	}
 }

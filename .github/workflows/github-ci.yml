@@ -4,26 +4,26 @@ on:
   push:
     branches: [ master ]
   pull_request:
-		branches: [ master ]
+    branches: [ master ]
 
 jobs:
   run:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-				os: [ubuntu-latest, macos-latest, windows-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
     env:
       OS: ${{ matrix.os }}
       NODE: '12.x'
     steps:
     - uses: actions/checkout@master
     - name: Setup Node.js
-			uses: actions/setup-node@v1
+      uses: actions/setup-node@v1
       with:
         node-version: 12.x
     - name: Generate coverage report
-			run: |
-				npm ci
+      run: |
+        npm ci
         npm test -- --coverage
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@master

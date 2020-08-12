@@ -1,5 +1,4 @@
 import { Question } from './question';
-import { Extensions } from '../../extensions';
 
 export class ExtensionsQuestion extends Question {
 	public constructor() {

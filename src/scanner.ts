@@ -24,7 +24,7 @@ interface Options {
 
 export class Scanner {
 	private readonly scannedDirs: string[] = [];
-	private readonly store = new Store<Finding>();
+	private readonly store = Store;
 	private exclusions!: string[];
 	private extensions!: string[];
 	private threshold!: number | string;
@@ -73,7 +73,14 @@ export class Scanner {
 		}
 
 		if (shouldScan) {
-			this.scanDir(path);
+			console.time('timer');
+			try {
+				await this.scanDir(path);
+			} catch (error) {
+				console.log(error);
+				this.store.clear();
+			}
+			console.timeEnd('timer');
 			this.scannedDirs.push(path);
 		}
 
@@ -83,26 +90,30 @@ export class Scanner {
 			return this.scan();
 		}
 
-		const duplicates = this.getDuplicates(this.store);
+		const duplicates = this.getDuplicates();
 
 		if (!duplicates.length) {
 			console.log('No duplicates where found.');
 			return;
 		}
 
-		await new Output(duplicates, this.silent).output();
+		await new Output(duplicates as Finding[], this.silent).output();
+
+		this.store.clear();
 	}
 
-	private scanDir(dirName: string) {
+	private async scanDir(dirName: string) {
 		const directory = new Directory(dirName, this.exclusions, this.extensions);
-		const files = directory.getFiles();
+		const files = await directory.getFiles();
 
-		for (const file of files) {
-			new File(this.store, file).getStrings();
+		for await (const file of files) {
+			await new File(this.store, file).getStrings();
 		}
 	}
 
-	private getDuplicates(store: Store<Finding>) {
-		return store.getAll().filter((value) => value.count > this.threshold);
+	private getDuplicates() {
+		const duplicates = Store.getAll().filter((value: any) => value.count > this.threshold);
+		Store.save();
+		return duplicates;
 	}
 }

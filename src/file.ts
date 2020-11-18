@@ -1,4 +1,4 @@
-import { readFileSync } from 'fs';
+import { promises } from 'fs';
 import { Store } from './store';
 import { Finding } from './ifinding';
 
@@ -9,14 +9,14 @@ enum Character {
 }
 
 export class File {
-	private readonly file: string;
+	// private readonly file: string;
 
-	constructor(private store: Store<Finding>, private name: string) {
-		this.file = readFileSync(name, 'utf8');
-	}
+	constructor(private store: Store, private name: string) {}
 
-	public getStrings(): void {
-		this.getLines().forEach((line: string) => {
+	async getStrings(): Promise<void> {
+		const lines = await this.getLines();
+
+		lines.forEach((line: string) => {
 			let singleQuoteToggle = false;
 			let doubleQuoteToggle = false;
 			let characterSet = '';
@@ -67,12 +67,14 @@ export class File {
 	}
 
 	private storeMatch(key: string, file: string): void {
-		const value = this.store.find(key);
+		const value = Store.find(key) as Finding;
 
 		if (!value) {
-			this.store.add(key, { key, count: 1, files: [file] });
+			Store.add(key, { key, count: 1, files: [file] });
 			return;
 		}
+
+		if (!value.files) console.log('broken: ', value);
 
 		if (!value.files.includes(file)) {
 			value.files.push(file);
@@ -80,10 +82,11 @@ export class File {
 
 		value.count++;
 
-		this.store.update(key, { key, count: value.count, files: value.files });
+		Store.update(key, { key, count: value.count, files: value.files });
 	}
 
-	private getLines(): Array<string> {
-		return this.file.split('\n');
+	private async getLines(): Promise<Array<string>> {
+		const file = await promises.readFile(this.name, 'utf8');
+		return file.split('\n');
 	}
 }

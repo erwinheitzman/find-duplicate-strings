@@ -1,14 +1,18 @@
 /* eslint @typescript-eslint/no-explicit-any: 0 */
 
 import { Directory } from './directory';
-import { readdirSync, existsSync, statSync } from 'fs';
+import { promises, existsSync, statSync } from 'fs';
 import { resolve, extname } from 'path';
 
 jest.mock('./store');
-jest.mock('fs');
+jest.mock('fs', () => ({
+	promises: { readdir: jest.fn() },
+	existsSync: jest.fn(),
+	statSync: jest.fn(),
+}));
 jest.mock('path');
 
-let readdirSyncMock: jest.Mock<any, any>;
+let readdirMock: jest.Mock<any, any>;
 let existsSyncMock: jest.Mock<any, any>;
 let statSyncMock: jest.Mock<any, any>;
 let resolveMock: jest.Mock<any, any>;
@@ -20,7 +24,9 @@ const extensions: string[] = [];
 
 describe('Directory', () => {
 	beforeEach(() => {
-		readdirSyncMock = (readdirSync as jest.Mock<any, any>).mockReturnValue(['file1', 'file2']);
+		readdirMock = (promises.readdir as jest.Mock<any, any>)
+			.mockResolvedValueOnce({ name: 'foo' })
+			.mockResolvedValueOnce(null);
 		existsSyncMock = (existsSync as jest.Mock<any, any>).mockReturnValue(true);
 		statSyncMock = (statSync as jest.Mock<any, any>).mockReturnValue({
 			isDirectory: jest.fn().mockReturnValueOnce(true).mockReturnValue(false),
@@ -53,7 +59,7 @@ describe('Directory', () => {
 		expect(() => new Directory(dataDir, exclusions, extensions)).toThrowError('Path does not point to a directory.');
 	});
 
-	it('should return files', () => {
+	it('should return files', async () => {
 		// arrange
 		resolveMock.mockReturnValueOnce('dir');
 		resolveMock.mockReturnValueOnce('dir/file1');
@@ -61,15 +67,21 @@ describe('Directory', () => {
 		const directory = new Directory(dataDir, exclusions, extensions);
 
 		// act
-		const files = directory.getFiles();
+		const files = await directory.getFiles();
+
+		const _files = [];
+
+		for await (const file of files) {
+			_files.push(file);
+		}
 
 		// assert
-		expect(files).toEqual(['dir/file1', 'dir/file2']);
+		expect(_files).toEqual(['dir/file1', 'dir/file2']);
 	});
 
-	it('should recursively go trough directories', () => {
+	it('should recursively go trough directories', async () => {
 		// arrange
-		readdirSyncMock.mockReturnValueOnce(['file1', 'file2']).mockReturnValueOnce(['sub-dir-file1', 'sub-dir-file2']);
+		readdirMock.mockReturnValueOnce(['file1', 'file2']).mockReturnValueOnce(['sub-dir-file1', 'sub-dir-file2']);
 		statSyncMock.mockReturnValue({
 			isDirectory: jest.fn().mockReturnValueOnce(true).mockReturnValueOnce(true).mockReturnValue(false),
 		});
@@ -81,13 +93,13 @@ describe('Directory', () => {
 		const directory = new Directory(dataDir, exclusions, extensions);
 
 		// act
-		const files = directory.getFiles();
+		const files = await directory.getFiles();
 
 		// assert
 		expect(files).toEqual(['dir/sub-dir-file1', 'dir/sub-dir-file2', 'dir/file2']);
 	});
 
-	it('should exlude files/directories matching "file1"', () => {
+	it('should exlude files/directories matching "file1"', async () => {
 		// arrange
 		resolveMock.mockReturnValueOnce('dir');
 		// file 1 wil be skipped
@@ -95,13 +107,13 @@ describe('Directory', () => {
 		const directory = new Directory(dataDir, ['file1'], extensions);
 
 		// act
-		const files = directory.getFiles();
+		const files = await directory.getFiles();
 
 		// assert
 		expect(files).toEqual(['dir/file2']);
 	});
 
-	it('should return files matching file extension "ts"', () => {
+	it('should return files matching file extension "ts"', async () => {
 		// arrange
 		extnameMock.mockReturnValueOnce('.ts').mockReturnValueOnce('.txt');
 		resolveMock.mockReturnValueOnce('dir');
@@ -110,13 +122,13 @@ describe('Directory', () => {
 		const directory = new Directory(dataDir, exclusions, ['ts']);
 
 		// act
-		const files = directory.getFiles();
+		const files = await directory.getFiles();
 
 		// assert
 		expect(files).toEqual(['dir/file1']);
 	});
 
-	it('should return any files when no extensions are passed', () => {
+	it('should return any files when no extensions are passed', async () => {
 		// arrange
 		extnameMock.mockReturnValueOnce('.ts').mockReturnValueOnce('.pdf');
 		resolveMock.mockReturnValueOnce('dir');
@@ -125,13 +137,13 @@ describe('Directory', () => {
 		const directory = new Directory(dataDir, exclusions, extensions);
 
 		// act
-		const files = directory.getFiles();
+		const files = await directory.getFiles();
 
 		// assert
 		expect(files).toEqual(['dir/file1', 'dir/file2']);
 	});
 
-	it('should handle extensions prefixed with and without a dot', () => {
+	it('should handle extensions prefixed with and without a dot', async () => {
 		// arrange
 		extnameMock.mockReturnValueOnce('ts').mockReturnValueOnce('.pdf');
 		resolveMock.mockReturnValueOnce('dir');
@@ -140,7 +152,7 @@ describe('Directory', () => {
 		const directory = new Directory(dataDir, exclusions, extensions);
 
 		// act
-		const files = directory.getFiles();
+		const files = await directory.getFiles();
 
 		// assert
 		expect(files).toEqual(['dir/file1', 'dir/file2']);

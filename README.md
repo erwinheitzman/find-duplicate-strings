@@ -1,5 +1,5 @@
-[![ci](https://github.com/erwinheitzman/find-duplicate-strings/workflows/ci/badge.svg?branch=master)](https://travis-ci.org/erwinheitzman/find-duplicate-strings)
-[![codecov](https://codecov.io/gh/erwinheitzman/find-duplicate-strings/branch/master/graph/badge.svg)](https://codecov.io/gh/erwinheitzman/find-duplicate-strings)
+![ci](https://github.com/erwinheitzman/find-duplicate-strings/workflows/ci/badge.svg)
+![codecov](https://codecov.io/gh/erwinheitzman/find-duplicate-strings/branch/master/graph/badge.svg)
 
 # find-duplicate-strings
 

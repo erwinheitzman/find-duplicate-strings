@@ -1,4 +1,5 @@
-import { promises } from 'fs';
+import { createInterface, Interface } from 'readline';
+import { createReadStream } from 'fs';
 import { Store } from './store';
 import { Finding } from './ifinding';
 
@@ -9,14 +10,12 @@ enum Character {
 }
 
 export class File {
-	// private readonly file: string;
+	constructor(private name: string) {}
 
-	constructor(private store: Store, private name: string) {}
+	getStrings(): void {
+		const rl = this.readlineInterface();
 
-	async getStrings(): Promise<void> {
-		const lines = await this.getLines();
-
-		lines.forEach((line: string) => {
+		rl.on('line', (line) => {
 			let singleQuoteToggle = false;
 			let doubleQuoteToggle = false;
 			let characterSet = '';
@@ -74,8 +73,6 @@ export class File {
 			return;
 		}
 
-		if (!value.files) console.log('broken: ', value);
-
 		if (!value.files.includes(file)) {
 			value.files.push(file);
 		}
@@ -85,8 +82,10 @@ export class File {
 		Store.update(key, { key, count: value.count, files: value.files });
 	}
 
-	private async getLines(): Promise<Array<string>> {
-		const file = await promises.readFile(this.name, 'utf8');
-		return file.split('\n');
+	private readlineInterface(): Interface {
+		return createInterface({
+			input: createReadStream(this.name, { encoding: 'utf8' }),
+			terminal: false,
+		});
 	}
 }

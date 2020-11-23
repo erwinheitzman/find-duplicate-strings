@@ -73,14 +73,13 @@ export class Scanner {
 		}
 
 		if (shouldScan) {
-			console.time('timer');
 			try {
 				await this.scanDir(path);
 			} catch (error) {
 				console.log(error);
 				this.store.clear();
 			}
-			console.timeEnd('timer');
+
 			this.scannedDirs.push(path);
 		}
 
@@ -104,10 +103,10 @@ export class Scanner {
 
 	private async scanDir(dirName: string) {
 		const directory = new Directory(dirName, this.exclusions, this.extensions);
-		const files = await directory.getFiles();
+		const files = directory.getFiles();
 
 		for await (const file of files) {
-			await new File(this.store, file).getStrings();
+			new File(file).getStrings();
 		}
 	}
 

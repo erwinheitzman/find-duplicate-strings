@@ -29,7 +29,7 @@ let confirmScannedDirAnswer: jest.Mock<any, any>;
 
 describe('Scanner', () => {
 	beforeEach(() => {
-		getAll = Store.prototype.getAll = jest.fn().mockReturnValue([{ count: 1 }]);
+		getAll = Store.getAll = jest.fn().mockReturnValue([{ count: 1 }]);
 		getStrings = File.prototype.getStrings = jest.fn();
 		getFiles = Directory.prototype.getFiles = jest.fn().mockReturnValue([]);
 		confirmDirAnswer = ConfirmDirectoryQuestion.prototype.getAnswer = jest.fn().mockResolvedValue(false);

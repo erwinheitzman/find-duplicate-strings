@@ -1,4 +1,4 @@
-import { promises, readdirSync, existsSync, statSync } from 'fs';
+import { promises, existsSync, statSync } from 'fs';
 import { resolve, extname } from 'path';
 
 export class Directory {
@@ -16,7 +16,7 @@ export class Directory {
 		}
 	}
 
-	public async getFiles(): Promise<AsyncGenerator<string, void, unknown>> {
+	public getFiles(): AsyncGenerator<string, void, unknown> {
 		return this.readdirRecursively(this.path);
 	}
 
@@ -41,33 +41,4 @@ export class Directory {
 			}
 		}
 	}
-
-	// public getFiles(): string[] {
-	// 	return this.readdirRecursively(this.path);
-	// }
-
-	// private readdirRecursively = (path: string): string[] => {
-	// 	const files: string[] = [];
-
-	// 	readdirSync(path).forEach((file) => {
-	// 		if (this.exclusions.includes(file)) {
-	// 			return;
-	// 		}
-
-	// 		const fullPath = resolve(path, file);
-
-	// 		if (statSync(fullPath).isDirectory()) {
-	// 			files.push(...this.readdirRecursively(fullPath));
-	// 			return;
-	// 		}
-
-	// 		const extension = extname(fullPath).substr(1);
-
-	// 		if (!this.extensions.length || this.extensions.includes(extension)) {
-	// 			files.push(fullPath);
-	// 		}
-	// 	});
-
-	// 	return files;
-	// };
 }

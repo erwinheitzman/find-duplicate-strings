@@ -16,7 +16,7 @@ export class Store {
 		const file = readFileSync(path, { encoding: 'utf8' });
 		const newFile = JSON.parse(file);
 		writeFileSync(path, JSON.stringify(newFile), { encoding: 'utf8' });
-		this.store = new Map();
+		this.clear();
 	}
 
 	static add(key: string, value: unknown): void {
@@ -88,6 +88,7 @@ export class Store {
 	}
 
 	static clear(): void {
+		this.store = new Map();
 		const path = join(__dirname, '.tmp');
 
 		try {

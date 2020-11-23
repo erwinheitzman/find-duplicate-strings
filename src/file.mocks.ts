@@ -1,15 +1,52 @@
 import { Readable } from 'stream';
 
-const readStreamMock = jest.fn().mockImplementation(() => {
-	const readable = new Readable();
-	readable.push('hello');
-	readable.push('world');
+export const file1 = (): Readable => {
+	const readable = new Readable({ encoding: 'utf8' });
+	readable.push(`describe('', () => {`);
+	readable.push(`    it("", () => {`);
+	readable.push(`        const foo = "foo";`);
+	readable.push(`        const bar = 'bar';`);
+	readable.push(`        const baz = \`baz\`;`);
+	readable.push(`    });`);
+	readable.push(`});`);
 	readable.push(null);
 	return readable;
-});
+};
 
-const fileMock = jest.fn().mockImplementation(() => ({
-	createReadStream: readStreamMock,
-}));
+export const file2 = (): Readable => {
+	const readable = new Readable({ encoding: 'utf8' });
+	readable.push(`describe('', () => {`);
+	readable.push(`    it("", () => {`);
+	readable.push(`    });`);
+	readable.push(`});`);
+	readable.push(null);
+	return readable;
+};
 
-export { readStreamMock, fileMock };
+export const file3 = (): Readable => {
+	const readable = new Readable({ encoding: 'utf8' });
+	readable.push(`describe('', () => {`);
+	readable.push(`    it("", () => {`);
+	readable.push(`        let foo = "foo";`);
+	readable.push(`        foo = "foo";`);
+	readable.push(`        foo = "foo";`);
+	readable.push(`    });`);
+	readable.push(`});`);
+	readable.push(null);
+	return readable;
+};
+
+export const file4 = (): Readable => {
+	const readable = new Readable({ encoding: 'utf8' });
+	readable.push(`const foo = "foo";`);
+	readable.push(``);
+	readable.push(`describe('', () => {`);
+	readable.push(`    it("", () => {`);
+	readable.push(`        const foo = "foo";`);
+	readable.push(`        const bar = 'bar';`);
+	readable.push(`        const baz = \`baz\`;`);
+	readable.push(`    });`);
+	readable.push(`});`);
+	readable.push(null);
+	return readable;
+};

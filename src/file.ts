@@ -1,7 +1,7 @@
 import { createInterface, Interface } from 'readline';
 import { createReadStream } from 'fs';
 import { Store } from './store';
-import { Finding } from './ifinding';
+import { Finding } from './finding';
 
 enum Character {
 	SINGLE_QUOTE = 39,
@@ -12,41 +12,45 @@ enum Character {
 export class File {
 	constructor(private name: string) {}
 
-	getStrings(): void {
+	processContent(): Interface {
 		const rl = this.readlineInterface();
 
-		rl.on('line', (line) => {
-			let singleQuoteToggle = false;
-			let doubleQuoteToggle = false;
-			let characterSet = '';
+		rl.on('line', (line) => this.processLine(line));
 
-			for (let i = 0; i < line.length; i++) {
-				if (this.shouldStoreDoubleQuoteString(line, i, singleQuoteToggle)) {
-					doubleQuoteToggle = !doubleQuoteToggle;
+		return rl;
+	}
 
-					if (doubleQuoteToggle === false && characterSet.length) {
-						this.storeMatch(characterSet, this.name);
-						characterSet = '';
-					}
-					continue;
+	private processLine(line: string) {
+		let singleQuoteToggle = false;
+		let doubleQuoteToggle = false;
+		let characterSet = '';
+
+		for (let i = 0; i < line.length; i++) {
+			if (this.shouldStoreDoubleQuoteString(line, i, singleQuoteToggle)) {
+				doubleQuoteToggle = !doubleQuoteToggle;
+
+				if (doubleQuoteToggle === false && characterSet.length) {
+					this.storeMatch(characterSet, this.name);
+					characterSet = '';
 				}
-
-				if (this.shouldStoreSingleQuoteString(line, i, doubleQuoteToggle)) {
-					singleQuoteToggle = !singleQuoteToggle;
-
-					if (singleQuoteToggle === false && characterSet.length) {
-						this.storeMatch(characterSet, this.name);
-						characterSet = '';
-					}
-					continue;
-				}
-
-				if (doubleQuoteToggle === true || singleQuoteToggle === true) {
-					characterSet += line[i];
-					continue;
-				}
+				continue;
 			}
-		});
+
+			if (this.shouldStoreSingleQuoteString(line, i, doubleQuoteToggle)) {
+				singleQuoteToggle = !singleQuoteToggle;
+
+				if (singleQuoteToggle === false && characterSet.length) {
+					this.storeMatch(characterSet, this.name);
+					characterSet = '';
+				}
+				continue;
+			}
+
+			if (doubleQuoteToggle === true || singleQuoteToggle === true) {
+				characterSet += line[i];
+				continue;
+			}
+		}
 	}
 
 	private shouldStoreSingleQuoteString(line: string, index: number, toggle: boolean) {

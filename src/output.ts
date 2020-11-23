@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 import { writeFileSync } from 'fs';
-import { Finding } from './ifinding';
 import { OutputQuestion } from './cli/questions';
+import type { Finding } from './finding';
 
 export class Output {
 	public constructor(private input: Finding[], private silent: boolean) {}

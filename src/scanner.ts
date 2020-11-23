@@ -1,7 +1,6 @@
 import { Directory } from './directory';
 import { Store } from './store';
 import { File } from './file';
-import { Finding } from './ifinding';
 import { Output } from './output';
 import { Exclusions } from './exclusions';
 import { Extensions } from './extensions';
@@ -13,6 +12,7 @@ import {
 	ConfirmScannedDirQuestion,
 	ThresholdQuestion,
 } from './cli/questions';
+import type { Finding } from './finding';
 
 interface Options {
 	silent?: boolean;
@@ -106,7 +106,7 @@ export class Scanner {
 		const files = directory.getFiles();
 
 		for await (const file of files) {
-			new File(file).getStrings();
+			new File(file).processContent();
 		}
 	}
 

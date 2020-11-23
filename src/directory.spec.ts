@@ -83,6 +83,7 @@ describe('Directory', () => {
 		// assert
 		expect((await files.next()).value).toEqual('dir/file1');
 		expect((await files.next()).value).toEqual('dir/file2');
+		expect((await files.next()).done).toEqual(true);
 	});
 
 	it('should recursively go trough directories', async () => {
@@ -108,6 +109,7 @@ describe('Directory', () => {
 		expect((await files.next()).value).toEqual('dir/sub-dir-file1');
 		expect((await files.next()).value).toEqual('dir/sub-dir-file2');
 		expect((await files.next()).value).toEqual('dir/file2');
+		expect((await files.next()).done).toEqual(true);
 	});
 
 	it('should exlude files/directories matching "file1"', async () => {
@@ -125,6 +127,7 @@ describe('Directory', () => {
 
 		// assert
 		expect((await files.next()).value).toEqual('dir/file2');
+		expect((await files.next()).done).toEqual(true);
 	});
 
 	it('should return files matching file extension "ts"', async () => {
@@ -132,11 +135,13 @@ describe('Directory', () => {
 		readdirMock.mockReturnValueOnce([
 			{ name: 'file1', isDirectory: jest.fn().mockReturnValue(false) },
 			{ name: 'file2', isDirectory: jest.fn().mockReturnValue(false) },
+			{ name: 'file3', isDirectory: jest.fn().mockReturnValue(false) },
 		]);
-		extnameMock.mockReturnValueOnce('.ts').mockReturnValueOnce('.txt');
+		extnameMock.mockReturnValueOnce('.ts').mockReturnValueOnce('.txt').mockReturnValueOnce('.ts');
 		resolveMock.mockReturnValueOnce('dir');
 		resolveMock.mockReturnValueOnce('dir/file1');
 		resolveMock.mockReturnValueOnce('dir/file2');
+		resolveMock.mockReturnValueOnce('dir/file3');
 		const directory = new Directory(dataDir, exclusions, ['ts']);
 
 		// act
@@ -144,6 +149,8 @@ describe('Directory', () => {
 
 		// assert
 		expect((await files.next()).value).toEqual('dir/file1');
+		expect((await files.next()).value).toEqual('dir/file3');
+		expect((await files.next()).done).toEqual(true);
 	});
 
 	it('should return any files when no extensions are passed', async () => {
@@ -164,6 +171,7 @@ describe('Directory', () => {
 		// assert
 		expect((await files.next()).value).toEqual('dir/file1');
 		expect((await files.next()).value).toEqual('dir/file2');
+		expect((await files.next()).done).toEqual(true);
 	});
 
 	it('should handle extensions prefixed with and without a dot', async () => {
@@ -184,5 +192,6 @@ describe('Directory', () => {
 		// assert
 		expect((await files.next()).value).toEqual('dir/file1');
 		expect((await files.next()).value).toEqual('dir/file2');
+		expect((await files.next()).done).toEqual(true);
 	});
 });

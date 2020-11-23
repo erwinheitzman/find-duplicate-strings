@@ -73,12 +73,7 @@ export class Scanner {
 		}
 
 		if (shouldScan) {
-			try {
-				await this.scanDir(path);
-			} catch (error) {
-				console.log(error);
-				this.store.clear();
-			}
+			await this.scanDir(path);
 
 			this.scannedDirs.push(path);
 		}
@@ -97,8 +92,6 @@ export class Scanner {
 		}
 
 		await new Output(duplicates as Finding[], this.silent).output();
-
-		this.store.clear();
 	}
 
 	private async scanDir(dirName: string) {
@@ -111,8 +104,6 @@ export class Scanner {
 	}
 
 	private getDuplicates() {
-		const duplicates = Store.getAll().filter((value: any) => value.count > this.threshold);
-		Store.save();
-		return duplicates;
+		return (Store.getAll() as Finding[]).filter((value) => value.count > this.threshold);
 	}
 }

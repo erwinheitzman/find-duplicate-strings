@@ -33,7 +33,9 @@ export class Directory {
 			if (dirent.isDirectory()) {
 				yield* this.readdirRecursively(fullPath);
 			} else {
+				console.log('!this.extensions.length: ', !this.extensions.length);
 				const extension = extname(dirent.name).substr(1);
+				console.log('this.extensions.includes(extension): ', this.extensions.includes(extension));
 
 				if (!this.extensions.length || this.extensions.includes(extension)) {
 					yield fullPath;

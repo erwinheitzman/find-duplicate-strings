@@ -4,7 +4,7 @@ import { Store } from './store';
 
 describe('Store', () => {
 	beforeEach(() => {
-		Store.clear();
+		Store['store'] = new Map();
 	});
 
 	it('should add a value', () => {
@@ -45,16 +45,6 @@ describe('Store', () => {
 	it('should return null when the item is not found', () => {
 		// assert
 		expect(Store.find('dummy2')).toEqual(null);
-	});
-
-	it('should clear all values', () => {
-		// act
-		Store.add('dummy1', { example: 'example1' });
-		Store.add('dummy2', { example: 'example2' });
-		Store.clear();
-
-		// assert
-		expect(Store.getAll()).toEqual([]);
 	});
 
 	it('should throw an error when the key already exists', () => {

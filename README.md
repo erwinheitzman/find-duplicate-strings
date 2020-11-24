@@ -41,7 +41,7 @@ Breakdown of flags:
 
 - `--exclusions node_modules,coverage` excludes any files and directories matching `node_modules` or `coverage`
 - `--extensions ts,js,json` includes any files that have one of the following extentions `.ts`, `.js` or `.json`
-- `--treshold 10` only outputs matches found greater or equal to 10
+- `--treshold 10` only outputs matches found greater than or equal to 10
 - `--silent` runs the program in silent mode
 
 Breakdown of arguments:

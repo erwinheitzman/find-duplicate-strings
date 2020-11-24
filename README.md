@@ -25,11 +25,28 @@ When no arguments are passed, the CLI will ask you for the required information.
 
 For more information about what arguments and flags are supported, use the -h or --help flag.
 
-Example:
+Example without passing any flags or arguments (you will be asked for input):
 
 ```bash
-find-duplicate-strings . --exclusions node_modules --extensions ts,js -t 10 -s
+find-duplicate-strings
 ```
+
+Example with all the supported flags and arguments:
+
+```bash
+find-duplicate-strings --exclusions node_modules,coverage --extensions ts,js,json --treshold 10 --silent ./example/path
+```
+
+Breakdown of flags:
+
+- `--exclusions node_modules,coverage` excludes any files and directories matching `node_modules` or `coverage`
+- `--extensions ts,js,json` includes any files that have one of the following extentions `.ts`, `.js` or `.json`
+- `--treshold 10` only outputs matches found greater or equal to 10
+- `--silent` runs the program in silent mode
+
+Breakdown of arguments:
+
+- `./example/path` this is the path to scan (can be absolute or relative)
 
 When done, if you aren't running in silent mode it will output a table containing it's first 10 findings:
 

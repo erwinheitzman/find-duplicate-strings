@@ -1,9 +1,9 @@
 /* eslint @typescript-eslint/no-explicit-any: 0 */
 
 import { Output } from './output';
-import { Finding } from './ifinding';
 import { writeFileSync } from 'fs';
 import { prompt } from 'inquirer';
+import type { Finding } from './finding';
 
 jest.mock('fs');
 jest.mock('inquirer');

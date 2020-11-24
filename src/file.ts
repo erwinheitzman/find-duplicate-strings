@@ -1,6 +1,7 @@
-import { readFileSync } from 'fs';
+import { createInterface, Interface } from 'readline';
+import { createReadStream } from 'fs';
 import { Store } from './store';
-import { Finding } from './ifinding';
+import { Finding } from './finding';
 
 enum Character {
 	SINGLE_QUOTE = 39,
@@ -9,45 +10,47 @@ enum Character {
 }
 
 export class File {
-	private readonly file: string;
+	constructor(private name: string) {}
 
-	constructor(private store: Store<Finding>, private name: string) {
-		this.file = readFileSync(name, 'utf8');
+	processContent(): Interface {
+		const rl = this.readlineInterface();
+
+		rl.on('line', (line) => this.processLine(line));
+
+		return rl;
 	}
 
-	public getStrings(): void {
-		this.getLines().forEach((line: string) => {
-			let singleQuoteToggle = false;
-			let doubleQuoteToggle = false;
-			let characterSet = '';
+	private processLine(line: string) {
+		let singleQuoteToggle = false;
+		let doubleQuoteToggle = false;
+		let characterSet = '';
 
-			for (let i = 0; i < line.length; i++) {
-				if (this.shouldStoreDoubleQuoteString(line, i, singleQuoteToggle)) {
-					doubleQuoteToggle = !doubleQuoteToggle;
+		for (let i = 0; i < line.length; i++) {
+			if (this.shouldStoreDoubleQuoteString(line, i, singleQuoteToggle)) {
+				doubleQuoteToggle = !doubleQuoteToggle;
 
-					if (doubleQuoteToggle === false && characterSet.length) {
-						this.storeMatch(characterSet, this.name);
-						characterSet = '';
-					}
-					continue;
+				if (doubleQuoteToggle === false && characterSet.length) {
+					this.storeMatch(characterSet, this.name);
+					characterSet = '';
 				}
-
-				if (this.shouldStoreSingleQuoteString(line, i, doubleQuoteToggle)) {
-					singleQuoteToggle = !singleQuoteToggle;
-
-					if (singleQuoteToggle === false && characterSet.length) {
-						this.storeMatch(characterSet, this.name);
-						characterSet = '';
-					}
-					continue;
-				}
-
-				if (doubleQuoteToggle === true || singleQuoteToggle === true) {
-					characterSet += line[i];
-					continue;
-				}
+				continue;
 			}
-		});
+
+			if (this.shouldStoreSingleQuoteString(line, i, doubleQuoteToggle)) {
+				singleQuoteToggle = !singleQuoteToggle;
+
+				if (singleQuoteToggle === false && characterSet.length) {
+					this.storeMatch(characterSet, this.name);
+					characterSet = '';
+				}
+				continue;
+			}
+
+			if (doubleQuoteToggle === true || singleQuoteToggle === true) {
+				characterSet += line[i];
+				continue;
+			}
+		}
 	}
 
 	private shouldStoreSingleQuoteString(line: string, index: number, toggle: boolean) {
@@ -67,10 +70,10 @@ export class File {
 	}
 
 	private storeMatch(key: string, file: string): void {
-		const value = this.store.find(key);
+		const value = Store.find(key) as Finding;
 
 		if (!value) {
-			this.store.add(key, { key, count: 1, files: [file] });
+			Store.add(key, { key, count: 1, files: [file] });
 			return;
 		}
 
@@ -80,10 +83,13 @@ export class File {
 
 		value.count++;
 
-		this.store.update(key, { key, count: value.count, files: value.files });
+		Store.update(key, { key, count: value.count, files: value.files });
 	}
 
-	private getLines(): Array<string> {
-		return this.file.split('\n');
+	private readlineInterface(): Interface {
+		return createInterface({
+			input: createReadStream(this.name, { encoding: 'utf8' }),
+			terminal: false,
+		});
 	}
 }

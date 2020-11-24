@@ -3,40 +3,29 @@
 import { File } from './file';
 import { resolve } from 'path';
 import { Store } from './store';
-import { Finding } from './ifinding';
-import { readFileSync } from 'fs';
+import { createReadStream } from 'fs';
+import { file1, file2, file3, file4 } from './file.mocks';
 
 jest.mock('./store');
-jest.mock('fs');
+jest.mock('fs', () => ({
+	createReadStream: jest.fn(),
+}));
 
-const dataDir = resolve(__dirname, '..', 'data');
-const store = new Store<Finding>();
 let findMock: jest.Mock<any, any>;
-let readFileSyncMock: jest.Mock<any, any>;
+let createReadStreamMock: jest.Mock<any, any>;
 
-const path = resolve(dataDir, 'one.js');
-const dummyFile1 =
-	`describe('', () => {\n` +
-	`    it("", () => {\n` +
-	`        const foo = "foo";\n` +
-	`        const bar = 'bar';\n` +
-	`        const baz = \`baz\`;\n` +
-	`    });\n` +
-	`});\n`;
+const path = resolve(__dirname, '..', 'data', 'one.js');
 
-const dummyFile2 =
-	`describe('', () => {\n` +
-	`    it("", () => {\n` +
-	`        let foo = "foo";\n` +
-	`        foo = "foo";\n` +
-	`        foo = "foo";\n` +
-	`    });\n` +
-	`});\n`;
+const resultObject = {
+	key: 'foo',
+	files: [path],
+	count: 1,
+};
 
 describe('File', () => {
 	beforeEach(() => {
-		readFileSyncMock = readFileSync as jest.Mock<any, any>;
-		findMock = store.find as jest.Mock<any, any>;
+		createReadStreamMock = createReadStream as jest.Mock<any, any>;
+		findMock = Store.find as jest.Mock<any, any>;
 	});
 
 	afterEach(() => {
@@ -45,106 +34,96 @@ describe('File', () => {
 		jest.clearAllMocks();
 	});
 
-	it('should add matches to store', () => {
+	it('should add matches to store', async (done) => {
 		// arrange
-		readFileSyncMock.mockReturnValue(dummyFile1);
+		createReadStreamMock.mockImplementationOnce(file1);
 		findMock.mockReturnValue(null);
-		const file = new File(store, path);
-		const findingObj = {
-			count: 1,
-			files: [path],
-			key: 'foo',
-		};
 
 		// act
-		file.getStrings();
+		const rl = new File(path).processContent();
 
 		// assert
-		expect(store.add).toBeCalledTimes(2);
-		expect(store.update).toBeCalledTimes(0);
-		expect(store.add).toHaveBeenNthCalledWith(1, 'foo', findingObj);
-		expect(store.add).toHaveBeenNthCalledWith(2, 'bar', { ...findingObj, key: 'bar' });
+		rl.on('close', () => {
+			expect(Store.add).toBeCalledTimes(2);
+			expect(Store.update).toBeCalledTimes(0);
+			expect(Store.add).toHaveBeenNthCalledWith(1, 'foo', resultObject);
+			expect(Store.add).toHaveBeenNthCalledWith(2, 'bar', { ...resultObject, key: 'bar' });
+			done();
+		});
 	});
 
-	it('should update matches in store', () => {
+	it('should update matches in store', async (done) => {
 		// arrange
-		readFileSyncMock.mockReturnValue(dummyFile1);
+		createReadStreamMock.mockImplementationOnce(file1);
 		findMock.mockReturnValueOnce({ count: 1, files: [] }).mockReturnValueOnce({ count: 1, files: [] });
-		const file = new File(store, path);
-		const findingObj = {
-			count: 2,
-			files: [path],
-			key: 'foo',
-		};
 
 		// act
-		file.getStrings();
+		const rl = new File(path).processContent();
 
 		// assert
-		expect(store.add).toBeCalledTimes(0);
-		expect(store.update).toBeCalledTimes(2);
-		expect(store.update).toHaveBeenNthCalledWith(1, 'foo', findingObj);
-		expect(store.update).toHaveBeenNthCalledWith(2, 'bar', { ...findingObj, key: 'bar' });
+		rl.on('close', () => {
+			expect(Store.add).toBeCalledTimes(0);
+			expect(Store.update).toBeCalledTimes(2);
+			expect(Store.update).toHaveBeenNthCalledWith(1, 'foo', { ...resultObject, count: 2 });
+			expect(Store.update).toHaveBeenNthCalledWith(2, 'bar', { ...resultObject, key: 'bar', count: 2 });
+			done();
+		});
 	});
 
-	it('should not store empty string values', () => {
+	it('should not store empty string values', async (done) => {
 		// arrange
-		readFileSyncMock.mockReturnValue(`describe('', () => {\n` + `    it("", () => {\n` + `    });\n` + `});\n`);
+		createReadStreamMock.mockImplementationOnce(file2);
 		findMock.mockReturnValueOnce({ count: 1, files: [] }).mockReturnValueOnce({ count: 1, files: [] });
-		const file = new File(store, path);
 
 		// act
-		file.getStrings();
+		const rl = new File(path).processContent();
 
 		// assert
-		expect(store.add).toBeCalledTimes(0);
-		expect(store.update).toBeCalledTimes(0);
+		rl.on('close', () => {
+			expect(Store.add).toBeCalledTimes(0);
+			expect(Store.update).toBeCalledTimes(0);
+			done();
+		});
 	});
 
-	it('should not store the same path path twice', () => {
+	it('should not store the same path path twice', async (done) => {
 		// arrange
-		readFileSyncMock.mockReturnValue(dummyFile2);
+		createReadStreamMock.mockImplementationOnce(file3);
 		findMock
 			.mockReturnValueOnce(null)
 			.mockReturnValueOnce({ count: 1, files: [path] })
 			.mockReturnValueOnce({ count: 2, files: [path] });
-		const file = new File(store, path);
-		const findingObj = {
-			count: 1,
-			files: [path],
-			key: 'foo',
-		};
 
 		// act
-		file.getStrings();
+		const rl = new File(path).processContent();
 
 		// assert
-		expect(store.add).toBeCalledTimes(1);
-		expect(store.update).toBeCalledTimes(2);
-		expect(store.add).toHaveBeenNthCalledWith(1, 'foo', findingObj);
-		expect(store.update).toHaveBeenNthCalledWith(1, 'foo', { ...findingObj, count: 2 });
-		expect(store.update).toHaveBeenNthCalledWith(2, 'foo', { ...findingObj, count: 3 });
+		rl.on('close', () => {
+			expect(Store.add).toBeCalledTimes(1);
+			expect(Store.update).toBeCalledTimes(2);
+			expect(Store.add).toHaveBeenNthCalledWith(1, 'foo', resultObject);
+			expect(Store.update).toHaveBeenNthCalledWith(1, 'foo', { ...resultObject, count: 2 });
+			expect(Store.update).toHaveBeenNthCalledWith(2, 'foo', { ...resultObject, count: 3 });
+			done();
+		});
 	});
 
-	it('should store all matches', () => {
+	it('should store all matches', async (done) => {
 		// arrange
-		readFileSyncMock.mockReturnValue(`const foo = "foo";\n\n` + dummyFile1);
+		createReadStreamMock.mockImplementationOnce(file4);
 		findMock.mockReturnValueOnce(null).mockReturnValueOnce({ count: 1, files: [] }).mockReturnValueOnce(null);
-		const file = new File(store, path);
-		const findingObj = {
-			count: 1,
-			files: [path],
-			key: 'foo',
-		};
 
 		// act
-		file.getStrings();
+		const rl = new File(path).processContent();
 
 		// assert
-		expect(store.add).toBeCalledTimes(2);
-		expect(store.update).toBeCalledTimes(1);
-		expect(store.add).toHaveBeenNthCalledWith(1, 'foo', findingObj);
-		expect(store.update).toHaveBeenNthCalledWith(1, 'foo', { ...findingObj, count: 2 });
-		expect(store.add).toHaveBeenNthCalledWith(2, 'bar', { ...findingObj, count: 1, key: 'bar' });
+		rl.on('close', () => {
+			expect(Store.add).toBeCalledTimes(2);
+			expect(Store.update).toBeCalledTimes(1);
+			expect(Store.add).toHaveBeenNthCalledWith(1, 'foo', resultObject);
+			expect(Store.update).toHaveBeenNthCalledWith(1, 'foo', { ...resultObject, count: 2 });
+			expect(Store.add).toHaveBeenNthCalledWith(2, 'bar', { ...resultObject, key: 'bar' });
+			done();
+		});
 	});
 });

@@ -1,4 +1,4 @@
-import { readdirSync, existsSync, statSync } from 'fs';
+import { promises, existsSync, statSync } from 'fs';
 import { resolve, extname } from 'path';
 
 export class Directory {
@@ -16,32 +16,29 @@ export class Directory {
 		}
 	}
 
-	public getFiles(): string[] {
+	public getFiles(): AsyncGenerator<string, void, unknown> {
 		return this.readdirRecursively(this.path);
 	}
 
-	private readdirRecursively = (path: string): string[] => {
-		const files: string[] = [];
+	private async *readdirRecursively(path: string): AsyncGenerator<string, void, unknown> {
+		const dirents = await promises.readdir(path, { withFileTypes: true });
 
-		readdirSync(path).forEach((file) => {
-			if (this.exclusions.includes(file)) {
-				return;
+		for (const dirent of dirents) {
+			if (this.exclusions.includes(dirent.name)) {
+				continue;
 			}
 
-			const fullPath = resolve(path, file);
+			const fullPath = resolve(path, dirent.name);
 
-			if (statSync(fullPath).isDirectory()) {
-				files.push(...this.readdirRecursively(fullPath));
-				return;
+			if (dirent.isDirectory()) {
+				yield* this.readdirRecursively(fullPath);
+			} else {
+				const extension = extname(dirent.name).substr(1);
+
+				if (!this.extensions.length || this.extensions.includes(extension)) {
+					yield fullPath;
+				}
 			}
-
-			const extension = extname(fullPath).substr(1);
-
-			if (!this.extensions.length || this.extensions.includes(extension)) {
-				files.push(fullPath);
-			}
-		});
-
-		return files;
-	};
+		}
+	}
 }

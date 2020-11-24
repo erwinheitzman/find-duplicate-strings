@@ -22,15 +22,15 @@ jest.mock('fs');
 jest.mock('./output', () => ({ Output: jest.fn().mockImplementation(() => ({ output: jest.fn() })) }));
 
 let getAll: jest.Mock<any, any>;
-let getStrings: jest.Mock<any, any>;
+let processContent: jest.Mock<any, any>;
 let getFiles: jest.Mock<any, any>;
 let confirmDirAnswer: jest.Mock<any, any>;
 let confirmScannedDirAnswer: jest.Mock<any, any>;
 
 describe('Scanner', () => {
 	beforeEach(() => {
-		getAll = Store.prototype.getAll = jest.fn().mockReturnValue([{ count: 1 }]);
-		getStrings = File.prototype.getStrings = jest.fn();
+		getAll = Store.getAll = jest.fn().mockReturnValue([{ count: 1 }]);
+		processContent = File.prototype.processContent = jest.fn();
 		getFiles = Directory.prototype.getFiles = jest.fn().mockReturnValue([]);
 		confirmDirAnswer = ConfirmDirectoryQuestion.prototype.getAnswer = jest.fn().mockResolvedValue(false);
 		confirmScannedDirAnswer = ConfirmScannedDirQuestion.prototype.getAnswer = jest.fn().mockResolvedValue(false);
@@ -207,7 +207,7 @@ describe('Scanner', () => {
 		await scanner.scan();
 
 		// assert
-		expect(getStrings).toHaveBeenCalledTimes(4);
+		expect(processContent).toHaveBeenCalledTimes(4);
 	});
 
 	it('should log a message to the console when no results are found', async () => {

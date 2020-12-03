@@ -16,10 +16,10 @@ export class Output {
 		this.outputToFile(this.input, fileName);
 	}
 
-	private outputToConsole(output: Finding[]) {
+	private outputToConsole(output: Finding[]): void {
 		const outputCopy = JSON.parse(JSON.stringify(output.slice(0, 10))) as Finding[];
 
-		const consoleOutput = outputCopy.map(this.processFinding);
+		const consoleOutput: [string, number?][] = outputCopy.map(this.processFinding);
 
 		if (output.length > 10) {
 			consoleOutput.push(['...']);
@@ -28,13 +28,13 @@ export class Output {
 		console.table(consoleOutput);
 	}
 
-	private outputToFile(output: Finding[], filename: string) {
+	private outputToFile(output: Finding[], filename: string): void {
 		const filePath = resolve(process.cwd(), filename);
 		const data = JSON.stringify(output, null, 2);
 		writeFileSync(`${filePath}.json`, data, { encoding: 'utf8' });
 	}
 
-	private processFinding(finding: Finding) {
+	private processFinding(finding: Finding): [string, number] {
 		if (finding.key.length > 32) {
 			finding.key = finding.key.substring(0, 32) + '...';
 		}

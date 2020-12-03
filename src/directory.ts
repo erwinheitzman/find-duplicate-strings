@@ -4,7 +4,7 @@ import { resolve, extname } from 'path';
 export class Directory {
 	private readonly path: string;
 
-	constructor(directory: string, private exclusions: string[], private extensions: string[]) {
+	constructor(directory: string, private readonly exclusions: string[], private readonly extensions: string[]) {
 		this.path = resolve(process.cwd(), directory);
 
 		if (!existsSync(this.path)) {

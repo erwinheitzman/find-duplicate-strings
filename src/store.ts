@@ -1,5 +1,5 @@
 export class Store {
-	private static store: Map<string, unknown> = new Map();
+	private static readonly store: Map<string, unknown> = new Map();
 
 	static add(key: string, value: unknown): void {
 		if (this.store.has(key)) {

@@ -1,7 +1,8 @@
-import { createInterface, Interface } from 'readline';
+import type { Interface } from 'readline';
+import { createInterface } from 'readline';
 import { createReadStream } from 'fs';
 import { Store } from './store';
-import { Finding } from './finding';
+import type { Finding } from './finding';
 
 enum Character {
 	SINGLE_QUOTE = 39,
@@ -20,7 +21,7 @@ export class File {
 		return rl;
 	}
 
-	private processLine(line: string) {
+	private processLine(line: string): void {
 		let singleQuoteToggle = false;
 		let doubleQuoteToggle = false;
 		let characterSet = '';
@@ -29,7 +30,7 @@ export class File {
 			if (this.shouldStoreDoubleQuoteString(line, i, singleQuoteToggle)) {
 				doubleQuoteToggle = !doubleQuoteToggle;
 
-				if (doubleQuoteToggle === false && characterSet.length) {
+				if (!doubleQuoteToggle && characterSet.length) {
 					this.storeMatch(characterSet, this.name);
 					characterSet = '';
 				}
@@ -39,21 +40,21 @@ export class File {
 			if (this.shouldStoreSingleQuoteString(line, i, doubleQuoteToggle)) {
 				singleQuoteToggle = !singleQuoteToggle;
 
-				if (singleQuoteToggle === false && characterSet.length) {
+				if (!singleQuoteToggle && characterSet.length) {
 					this.storeMatch(characterSet, this.name);
 					characterSet = '';
 				}
 				continue;
 			}
 
-			if (doubleQuoteToggle === true || singleQuoteToggle === true) {
+			if (doubleQuoteToggle || singleQuoteToggle) {
 				characterSet += line[i];
 				continue;
 			}
 		}
 	}
 
-	private shouldStoreSingleQuoteString(line: string, index: number, toggle: boolean) {
+	private shouldStoreSingleQuoteString(line: string, index: number, toggle: boolean): boolean {
 		return (
 			line.charCodeAt(index) === Character.SINGLE_QUOTE &&
 			line.charCodeAt(index - 1) !== Character.BACKSLASH &&
@@ -61,7 +62,7 @@ export class File {
 		);
 	}
 
-	private shouldStoreDoubleQuoteString(line: string, index: number, toggle: boolean) {
+	private shouldStoreDoubleQuoteString(line: string, index: number, toggle: boolean): boolean {
 		return (
 			line.charCodeAt(index) === Character.DOUBLE_QUOTE &&
 			line.charCodeAt(index - 1) !== Character.BACKSLASH &&

@@ -1,10 +1,8 @@
-/* eslint @typescript-eslint/no-explicit-any: 0 */
-
-import { Question } from './question';
+import { QuestionMock } from './question.mocks';
 
 jest.mock('inquirer');
 
-describe('File', () => {
+describe('Question', () => {
 	afterEach(() => {
 		jest.resetAllMocks();
 		jest.restoreAllMocks();
@@ -12,28 +10,21 @@ describe('File', () => {
 	});
 
 	it('should have default type "input"', () => {
-		// arrange & act
-		// @ts-expect-error
-		const question = new Question('foo', 'bar');
+		const question = new QuestionMock('foo', 'bar');
 
 		expect(question['type']).toEqual('input');
 	});
 
 	it('should take the name and message parameters', () => {
-		// arrange & act
-		// @ts-expect-error
-		const question = new Question('foo', 'bar');
+		const question = new QuestionMock('foo', 'bar');
 
 		expect(question['name']).toEqual('foo');
 		expect(question['message']).toEqual('bar');
 	});
 
 	it('should be possible to overwrite the type', () => {
-		// arrange & act
-		// @ts-expect-error
-		const question = new Question('foo', 'bar', 'baz');
+		const question = new QuestionMock('foo', 'bar', 'password');
 
-		// assert
-		expect(question['type']).toEqual('baz');
+		expect(question['type']).toEqual('password');
 	});
 });

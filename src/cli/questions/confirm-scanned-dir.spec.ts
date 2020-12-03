@@ -1,18 +1,11 @@
-/* eslint @typescript-eslint/no-explicit-any: 0 */
-
 import { ConfirmScannedDirQuestion } from './confirm-scanned-dir';
 import { prompt } from 'inquirer';
 
 jest.mock('inquirer');
 
-let promptMock: jest.Mock<any, any>;
+const promptMock = (prompt as unknown) as jest.Mock<any, any>;
 
-describe('File', () => {
-	beforeEach(() => {
-		// @ts-ignore
-		promptMock = prompt as jest.Mock<any, any>;
-	});
-
+describe('ConfirmScannedDirQuestion', () => {
 	afterEach(() => {
 		jest.resetAllMocks();
 		jest.restoreAllMocks();
@@ -20,14 +13,11 @@ describe('File', () => {
 	});
 
 	it('should return the answer when it is found', async () => {
-		// arrange
 		promptMock.mockResolvedValue({ 'confirm-recursive-directory': 'dummy' });
 		const question = new ConfirmScannedDirQuestion();
 
-		// act
 		const answer = await question.getAnswer();
 
-		// assert
 		expect(answer).toEqual('dummy');
 	});
 });

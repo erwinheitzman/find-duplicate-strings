@@ -1,5 +1,3 @@
-/* eslint @typescript-eslint/no-explicit-any: 0 */
-
 import { Scanner } from './scanner';
 import {
 	DirectoryQuestion,
@@ -19,28 +17,27 @@ jest.mock('./directory');
 jest.mock('./store');
 jest.mock('./file');
 jest.mock('fs');
-jest.mock('./output', () => ({ Output: jest.fn().mockImplementation(() => ({ output: jest.fn() })) }));
+jest.mock('path');
+jest.mock('./output');
 
-let getAll: jest.Mock<any, any>;
-let processContent: jest.Mock<any, any>;
-let getFiles: jest.Mock<any, any>;
-let confirmDirAnswer: jest.Mock<any, any>;
-let confirmScannedDirAnswer: jest.Mock<any, any>;
+const getAllMock = Store.getAll as jest.Mock<any, any>;
+const processContentMock = File.prototype.processContent as jest.Mock<any, any>;
+const getFilesMock = Directory.prototype.getFiles as jest.Mock<any, any>;
+const ConfirmDirectoryQuestionMock = ConfirmDirectoryQuestion.prototype.getAnswer as jest.Mock<any, any>;
+const ConfirmScannedDirQuestionMock = ConfirmScannedDirQuestion.prototype.getAnswer as jest.Mock<any, any>;
+
+console.log = jest.fn();
 
 describe('Scanner', () => {
 	beforeEach(() => {
-		getAll = Store.getAll = jest.fn().mockReturnValue([{ count: 1 }]);
-		processContent = File.prototype.processContent = jest.fn();
-		getFiles = Directory.prototype.getFiles = jest.fn().mockReturnValue([]);
-		confirmDirAnswer = ConfirmDirectoryQuestion.prototype.getAnswer = jest.fn().mockResolvedValue(false);
-		confirmScannedDirAnswer = ConfirmScannedDirQuestion.prototype.getAnswer = jest.fn().mockResolvedValue(false);
-
-		ExclusionsQuestion.prototype.getAnswer = jest.fn().mockResolvedValue('dummy-dir');
-		ExtensionsQuestion.prototype.getAnswer = jest.fn().mockResolvedValue('.ts,.js');
-		DirectoryQuestion.prototype.getAnswer = jest.fn().mockResolvedValue(['dummy']);
-		ThresholdQuestion.prototype.getAnswer = jest.fn().mockResolvedValue('1');
-		Output.prototype.output = jest.fn();
-		console.log = jest.fn();
+		getAllMock.mockReturnValue([{ count: 1 }]);
+		getFilesMock.mockReturnValue([]);
+		ConfirmDirectoryQuestionMock.mockResolvedValue(false);
+		ConfirmScannedDirQuestionMock.mockResolvedValue(false);
+		(ExclusionsQuestion.prototype.getAnswer as jest.Mock<any, any>).mockResolvedValue('dummy-dir');
+		(ExtensionsQuestion.prototype.getAnswer as jest.Mock<any, any>).mockResolvedValue('.ts,.js');
+		(DirectoryQuestion.prototype.getAnswer as jest.Mock<any, any>).mockResolvedValue(['dummy']);
+		(ThresholdQuestion.prototype.getAnswer as jest.Mock<any, any>).mockResolvedValue('1');
 	});
 
 	afterEach(() => {
@@ -50,312 +47,235 @@ describe('Scanner', () => {
 	});
 
 	it('should enable silent mode', async () => {
-		// act
 		const scanner = new Scanner({ silent: true });
 
-		// assert
 		expect(scanner['silent']).toEqual(true);
 	});
 
 	it('should disable silent mode', async () => {
-		// act
 		const scanner = new Scanner({ silent: false });
 
-		// assert
 		expect(scanner['silent']).toEqual(false);
 	});
 
 	it('should set exlusions', async () => {
-		// act
 		const scanner = new Scanner({ exclusions: 'one,two,three' });
 
-		// assert
 		expect(scanner['exclusions']).toEqual(['one', 'two', 'three']);
 	});
 
 	it('should ask a question when exlusions are not provided', async () => {
-		// arrange
 		const scanner = new Scanner({});
 
-		// act
 		await scanner.scan();
 
-		// assert
 		expect(ExclusionsQuestion.prototype.getAnswer).toBeCalledTimes(1);
 	});
 
 	it('should set extensions', async () => {
-		// act
 		const scanner = new Scanner({ extensions: 'one,two,three' });
 
-		// assert
 		expect(scanner['extensions']).toEqual(['one', 'two', 'three']);
 	});
 
 	it('should ask a question when extensions are not provided', async () => {
-		// arrange
 		const scanner = new Scanner({});
 
-		// act
 		await scanner.scan();
 
-		// assert
 		expect(ExtensionsQuestion.prototype.getAnswer).toBeCalledTimes(1);
 	});
 
 	it('should set a threshold when passing threshold as a number', async () => {
-		// arrange
-		getAll.mockReturnValue([{ count: 5 }]);
+		getAllMock.mockReturnValue([{ count: 5 }]);
 		const scanner = new Scanner({ threshold: 3 });
 
-		// act
 		await scanner.scan();
 
-		// assert
 		expect(scanner['threshold']).toEqual(3);
 		expect((Output as jest.Mock<any, any>).mock.calls[0][0]).toEqual([{ count: 5 }]);
 	});
 
 	it('should set a threshold when passing threshold as a string', async () => {
-		// arrange
-		getAll.mockReturnValue([{ count: 5 }]);
+		getAllMock.mockReturnValue([{ count: 5 }]);
 		const scanner = new Scanner({ threshold: '3' });
 
-		// act
 		await scanner.scan();
 
-		// assert
 		expect(scanner['threshold']).toEqual(3);
 		expect((Output as jest.Mock<any, any>).mock.calls[0][0]).toEqual([{ count: 5 }]);
 	});
 
 	it('should set a threshold when passing threshold as a float', async () => {
-		// arrange
-		getAll.mockReturnValue([{ count: 5 }]);
+		getAllMock.mockReturnValue([{ count: 5 }]);
 		const scanner = new Scanner({ threshold: '3.66' });
 
-		// act
 		await scanner.scan();
 
-		// assert
 		expect(scanner['threshold']).toEqual(3);
 		expect((Output as jest.Mock<any, any>).mock.calls[0][0]).toEqual([{ count: 5 }]);
 	});
 
 	it('should ask a question when the threshold is not provided', async () => {
-		// arrange
 		const scanner = new Scanner({});
 
-		// act
 		await scanner.scan();
 
-		// assert
 		expect(ThresholdQuestion.prototype.getAnswer).toBeCalledTimes(1);
 	});
 
 	it('should set path', async () => {
-		// arrange
 		const scanner = new Scanner({ path: './some/path' });
 
-		// act
 		await scanner.scan();
 
-		// assert
 		expect(scanner['path']).toEqual('./some/path');
 	});
 
 	it('should not ask a question when the path is provided', async () => {
-		// arrange
 		const scanner = new Scanner({ path: './some/path' });
 
-		// act
 		await scanner.scan();
 
-		// assert
 		expect(DirectoryQuestion.prototype.getAnswer).toBeCalledTimes(0);
 	});
 
 	it('should set path to an empty string when missing', async () => {
-		// arrange
 		const scanner = new Scanner({});
 
-		// act
 		await scanner.scan();
 
-		// assert
 		expect(scanner['path']).toEqual('');
 		expect(DirectoryQuestion.prototype.getAnswer).toBeCalledTimes(1);
 	});
 
 	it('should ask a question when the path is not provided', async () => {
-		// arrange
 		const scanner = new Scanner({});
 
-		// act
 		await scanner.scan();
 
-		// assert
 		expect(DirectoryQuestion.prototype.getAnswer).toBeCalledTimes(1);
 	});
 
 	it('should create a file instance', async () => {
-		// arrange
-		getFiles.mockReturnValue([{}, {}, {}, {}]);
+		getFilesMock.mockReturnValue([{}, {}, {}, {}]);
 		const scanner = new Scanner({});
 
-		// act
 		await scanner.scan();
 
-		// assert
-		expect(processContent).toHaveBeenCalledTimes(4);
+		expect(processContentMock).toHaveBeenCalledTimes(4);
 	});
 
 	it('should log a message to the console when no results are found', async () => {
-		// arrange
-		getAll.mockReturnValue([]);
+		getAllMock.mockReturnValue([]);
 		const scanner = new Scanner({});
 
-		// act
 		await scanner.scan();
 
-		// assert
 		expect(console.log).toHaveBeenCalledWith('No duplicates where found.');
 	});
 
 	it('should not trigger an output when no results are found', async () => {
-		// arrange
-		getAll.mockReturnValue([]);
+		getAllMock.mockReturnValue([]);
 		const scanner = new Scanner({});
 
-		// act
 		await scanner.scan();
 
-		// assert
 		expect(Output.prototype.output).not.toHaveBeenCalled();
 	});
 
 	it('should log a message to the console when results are found but the counts are lower then the threshold', async () => {
-		// arrange
-		getAll.mockReturnValue([{ count: 0 }]);
+		getAllMock.mockReturnValue([{ count: 0 }]);
 		const scanner = new Scanner({});
 
-		// act
 		await scanner.scan();
 
-		// assert
 		expect(console.log).toHaveBeenCalledWith('No duplicates where found.');
 	});
 
 	it('should not trigger an output when results are found but the counts are lower then the threshold', async () => {
-		// arrange
-		getAll.mockReturnValue([{ count: 0 }]);
+		getAllMock.mockReturnValue([{ count: 0 }]);
 		const scanner = new Scanner({});
 
-		// act
 		await scanner.scan();
 
-		// assert
 		expect(Output.prototype.output).not.toHaveBeenCalled();
 	});
 
 	it('should log a message to the console when results are found but the counts are equal to the threshold', async () => {
-		// arrange
-		getAll.mockReturnValue([{ count: 1 }]);
+		getAllMock.mockReturnValue([{ count: 1 }]);
 		const scanner = new Scanner({});
 
-		// act
 		await scanner.scan();
 
-		// assert
 		expect(console.log).toHaveBeenCalledWith('No duplicates where found.');
 	});
 
 	it('should not trigger an output when results are found but the counts are equal to the threshold', async () => {
-		// arrange
-		getAll.mockReturnValue([{ count: 1 }]);
+		getAllMock.mockReturnValue([{ count: 1 }]);
 		const scanner = new Scanner({});
 
-		// act
 		await scanner.scan();
 
-		// assert
 		expect(Output.prototype.output).not.toHaveBeenCalled();
 	});
 
 	it('should not log a message to the console when duplicates are found and the counts are higher then the threshold', async () => {
-		// arrange
-		getAll.mockReturnValue([{ count: 2 }]);
+		getAllMock.mockReturnValue([{ count: 2 }]);
 		const scanner = new Scanner({});
 
-		// act
 		await scanner.scan();
 
-		// assert
 		expect(console.log).not.toHaveBeenCalledTimes(1);
 	});
 
 	it('should trigger an output when duplicates are found and the counts are higher then the threshold', async () => {
-		// arrange
-		getAll.mockReturnValue([{ count: 2 }]);
+		getAllMock.mockReturnValue([{ count: 2 }]);
 		const scanner = new Scanner({});
 
-		// act
 		await scanner.scan();
 
-		// assert
 		expect(Output.prototype.output).toHaveBeenCalledTimes(1);
 	});
 
 	it('should ask if you want to scan the same directory twice', async () => {
-		// arrange
-		confirmScannedDirAnswer.mockResolvedValue(false);
-		getFiles.mockReturnValue([]);
+		ConfirmScannedDirQuestionMock.mockResolvedValue(false);
+		getFilesMock.mockReturnValue([]);
 		const scanner = new Scanner({});
 
-		// act
 		await scanner.scan();
 		await scanner.scan();
 
-		// assert
-		expect(confirmScannedDirAnswer).toHaveBeenCalledTimes(1);
-		expect(getFiles).toHaveBeenCalledTimes(1);
+		expect(ConfirmScannedDirQuestionMock).toHaveBeenCalledTimes(1);
+		expect(getFilesMock).toHaveBeenCalledTimes(1);
 	});
 
 	it('should re-scan directory when confirmed', async () => {
-		// arrange
-		confirmScannedDirAnswer.mockResolvedValueOnce(true).mockResolvedValueOnce(false);
-		getFiles.mockReturnValue([]);
+		ConfirmScannedDirQuestionMock.mockResolvedValueOnce(true).mockResolvedValueOnce(false);
+		getFilesMock.mockReturnValue([]);
 		const scanner = new Scanner({});
 
-		// act
 		await scanner.scan();
 		await scanner.scan();
 
-		// assert
-		expect(getFiles).toHaveBeenCalledTimes(2);
+		expect(getFilesMock).toHaveBeenCalledTimes(2);
 	});
 
 	it('should ask if you want to scan another directory', async () => {
-		// arrange
-		confirmDirAnswer.mockResolvedValueOnce(false);
+		ConfirmDirectoryQuestionMock.mockResolvedValueOnce(false);
 		const scanner = new Scanner({});
 
-		// act
 		await scanner.scan();
 
-		// assert
-		expect(confirmDirAnswer).toHaveBeenCalledTimes(1);
+		expect(ConfirmDirectoryQuestionMock).toHaveBeenCalledTimes(1);
 	});
 
 	it('should re-ask if you want to scan another directory', async () => {
-		// arrange
-		confirmDirAnswer.mockResolvedValueOnce(true).mockResolvedValueOnce(false);
+		ConfirmDirectoryQuestionMock.mockResolvedValueOnce(true).mockResolvedValueOnce(false);
 		const scanner = new Scanner({});
 
-		// act
 		await scanner.scan();
 
-		// assert
-		expect(confirmDirAnswer).toHaveBeenCalledTimes(2);
+		expect(ConfirmDirectoryQuestionMock).toHaveBeenCalledTimes(2);
 	});
 });

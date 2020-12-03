@@ -1,9 +1,6 @@
 export class Extensions {
 	private static removeDotPrefix(str: string): string {
-		if (str.startsWith('.')) {
-			return str.substr(1, str.length);
-		}
-		return str;
+		return str.startsWith('.') ? str.substr(1, str.length) : str;
 	}
 
 	public static process(extensions: string): string[] {

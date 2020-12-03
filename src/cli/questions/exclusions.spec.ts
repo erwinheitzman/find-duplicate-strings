@@ -1,18 +1,11 @@
-/* eslint @typescript-eslint/no-explicit-any: 0 */
-
 import { ExclusionsQuestion } from './exclusions';
 import { prompt } from 'inquirer';
 
 jest.mock('inquirer');
 
-let promptMock: jest.Mock<any, any>;
+const promptMock = (prompt as unknown) as jest.Mock<any, any>;
 
-describe('Exclusions', () => {
-	beforeEach(() => {
-		// @ts-ignore
-		promptMock = prompt as jest.Mock<any, any>;
-	});
-
+describe('ExclusionsQuestion', () => {
 	afterEach(() => {
 		jest.resetAllMocks();
 		jest.restoreAllMocks();
@@ -20,14 +13,11 @@ describe('Exclusions', () => {
 	});
 
 	it('should return the answer when it is found', async () => {
-		// arrange
 		promptMock.mockResolvedValue({ exclusions: 'dummy' });
 		const question = new ExclusionsQuestion();
 
-		// act
 		const answer = await question.getAnswer();
 
-		// assert
 		expect(answer).toEqual('dummy');
 	});
 });

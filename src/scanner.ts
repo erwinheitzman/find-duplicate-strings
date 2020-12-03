@@ -24,7 +24,6 @@ interface Options {
 
 export class Scanner {
 	private readonly scannedDirs: string[] = [];
-	private readonly store = Store;
 	private exclusions!: string[];
 	private extensions!: string[];
 	private threshold!: number | string;
@@ -94,7 +93,7 @@ export class Scanner {
 		await new Output(duplicates as Finding[], this.silent).output();
 	}
 
-	private async scanDir(dirName: string) {
+	private async scanDir(dirName: string): Promise<void> {
 		const directory = new Directory(dirName, this.exclusions, this.extensions);
 		const files = directory.getFiles();
 
@@ -103,7 +102,7 @@ export class Scanner {
 		}
 	}
 
-	private getDuplicates() {
+	private getDuplicates(): Finding[] {
 		return (Store.getAll() as Finding[]).filter((value) => value.count > this.threshold);
 	}
 }

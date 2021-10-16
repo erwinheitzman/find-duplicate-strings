@@ -13,14 +13,10 @@ const findings: Finding[] = [
 	},
 ];
 
-const manyFindings: Finding[] = [...findings];
-
-for (let i = 3; i <= 15; i++) {
-	manyFindings.push({
-		count: i,
-		files: ['dummy/path/' + i],
-		key: 'foo',
-	});
-}
+const manyFindings: Finding[] = Array.from({ length: 15 }).map((_, i) => ({
+	count: i + 1,
+	files: ['dummy/path/' + (i + 1)],
+	key: 'foo',
+}));
 
 export { findings, manyFindings };

@@ -6,7 +6,7 @@ export class ThresholdQuestion extends Question {
 			'threshold',
 			'Please provide a threshold (only results that apear more often then the threshold will be output)',
 			'input',
-			'1',
+			'1'
 		);
 	}
 

@@ -11,17 +11,11 @@ jest.mock('path', () => ({
 	resolve: () => path,
 }));
 
-const findMock = Store.find as jest.Mock<any, any>;
-const createReadStreamMock = createReadStream as jest.Mock<any, any>;
+const findMock = Store.find as jest.Mock;
+const createReadStreamMock = createReadStream as jest.Mock;
 
 describe('File', () => {
-	afterEach(() => {
-		jest.resetAllMocks();
-		jest.restoreAllMocks();
-		jest.clearAllMocks();
-	});
-
-	it('should add matches to store', async (done) => {
+	it('should add matches to store', (done) => {
 		createReadStreamMock.mockImplementationOnce(file1);
 		findMock.mockReturnValue(null);
 
@@ -36,7 +30,7 @@ describe('File', () => {
 		});
 	});
 
-	it('should update matches in store', async (done) => {
+	it('should update matches in store', (done) => {
 		createReadStreamMock.mockImplementationOnce(file1);
 		findMock.mockReturnValueOnce({ count: 1, files: [] }).mockReturnValueOnce({ count: 1, files: [] });
 
@@ -51,7 +45,7 @@ describe('File', () => {
 		});
 	});
 
-	it('should not store empty string values', async (done) => {
+	it('should not store empty string values', (done) => {
 		createReadStreamMock.mockImplementationOnce(file2);
 		findMock.mockReturnValueOnce({ count: 1, files: [] }).mockReturnValueOnce({ count: 1, files: [] });
 
@@ -64,7 +58,7 @@ describe('File', () => {
 		});
 	});
 
-	it('should not store the same path path twice', async (done) => {
+	it('should not store the same path path twice', (done) => {
 		createReadStreamMock.mockImplementationOnce(file3);
 		findMock
 			.mockReturnValueOnce(null)
@@ -83,7 +77,7 @@ describe('File', () => {
 		});
 	});
 
-	it('should store all matches', async (done) => {
+	it('should store all matches', (done) => {
 		createReadStreamMock.mockImplementationOnce(file4);
 		findMock.mockReturnValueOnce(null).mockReturnValueOnce({ count: 1, files: [] }).mockReturnValueOnce(null);
 

@@ -4,25 +4,20 @@ import { prompt } from 'inquirer';
 import { findings, manyFindings } from './output.mocks';
 
 jest.mock('fs');
+jest.mock('path');
 jest.mock('inquirer');
 
 console.table = jest.fn();
 
 describe('Output', () => {
 	beforeEach(() => {
-		((prompt as unknown) as jest.Mock<any, any>)
+		(prompt as unknown as jest.Mock)
 			.mockResolvedValueOnce({
 				output: 'dummy1',
 			})
 			.mockResolvedValueOnce({
 				output: 'dummy2',
 			});
-	});
-
-	afterEach(() => {
-		jest.resetAllMocks();
-		jest.restoreAllMocks();
-		jest.clearAllMocks();
 	});
 
 	it('should output to the console when the "silent" flag is not set', async () => {
@@ -75,7 +70,7 @@ describe('Output', () => {
 
 		await output.output();
 
-		expect((writeFileSync as jest.Mock<any, any>).mock.calls[0][1]).toEqual(expectedOutput);
+		expect((writeFileSync as jest.Mock).mock.calls[0][1]).toEqual(expectedOutput);
 	});
 
 	it('should not output to the console when the "silent" flag is set', async () => {

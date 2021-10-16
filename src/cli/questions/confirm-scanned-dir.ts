@@ -5,7 +5,7 @@ export class ConfirmScannedDirQuestion extends Question {
 		super(
 			'confirm-recursive-directory',
 			'This directory has already been scanned. Are you sure you want to scan this directory?',
-			'confirm',
+			'confirm'
 		);
 	}
 

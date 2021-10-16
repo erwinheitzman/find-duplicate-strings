@@ -4,7 +4,7 @@ export class ExclusionsQuestion extends Question {
 	public constructor() {
 		super(
 			'exclusions',
-			'Please provide any directories or files that you would like to exclude (comma separated list)',
+			'Please provide any directories or files that you would like to exclude (comma separated list)'
 		);
 	}
 

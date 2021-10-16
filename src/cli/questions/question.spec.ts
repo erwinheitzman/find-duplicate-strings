@@ -3,12 +3,6 @@ import { QuestionMock } from './question.mocks';
 jest.mock('inquirer');
 
 describe('Question', () => {
-	afterEach(() => {
-		jest.resetAllMocks();
-		jest.restoreAllMocks();
-		jest.clearAllMocks();
-	});
-
 	it('should have default type "input"', () => {
 		const question = new QuestionMock('foo', 'bar');
 

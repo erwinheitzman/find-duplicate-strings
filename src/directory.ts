@@ -21,9 +21,9 @@ export class Directory {
 	}
 
 	private async *readdirRecursively(path: string): AsyncGenerator<string, void, unknown> {
-		const dirents = await promises.readdir(path, { withFileTypes: true });
+		const stream = await promises.readdir(path, { withFileTypes: true });
 
-		for (const dirent of dirents) {
+		for (const dirent of stream) {
 			if (this.exclusions.includes(dirent.name)) {
 				continue;
 			}

@@ -19,12 +19,13 @@ jest.mock('./file');
 jest.mock('fs');
 jest.mock('path');
 jest.mock('./output');
+jest.mock('inquirer');
 
-const getAllMock = Store.getAll as jest.Mock<any, any>;
-const processContentMock = File.prototype.processContent as jest.Mock<any, any>;
-const getFilesMock = Directory.prototype.getFiles as jest.Mock<any, any>;
-const ConfirmDirectoryQuestionMock = ConfirmDirectoryQuestion.prototype.getAnswer as jest.Mock<any, any>;
-const ConfirmScannedDirQuestionMock = ConfirmScannedDirQuestion.prototype.getAnswer as jest.Mock<any, any>;
+const getAllMock = Store.getAll as jest.Mock;
+const processContentMock = File.prototype.processContent as jest.Mock;
+const getFilesMock = Directory.prototype.getFiles as jest.Mock;
+const ConfirmDirectoryQuestionMock = ConfirmDirectoryQuestion.prototype.getAnswer as jest.Mock;
+const ConfirmScannedDirQuestionMock = ConfirmScannedDirQuestion.prototype.getAnswer as jest.Mock;
 
 console.log = jest.fn();
 
@@ -34,16 +35,10 @@ describe('Scanner', () => {
 		getFilesMock.mockReturnValue([]);
 		ConfirmDirectoryQuestionMock.mockResolvedValue(false);
 		ConfirmScannedDirQuestionMock.mockResolvedValue(false);
-		(ExclusionsQuestion.prototype.getAnswer as jest.Mock<any, any>).mockResolvedValue('dummy-dir');
-		(ExtensionsQuestion.prototype.getAnswer as jest.Mock<any, any>).mockResolvedValue('.ts,.js');
-		(DirectoryQuestion.prototype.getAnswer as jest.Mock<any, any>).mockResolvedValue(['dummy']);
-		(ThresholdQuestion.prototype.getAnswer as jest.Mock<any, any>).mockResolvedValue('1');
-	});
-
-	afterEach(() => {
-		jest.resetAllMocks();
-		jest.restoreAllMocks();
-		jest.clearAllMocks();
+		(ExclusionsQuestion.prototype.getAnswer as jest.Mock).mockResolvedValue('dummy-dir');
+		(ExtensionsQuestion.prototype.getAnswer as jest.Mock).mockResolvedValue('.ts,.js');
+		(DirectoryQuestion.prototype.getAnswer as jest.Mock).mockResolvedValue(['dummy']);
+		(ThresholdQuestion.prototype.getAnswer as jest.Mock).mockResolvedValue('1');
 	});
 
 	it('should enable silent mode', async () => {
@@ -58,13 +53,13 @@ describe('Scanner', () => {
 		expect(scanner['silent']).toEqual(false);
 	});
 
-	it('should set exlusions', async () => {
+	it('should set exclusions', async () => {
 		const scanner = new Scanner({ exclusions: 'one,two,three' });
 
 		expect(scanner['exclusions']).toEqual(['one', 'two', 'three']);
 	});
 
-	it('should ask a question when exlusions are not provided', async () => {
+	it('should ask a question when exclusions are not provided', async () => {
 		const scanner = new Scanner({});
 
 		await scanner.scan();
@@ -93,7 +88,7 @@ describe('Scanner', () => {
 		await scanner.scan();
 
 		expect(scanner['threshold']).toEqual(3);
-		expect((Output as jest.Mock<any, any>).mock.calls[0][0]).toEqual([{ count: 5 }]);
+		expect((Output as jest.Mock).mock.calls[0][0]).toEqual([{ count: 5 }]);
 	});
 
 	it('should set a threshold when passing threshold as a string', async () => {
@@ -103,7 +98,7 @@ describe('Scanner', () => {
 		await scanner.scan();
 
 		expect(scanner['threshold']).toEqual(3);
-		expect((Output as jest.Mock<any, any>).mock.calls[0][0]).toEqual([{ count: 5 }]);
+		expect((Output as jest.Mock).mock.calls[0][0]).toEqual([{ count: 5 }]);
 	});
 
 	it('should set a threshold when passing threshold as a float', async () => {
@@ -113,7 +108,7 @@ describe('Scanner', () => {
 		await scanner.scan();
 
 		expect(scanner['threshold']).toEqual(3);
-		expect((Output as jest.Mock<any, any>).mock.calls[0][0]).toEqual([{ count: 5 }]);
+		expect((Output as jest.Mock).mock.calls[0][0]).toEqual([{ count: 5 }]);
 	});
 
 	it('should ask a question when the threshold is not provided', async () => {

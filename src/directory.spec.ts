@@ -2,15 +2,15 @@ import { Directory } from './directory';
 import { promises, existsSync, statSync } from 'fs';
 import { resolve, extname } from 'path';
 
-const promisesMock = ((promises as unknown) = { readdir: jest.fn() });
-const existsSyncMock = existsSync as jest.Mock<any, any>;
-const isDirectoryMock = statSync as jest.Mock<any, any>;
-const resolveMock = resolve as jest.Mock<any, any>;
-const extnameMock = extname as jest.Mock<any, any>;
-
 jest.mock('./store');
 jest.mock('fs');
 jest.mock('path');
+
+const promisesMock = ((promises as unknown) = { readdir: jest.fn() });
+const existsSyncMock = existsSync as jest.Mock;
+const isDirectoryMock = statSync as jest.Mock;
+const resolveMock = resolve as jest.Mock;
+const extnameMock = extname as jest.Mock;
 
 describe('Directory', () => {
 	beforeEach(() => {
@@ -19,17 +19,11 @@ describe('Directory', () => {
 		extnameMock.mockReturnValue('.txt');
 	});
 
-	afterEach(() => {
-		jest.resetAllMocks();
-		jest.restoreAllMocks();
-		jest.clearAllMocks();
-	});
-
 	it('should throw when the directory does not exist', () => {
 		existsSyncMock.mockReturnValue(false);
 
 		expect(() => new Directory('dummy-directory', [], [])).toThrowError(
-			'Directory does not exist, please pass a valid path.',
+			'Directory does not exist, please pass a valid path.'
 		);
 	});
 

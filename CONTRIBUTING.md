@@ -10,23 +10,23 @@ Also if there is anything that could be simplified, also please let me know as w
 
 To set up the project follow these simple steps:
 
-* Fork the project.
+- Fork the project.
 
-* Clone the project somewhere on your computer
+- Clone the project somewhere on your computer
 
 ```bash
 git clone git@github.com:<your-username>/find-duplicate-strings.git
 ```
 
-* If you need to update your fork you can do so following the steps [here](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/syncing-a-fork)
+- If you need to update your fork you can do so following the steps [here](https://docs.github.com/en/github/collaborating-with-issues-and-pull-requests/syncing-a-fork)
 
-* Install dependencies:
+- Install dependencies:
 
 ```bash
 npm i
 ```
 
-* Run tests:
+- Run tests:
 
 ```bash
 npm t

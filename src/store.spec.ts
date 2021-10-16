@@ -2,6 +2,7 @@ import { Store } from './store';
 
 describe('Store', () => {
 	beforeEach(() => {
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 		// @ts-expect-error
 		Store['store'] = new Map();
 	});

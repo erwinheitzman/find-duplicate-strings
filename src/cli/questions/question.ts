@@ -5,7 +5,7 @@ export abstract class Question {
 		protected name: string,
 		protected message: string,
 		protected type: keyof QuestionMap = 'input',
-		protected defaultAnswer?: string,
+		protected defaultAnswer?: string
 	) {}
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any

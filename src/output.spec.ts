@@ -26,8 +26,8 @@ describe('Output', () => {
 		await output.output();
 
 		expect(console.table).toBeCalledWith([
-			['foo', 1],
 			['foo', 2],
+			['foo', 1],
 		]);
 	});
 
@@ -37,29 +37,29 @@ describe('Output', () => {
 		await output.output();
 
 		expect(console.table).toBeCalledWith([
-			['foo', 1],
-			['foo', 2],
-			['foo', 3],
-			['foo', 4],
-			['foo', 5],
-			['foo', 6],
-			['foo', 7],
-			['foo', 8],
-			['foo', 9],
+			['foo', 15],
+			['foo', 14],
+			['foo', 13],
+			['foo', 12],
+			['foo', 11],
 			['foo', 10],
+			['foo', 9],
+			['foo', 8],
+			['foo', 7],
+			['foo', 6],
 			['...'],
 		]);
 	});
 
 	it('should trim the matches in the console output when they contain more then 32 characters', async () => {
-		findings[1].key = 'some very very very very very long name';
+		findings[0].key = 'some very very very very very long name';
 		const output = new Output(findings, false);
 
 		await output.output();
 
 		expect(console.table).toBeCalledWith([
-			['foo', 1],
 			['some very very very very very lo...', 2],
+			['foo', 1],
 		]);
 	});
 

@@ -1,19 +1,23 @@
 import { resolve } from 'path';
 import { writeFileSync } from 'fs';
 import { OutputQuestion } from './cli/questions';
-import type { Finding } from './finding';
+import { Finding } from './finding';
 
 export class Output {
-	public constructor(private input: Finding[], private silent: boolean) {}
+	private data: Finding[];
+
+	public constructor(input: Finding[], private silent: boolean) {
+		this.data = input.sort((a, b) => b.count - a.count);
+	}
 
 	public async output(): Promise<void> {
 		if (!this.silent) {
-			this.outputToConsole(this.input);
+			this.outputToConsole(this.data);
 		}
 
 		const fileName = await new OutputQuestion().getAnswer();
 
-		this.outputToFile(this.input, fileName);
+		this.outputToFile(this.data, fileName);
 	}
 
 	private outputToConsole(output: Finding[]): void {

@@ -1,14 +1,7 @@
-import type { Interface } from 'readline';
-import { createInterface } from 'readline';
+import { createInterface, Interface } from 'readline';
 import { createReadStream } from 'fs';
 import { Store } from './store';
-import type { Finding } from './finding';
-
-enum Character {
-	SINGLE_QUOTE = 39,
-	DOUBLE_QUOTE = 34,
-	BACKSLASH = 92,
-}
+import { Finding } from './finding';
 
 export class File {
 	constructor(private name: string) {}
@@ -22,52 +15,15 @@ export class File {
 	}
 
 	private processLine(line: string): void {
-		let singleQuoteToggle = false;
-		let doubleQuoteToggle = false;
-		let characterSet = '';
+		const matches = line.match(/(?:("[^"\\]*(?:\\.[^"\\]*)*")|('[^'\\]*(?:\\.[^'\\]*)*'))/g);
 
-		for (let i = 0; i < line.length; i++) {
-			if (this.shouldStoreDoubleQuoteString(line, i, singleQuoteToggle)) {
-				doubleQuoteToggle = !doubleQuoteToggle;
-
-				if (!doubleQuoteToggle && characterSet.length) {
-					this.storeMatch(characterSet, this.name);
-					characterSet = '';
-				}
-				continue;
-			}
-
-			if (this.shouldStoreSingleQuoteString(line, i, doubleQuoteToggle)) {
-				singleQuoteToggle = !singleQuoteToggle;
-
-				if (!singleQuoteToggle && characterSet.length) {
-					this.storeMatch(characterSet, this.name);
-					characterSet = '';
-				}
-				continue;
-			}
-
-			if (doubleQuoteToggle || singleQuoteToggle) {
-				characterSet += line[i];
-				continue;
-			}
+		if (matches) {
+			matches
+				.filter((match) => match && match.length > 2)
+				.forEach((match) => {
+					this.storeMatch(match.substring(1, match.length - 1), this.name);
+				});
 		}
-	}
-
-	private shouldStoreSingleQuoteString(line: string, index: number, toggle: boolean): boolean {
-		return (
-			line.charCodeAt(index) === Character.SINGLE_QUOTE &&
-			line.charCodeAt(index - 1) !== Character.BACKSLASH &&
-			toggle === false
-		);
-	}
-
-	private shouldStoreDoubleQuoteString(line: string, index: number, toggle: boolean): boolean {
-		return (
-			line.charCodeAt(index) === Character.DOUBLE_QUOTE &&
-			line.charCodeAt(index - 1) !== Character.BACKSLASH &&
-			toggle === false
-		);
 	}
 
 	private storeMatch(key: string, file: string): void {

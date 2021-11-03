@@ -20,9 +20,5 @@ program
 	.parse();
 
 async function main(path: string, options: Options) {
-	try {
-		await new Scanner({ ...options, path }).scan();
-	} catch (error) {
-		throw error;
-	}
+	await new Scanner({ ...options, path }).scan().catch((e) => console.error(e));
 }

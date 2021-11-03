@@ -35,6 +35,16 @@ describe('Directory', () => {
 		expect(() => new Directory('dummy-directory', [], [])).toThrowError('Path does not point to a directory.');
 	});
 
+	it('should normalize the path', () => {
+		jest.spyOn(process, 'cwd').mockReturnValue('/Users/Dummy-User/development/current-working-directory');
+		resolveMock.mockReturnValue('/Users/Dummy-User/development/dummy-directory/');
+
+		new Directory('../dummy-directory', [], []);
+
+		expect(resolveMock).toBeCalledWith('/Users/Dummy-User/development/current-working-directory', '../dummy-directory');
+		expect(normalize).toBeCalledWith('/Users/Dummy-User/development/dummy-directory/');
+	});
+
 	it('should return files', async () => {
 		promisesMock.readdir.mockResolvedValue([
 			{ name: 'file1', isDirectory: () => false, isSymbolicLink: () => false },

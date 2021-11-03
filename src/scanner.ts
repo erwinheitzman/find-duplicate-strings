@@ -12,7 +12,7 @@ import {
 	ConfirmScannedDirQuestion,
 	ThresholdQuestion,
 } from './cli/questions';
-import type { Finding } from './finding';
+import { Finding } from './finding';
 
 interface Options {
 	silent?: boolean;

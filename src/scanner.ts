@@ -54,12 +54,20 @@ export class Scanner {
 	public async scan(): Promise<void> {
 		const path = this.path.length ? this.path : await new PathQuestion().getAnswer();
 
-		if (!this.exclusions) {
+		const fullPath = normalize(resolve(process.cwd(), path));
+
+		if (!existsSync(fullPath)) {
+			throw new Error('Invalid path: No such directory or file.');
+		}
+
+		const lstat = statSync(fullPath);
+
+		if (!this.exclusions && lstat.isDirectory()) {
 			const answer = await new ExclusionsQuestion().getAnswer();
 			this.exclusions = Exclusions.process(answer);
 		}
 
-		if (!this.extensions) {
+		if (!this.extensions && lstat.isDirectory()) {
 			const answer = await new ExtensionsQuestion().getAnswer();
 			this.extensions = Extensions.process(answer);
 		}
@@ -94,30 +102,6 @@ export class Scanner {
 		}
 
 		await new Output(duplicates as Finding[], this.silent).output();
-	}
-
-	private async startScan(path: string) {
-		const fullPath = normalize(resolve(process.cwd(), path));
-
-		const noSuchDirectoryOrFileError = new Error('Invalid path: No such directory or file.');
-
-		if (!existsSync(fullPath)) {
-			throw noSuchDirectoryOrFileError;
-		}
-
-		const lstat = statSync(fullPath);
-
-		if (lstat.isFile()) {
-			await this.scanFile(fullPath);
-			return;
-		}
-
-		if (lstat.isDirectory()) {
-			await this.scanDir(fullPath);
-			return;
-		}
-
-		throw noSuchDirectoryOrFileError;
 	}
 
 	private async scanDir(path: string): Promise<void> {
@@ -156,11 +140,14 @@ export class Scanner {
 			clearInterval(loader);
 		});
 
-		try {
-			await this.startScan(path);
-		} catch (error: any) {
-			clearLoader();
-			throw error;
+		const lstat = statSync(path);
+
+		if (lstat.isFile()) {
+			await this.scanFile(path);
+		}
+
+		if (lstat.isDirectory()) {
+			await this.scanDir(path);
 		}
 
 		clearLoader();

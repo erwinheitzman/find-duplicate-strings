@@ -1,26 +1,17 @@
-import { promises, existsSync, statSync } from 'fs';
-import { resolve, extname, normalize, join } from 'path';
+import { promises } from 'fs';
+import { extname, join } from 'path';
 
 export class Directory {
-	private readonly path: string;
-
-	constructor(directory: string, private readonly exclusions: string[], private readonly extensions: string[]) {
-		this.path = normalize(resolve(process.cwd(), directory));
-
-		if (!existsSync(this.path)) {
-			throw new Error('Directory does not exist, please pass a valid path.');
-		}
-
-		if (!statSync(this.path).isDirectory()) {
-			throw new Error('Path does not point to a directory.');
-		}
-	}
+	constructor(
+		private readonly path: string,
+		private readonly exclusions: string[],
+		private readonly extensions: string[]
+	) {}
 
 	public getFiles(): AsyncGenerator<string, void, unknown> {
 		return this.readdirRecursively(this.path);
 	}
 
-	// TODO: support reading single file
 	private async *readdirRecursively(path: string): AsyncGenerator<string, void, unknown> {
 		const stream = await promises.readdir(path, { withFileTypes: true });
 

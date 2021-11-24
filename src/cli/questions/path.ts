@@ -1,8 +1,8 @@
 import { Question } from './question';
 
-export class DirectoryQuestion extends Question {
+export class PathQuestion extends Question {
 	public constructor() {
-		super('directory', 'Please provide a directory to scan for duplicate values.');
+		super('path', 'Please provide a path to scan for duplicate values.');
 	}
 
 	public async getAnswer(): Promise<string> {

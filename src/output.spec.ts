@@ -2,12 +2,16 @@ import { Output } from './output';
 import { writeFileSync } from 'fs';
 import { prompt } from 'inquirer';
 import { findings, manyFindings } from './output.mocks';
+import { OutputQuestion } from './cli/questions';
 
 jest.mock('fs');
 jest.mock('path');
 jest.mock('inquirer');
+jest.mock('./cli/questions/output');
 
 console.table = jest.fn();
+
+const OutputQuestionMock = OutputQuestion.prototype.getAnswer as jest.Mock;
 
 describe('Output', () => {
 	beforeEach(() => {
@@ -18,6 +22,7 @@ describe('Output', () => {
 			.mockResolvedValueOnce({
 				output: 'dummy2',
 			});
+		OutputQuestionMock.mockResolvedValue('file');
 	});
 
 	it('should output to the console when the "silent" flag is not set', async () => {

@@ -5,14 +5,18 @@ import { Output } from './output';
 import { Exclusions } from './exclusions';
 import { Extensions } from './extensions';
 import {
-	DirectoryQuestion,
+	ConfirmDuplicatePathQuestion,
+	ConfirmPathQuestion,
 	ExclusionsQuestion,
 	ExtensionsQuestion,
-	ConfirmDirectoryQuestion,
-	ConfirmScannedDirQuestion,
 	ThresholdQuestion,
 } from './cli/questions';
 import { Finding } from './finding';
+import { existsSync, statSync } from 'fs';
+import { normalize, resolve } from 'path';
+import { PathQuestion } from './cli/questions/path';
+import process from 'process';
+import BottomBar from 'inquirer/lib/ui/bottom-bar';
 
 interface Options {
 	silent?: boolean;
@@ -30,7 +34,7 @@ export class Scanner {
 	private silent: boolean;
 	private path: string;
 
-	public constructor(options: Options) {
+	public constructor(options: Options, private bottomBar: BottomBar, private loaderInterval: number = 1000) {
 		if (options.exclusions) {
 			this.exclusions = Exclusions.process(options.exclusions);
 		}
@@ -48,7 +52,7 @@ export class Scanner {
 	}
 
 	public async scan(): Promise<void> {
-		const path = this.path.length ? this.path : await new DirectoryQuestion().getAnswer();
+		const path = this.path.length ? this.path : await new PathQuestion().getAnswer();
 
 		if (!this.exclusions) {
 			const answer = await new ExclusionsQuestion().getAnswer();
@@ -68,18 +72,17 @@ export class Scanner {
 		let shouldScan = true;
 
 		if (this.scannedDirs.includes(path)) {
-			shouldScan = await new ConfirmScannedDirQuestion().getAnswer();
+			shouldScan = await new ConfirmDuplicatePathQuestion().getAnswer();
 		}
 
 		if (shouldScan) {
-			await this.scanDir(path);
-
-			this.scannedDirs.push(path);
+			await this.initScan(path);
 		}
 
-		const continueScanning = await new ConfirmDirectoryQuestion().getAnswer();
+		const continueScanning = await new ConfirmPathQuestion().getAnswer();
 
 		if (continueScanning) {
+			this.path = '';
 			return this.scan();
 		}
 
@@ -93,16 +96,75 @@ export class Scanner {
 		await new Output(duplicates as Finding[], this.silent).output();
 	}
 
-	private async scanDir(dirName: string): Promise<void> {
-		const directory = new Directory(dirName, this.exclusions, this.extensions);
+	private async startScan(path: string) {
+		const fullPath = normalize(resolve(process.cwd(), path));
+
+		const noSuchDirectoryOrFileError = new Error('Invalid path: No such directory or file.');
+
+		if (!existsSync(fullPath)) {
+			throw noSuchDirectoryOrFileError;
+		}
+
+		const lstat = statSync(fullPath);
+
+		if (lstat.isFile()) {
+			await this.scanFile(fullPath);
+			return;
+		}
+
+		if (lstat.isDirectory()) {
+			await this.scanDir(fullPath);
+			return;
+		}
+
+		throw noSuchDirectoryOrFileError;
+	}
+
+	private async scanDir(path: string): Promise<void> {
+		const directory = new Directory(path, this.exclusions, this.extensions);
 		const files = directory.getFiles();
 
 		for await (const file of files) {
-			new File(file).processContent();
+			await this.scanFile(file);
 		}
 	}
 
+	private async scanFile(path: string): Promise<void> {
+		await new File(path).processContent();
+	}
+
 	private getDuplicates(): Finding[] {
-		return (Store.getAll() as Finding[]).filter((value) => value.count > this.threshold);
+		return Store.getAll().filter((value) => value.count > this.threshold);
+	}
+
+	private async initScan(path: string) {
+		let count = 0;
+		const loader = setInterval(() => {
+			count++;
+			if (count > 10) {
+				count = 0;
+			}
+			this.bottomBar.updateBottomBar('.'.repeat(count));
+		}, this.loaderInterval);
+
+		const clearLoader = () => {
+			clearInterval(loader);
+			process.removeAllListeners('SIGTERM');
+		};
+
+		process.on('SIGTERM', () => {
+			clearInterval(loader);
+		});
+
+		try {
+			await this.startScan(path);
+		} catch (error: any) {
+			clearLoader();
+			throw error;
+		}
+
+		clearLoader();
+		this.bottomBar.updateBottomBar('');
+		this.scannedDirs.push(path);
 	}
 }

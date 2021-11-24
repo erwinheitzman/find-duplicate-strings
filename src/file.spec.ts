@@ -15,135 +15,86 @@ const findMock = Store.find as jest.Mock;
 const createReadStreamMock = createReadStream as jest.Mock;
 
 describe('File', () => {
-	it('should add matches to store', (done) => {
+	it('should add matches to store', async () => {
 		createReadStreamMock.mockImplementationOnce(file1);
 		findMock.mockReturnValue(null);
 
-		const rl = new File(path).processContent();
+		await new File(path).processContent();
 
-		rl.on('close', () => {
-			try {
-				expect(Store.add).toBeCalledTimes(2);
-				expect(Store.update).toBeCalledTimes(0);
-				expect(Store.add).toHaveBeenNthCalledWith(1, 'foo', { key: 'foo', files: [path], count: 1 });
-				expect(Store.add).toHaveBeenNthCalledWith(2, 'bar', { key: 'bar', files: [path], count: 1 });
-				done();
-			} catch (error) {
-				done(error);
-			}
-		});
+		expect(Store.add).toBeCalledTimes(2);
+		expect(Store.update).toBeCalledTimes(0);
+		expect(Store.add).toHaveBeenNthCalledWith(1, 'foo', { key: 'foo', files: [path], count: 1 });
+		expect(Store.add).toHaveBeenNthCalledWith(2, 'bar', { key: 'bar', files: [path], count: 1 });
 	});
 
-	it('should update matches in store', (done) => {
+	it('should update matches in store', async () => {
 		createReadStreamMock.mockImplementationOnce(file1);
 		findMock.mockReturnValueOnce({ count: 1, files: [] }).mockReturnValueOnce({ count: 1, files: [] });
 
-		const rl = new File(path).processContent();
+		await new File(path).processContent();
 
-		rl.on('close', () => {
-			try {
-				expect(Store.add).toBeCalledTimes(0);
-				expect(Store.update).toBeCalledTimes(2);
-				expect(Store.update).toHaveBeenNthCalledWith(1, 'foo', { key: 'foo', files: [path], count: 2 });
-				expect(Store.update).toHaveBeenNthCalledWith(2, 'bar', { key: 'bar', files: [path], count: 2 });
-				done();
-			} catch (error) {
-				done(error);
-			}
-		});
+		expect(Store.add).toBeCalledTimes(0);
+		expect(Store.update).toBeCalledTimes(2);
+		expect(Store.update).toHaveBeenNthCalledWith(1, 'foo', { key: 'foo', files: [path], count: 2 });
+		expect(Store.update).toHaveBeenNthCalledWith(2, 'bar', { key: 'bar', files: [path], count: 2 });
 	});
 
-	it('should not store empty string values', (done) => {
+	it('should not store empty string values', async () => {
 		createReadStreamMock.mockImplementationOnce(emptyStringsFile);
 		findMock.mockReturnValueOnce({ count: 1, files: [] }).mockReturnValueOnce({ count: 1, files: [] });
 
-		const rl = new File(path).processContent();
+		await new File(path).processContent();
 
-		rl.on('close', () => {
-			try {
-				expect(Store.add).toBeCalledTimes(0);
-				expect(Store.update).toBeCalledTimes(0);
-				done();
-			} catch (error) {
-				done(error);
-			}
-		});
+		expect(Store.add).toBeCalledTimes(0);
+		expect(Store.update).toBeCalledTimes(0);
 	});
 
-	it('should not store the same path path twice', (done) => {
+	it('should not store the same path path twice', async () => {
 		createReadStreamMock.mockImplementationOnce(file2);
 		findMock
 			.mockReturnValueOnce(null)
 			.mockReturnValueOnce({ count: 1, files: [path] })
 			.mockReturnValueOnce({ count: 2, files: [path] });
 
-		const rl = new File(path).processContent();
+		await new File(path).processContent();
 
-		rl.on('close', () => {
-			try {
-				expect(Store.add).toBeCalledTimes(1);
-				expect(Store.update).toBeCalledTimes(2);
-				expect(Store.add).toHaveBeenNthCalledWith(1, 'foo', { key: 'foo', files: [path], count: 1 });
-				expect(Store.update).toHaveBeenNthCalledWith(1, 'foo', { key: 'foo', files: [path], count: 2 });
-				expect(Store.update).toHaveBeenNthCalledWith(2, 'foo', { key: 'foo', files: [path], count: 3 });
-				done();
-			} catch (error) {
-				done(error);
-			}
-		});
+		expect(Store.add).toBeCalledTimes(1);
+		expect(Store.update).toBeCalledTimes(2);
+		expect(Store.add).toHaveBeenNthCalledWith(1, 'foo', { key: 'foo', files: [path], count: 1 });
+		expect(Store.update).toHaveBeenNthCalledWith(1, 'foo', { key: 'foo', files: [path], count: 2 });
+		expect(Store.update).toHaveBeenNthCalledWith(2, 'foo', { key: 'foo', files: [path], count: 3 });
 	});
 
-	it('should store all matches', (done) => {
+	it('should store all matches', async () => {
 		createReadStreamMock.mockImplementationOnce(file3);
 		findMock.mockReturnValueOnce(null).mockReturnValueOnce({ count: 1, files: [] }).mockReturnValueOnce(null);
 
-		const rl = new File(path).processContent();
+		await new File(path).processContent();
 
-		rl.on('close', () => {
-			try {
-				expect(Store.add).toBeCalledTimes(2);
-				expect(Store.update).toBeCalledTimes(1);
-				expect(Store.add).toHaveBeenNthCalledWith(1, 'foo', { key: 'foo', files: [path], count: 1 });
-				expect(Store.update).toHaveBeenNthCalledWith(1, 'foo', { key: 'foo', files: [path], count: 2 });
-				expect(Store.add).toHaveBeenNthCalledWith(2, 'bar', { key: 'bar', files: [path], count: 1 });
-				done();
-			} catch (error) {
-				done(error);
-			}
-		});
+		expect(Store.add).toBeCalledTimes(2);
+		expect(Store.update).toBeCalledTimes(1);
+		expect(Store.add).toHaveBeenNthCalledWith(1, 'foo', { key: 'foo', files: [path], count: 1 });
+		expect(Store.update).toHaveBeenNthCalledWith(1, 'foo', { key: 'foo', files: [path], count: 2 });
+		expect(Store.add).toHaveBeenNthCalledWith(2, 'bar', { key: 'bar', files: [path], count: 1 });
 	});
 
-	it('should not call the store when there are no strings/matches', (done) => {
+	it('should not call the store when there are no strings/matches', async () => {
 		createReadStreamMock.mockImplementationOnce(noStringsFile);
 
-		const rl = new File(path).processContent();
+		await new File(path).processContent();
 
-		rl.on('close', () => {
-			try {
-				expect(Store.add).toBeCalledTimes(0);
-				expect(Store.update).toBeCalledTimes(0);
-				expect(Store.find).toBeCalledTimes(0);
-				done();
-			} catch (error) {
-				done(error);
-			}
-		});
+		expect(Store.add).toBeCalledTimes(0);
+		expect(Store.update).toBeCalledTimes(0);
+		expect(Store.find).toBeCalledTimes(0);
 	});
 
-	it('should not call the store when the file is empty', (done) => {
+	it('should not call the store when the file is empty', async () => {
 		createReadStreamMock.mockImplementationOnce(emptyFile);
 
-		const rl = new File(path).processContent();
+		await new File(path).processContent();
 
-		rl.on('close', () => {
-			try {
-				expect(Store.add).toBeCalledTimes(0);
-				expect(Store.update).toBeCalledTimes(0);
-				expect(Store.find).toBeCalledTimes(0);
-				done();
-			} catch (error) {
-				done(error);
-			}
-		});
+		expect(Store.add).toBeCalledTimes(0);
+		expect(Store.update).toBeCalledTimes(0);
+		expect(Store.find).toBeCalledTimes(0);
 	});
 });

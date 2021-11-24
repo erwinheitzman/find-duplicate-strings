@@ -1,7 +1,9 @@
-export class Store {
-	private static readonly store: Map<string, unknown> = new Map();
+import { Finding } from './finding';
 
-	static add(key: string, value: unknown): void {
+export class Store {
+	private static readonly store: Map<string, Finding> = new Map();
+
+	static add(key: string, value: Finding): void {
 		if (this.store.has(key)) {
 			throw new Error(`Key ${key} already exists`);
 		}
@@ -9,7 +11,7 @@ export class Store {
 		this.store.set(key, value);
 	}
 
-	static update(key: string, value: unknown): void {
+	static update(key: string, value: Finding): void {
 		if (!this.store.has(key)) {
 			throw new Error(`Key ${key} does not exist`);
 		}
@@ -17,11 +19,11 @@ export class Store {
 		this.store.set(key, value);
 	}
 
-	static find(key: string): unknown | null {
+	static find(key: string): Finding | null {
 		return this.store.get(key) || null;
 	}
 
-	static getAll(): unknown[] {
+	static getAll(): Finding[] {
 		return Array.from(this.store.values());
 	}
 }

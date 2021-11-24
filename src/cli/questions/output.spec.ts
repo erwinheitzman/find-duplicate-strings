@@ -1,13 +1,16 @@
 import { OutputQuestion } from './output';
-import { prompt } from 'inquirer';
+import { Question } from './question';
 
-jest.mock('inquirer');
+jest.mock('./question');
 
-const promptMock = prompt as unknown as jest.Mock;
+const questionMock = Question as jest.Mock;
 
 describe('OutputQuestion', () => {
+	beforeEach(() => {
+		questionMock.prototype.getAnswer = jest.fn().mockResolvedValue('dummy');
+	});
+
 	it('should return the answer when it is found', async () => {
-		promptMock.mockResolvedValue({ output: 'dummy' });
 		const question = new OutputQuestion();
 
 		const answer = await question.getAnswer();

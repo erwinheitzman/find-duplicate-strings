@@ -1,17 +1,18 @@
 import { createInterface, Interface } from 'readline';
 import { createReadStream } from 'fs';
 import { Store } from './store';
-import { Finding } from './finding';
 
 export class File {
-	constructor(private name: string) {}
+	constructor(private readonly name: string) {}
 
-	processContent(): Interface {
-		const rl = this.readlineInterface();
-
-		rl.on('line', (line) => this.processLine(line));
-
-		return rl;
+	processContent(): Promise<any> {
+		return new Promise((resolve) => {
+			const rl = this.readlineInterface();
+			rl.on('line', (line) => this.processLine(line));
+			rl.on('close', () => {
+				resolve(true);
+			});
+		});
 	}
 
 	private processLine(line: string): void {
@@ -27,7 +28,7 @@ export class File {
 	}
 
 	private storeMatch(key: string, file: string): void {
-		const value = Store.find(key) as Finding;
+		const value = Store.find(key);
 
 		if (!value) {
 			Store.add(key, { key, count: 1, files: [file] });
@@ -38,9 +39,7 @@ export class File {
 			value.files.push(file);
 		}
 
-		value.count++;
-
-		Store.update(key, { key, count: value.count, files: value.files });
+		Store.update(key, { key, count: (value.count += 1), files: value.files });
 	}
 
 	private readlineInterface(): Interface {

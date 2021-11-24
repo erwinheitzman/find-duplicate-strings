@@ -21,30 +21,6 @@ describe('Directory', () => {
 		extnameMock.mockReturnValue('.txt');
 	});
 
-	it('should throw when the directory does not exist', () => {
-		existsSyncMock.mockReturnValue(false);
-
-		expect(() => new Directory('dummy-directory', [], [])).toThrowError(
-			'Directory does not exist, please pass a valid path.'
-		);
-	});
-
-	it('should throw when the path does not point to a directory', () => {
-		isDirectoryMock.mockReturnValue({ isDirectory: () => false });
-
-		expect(() => new Directory('dummy-directory', [], [])).toThrowError('Path does not point to a directory.');
-	});
-
-	it('should normalize the path', () => {
-		jest.spyOn(process, 'cwd').mockReturnValue('/Users/Dummy-User/development/current-working-directory');
-		resolveMock.mockReturnValue('/Users/Dummy-User/development/dummy-directory/');
-
-		new Directory('../dummy-directory', [], []);
-
-		expect(resolveMock).toBeCalledWith('/Users/Dummy-User/development/current-working-directory', '../dummy-directory');
-		expect(normalize).toBeCalledWith('/Users/Dummy-User/development/dummy-directory/');
-	});
-
 	it('should return files', async () => {
 		promisesMock.readdir.mockResolvedValue([
 			{ name: 'file1', isDirectory: () => false, isSymbolicLink: () => false },
@@ -254,7 +230,7 @@ describe('Directory', () => {
 
 	it('should throw when realpath throws an error other then "ENOENT"', async () => {
 		promisesMock.readdir.mockReturnValueOnce([{ name: 'file1', isDirectory: () => false, isSymbolicLink: () => true }]);
-		promisesMock.realpath.mockRejectedValueOnce({ message: 'foo' } as Error);
+		promisesMock.realpath.mockRejectedValueOnce(new Error('foo'));
 		resolveMock.mockReturnValueOnce('dir').mockReturnValueOnce('dir/file2');
 		joinMock.mockReturnValueOnce('dir/file2');
 

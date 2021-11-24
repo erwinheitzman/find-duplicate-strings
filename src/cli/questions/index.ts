@@ -1,7 +1,7 @@
-export { DirectoryQuestion } from './directory';
+export { PathQuestion } from './path';
 export { ExclusionsQuestion } from './exclusions';
 export { ExtensionsQuestion } from './extensions';
 export { OutputQuestion } from './output';
-export { ConfirmDirectoryQuestion } from './confirm-directory';
-export { ConfirmScannedDirQuestion } from './confirm-scanned-dir';
+export { ConfirmPathQuestion } from './confirm-path';
+export { ConfirmDuplicatePathQuestion } from './confirm-duplicate-path';
 export { ThresholdQuestion } from './threshold';

@@ -1,6 +1,6 @@
 {
 	"name": "find-duplicate-strings",
-	"version": "2.1.5",
+	"version": "2.1.6",
 	"description": "Easy to use CLI that finds duplicate strings in a directory and stores them in a external file for easy reference",
 	"author": "Erwin Heitzman",
 	"homepage": "https://github.com/erwinheitzman/find-duplicate-strings/blob/master/README.md",

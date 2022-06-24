@@ -17,6 +17,8 @@ export abstract class Question {
 			default: this.defaultAnswer,
 		});
 
+		console.log('answer: ', answer);
+
 		return answer[this.name];
 	}
 }

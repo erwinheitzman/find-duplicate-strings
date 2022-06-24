@@ -83,12 +83,22 @@ describe('Scanner', () => {
 		expect(scanner['exclusions']).toEqual(['one', 'two', 'three']);
 	});
 
-	it('should ask a question when exclusions are not provided', async () => {
+	it('should ask a question when exclusions are not provided and the path does not point to a file', async () => {
+		statSyncMock.mockReturnValue({ isFile: () => false, isDirectory: () => true });
 		const scanner = new Scanner({}, bottomBar, interval);
 
 		await scanner.scan();
 
 		expect(ExclusionsQuestion.prototype.getAnswer).toBeCalledTimes(1);
+	});
+
+	it('should not ask a question when exclusions are not provided and the path points to a file', async () => {
+		statSyncMock.mockReturnValue({ isFile: () => true, isDirectory: () => false });
+		const scanner = new Scanner({}, bottomBar, interval);
+
+		await scanner.scan();
+
+		expect(ExclusionsQuestion.prototype.getAnswer).toBeCalledTimes(0);
 	});
 
 	it('should set extensions', async () => {
@@ -97,12 +107,22 @@ describe('Scanner', () => {
 		expect(scanner['extensions']).toEqual(['one', 'two', 'three']);
 	});
 
-	it('should ask a question when extensions are not provided', async () => {
+	it('should ask a question when extensions are not provided and the path does not point to a file', async () => {
+		statSyncMock.mockReturnValue({ isFile: () => false, isDirectory: () => true });
 		const scanner = new Scanner({}, bottomBar, interval);
 
 		await scanner.scan();
 
 		expect(ExtensionsQuestion.prototype.getAnswer).toBeCalledTimes(1);
+	});
+
+	it('should not ask a question when extensions are not provided and the path points to a file', async () => {
+		statSyncMock.mockReturnValue({ isFile: () => true, isDirectory: () => false });
+		const scanner = new Scanner({}, bottomBar, interval);
+
+		await scanner.scan();
+
+		expect(ExtensionsQuestion.prototype.getAnswer).toBeCalledTimes(0);
 	});
 
 	it('should set a threshold when passing threshold as a number', async () => {

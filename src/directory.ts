@@ -5,7 +5,7 @@ export class Directory {
 	constructor(
 		private readonly path: string,
 		private readonly exclusions: string[],
-		private readonly extensions: string[]
+		private readonly extensions: string[],
 	) {}
 
 	public getFiles(): AsyncGenerator<string, void, unknown> {
@@ -27,8 +27,10 @@ export class Directory {
 				try {
 					fullPath = await promises.realpath(fullPath);
 					isLink = true;
-				} catch (error: any) {
-					if (error.message.includes('ENOENT')) {
+				} catch (error: unknown) {
+					console.log(error);
+
+					if (error instanceof Error && error.message.includes('ENOENT')) {
 						continue; // ignore broken symlinks
 					}
 					throw error;

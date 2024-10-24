@@ -1,20 +1,16 @@
+import { confirm } from '@inquirer/prompts';
 import { ConfirmPathQuestion } from './confirm-path';
-import { Question } from './question';
 
-jest.mock('./question');
-
-const questionMock = Question as jest.Mock;
+jest.mock('@inquirer/prompts');
 
 describe('ConfirmPathQuestion', () => {
-	beforeEach(() => {
-		questionMock.prototype.getAnswer = jest.fn().mockResolvedValue('dummy');
-	});
-
 	it('should return the answer when it is found', async () => {
+		jest.mocked(confirm).mockResolvedValue(true);
+
 		const question = new ConfirmPathQuestion();
 
 		const answer = await question.getAnswer();
 
-		expect(answer).toEqual('dummy');
+		expect(answer).toEqual(true);
 	});
 });

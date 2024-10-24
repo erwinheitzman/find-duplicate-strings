@@ -1,11 +1,7 @@
-import { Question } from './question';
+import { confirm } from '@inquirer/prompts';
 
-export class ConfirmPathQuestion extends Question {
-	public constructor() {
-		super('confirm-path', 'Would you like to scan another path?', 'confirm');
-	}
-
+export class ConfirmPathQuestion {
 	public async getAnswer(): Promise<boolean> {
-		return super.getAnswer();
+		return confirm({ message: 'Would you like to scan another path?' });
 	}
 }

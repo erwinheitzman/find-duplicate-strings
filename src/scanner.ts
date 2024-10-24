@@ -16,7 +16,6 @@ import { existsSync, statSync } from 'fs';
 import { normalize, resolve } from 'path';
 import { PathQuestion } from './cli/questions/path';
 import process from 'process';
-import BottomBar from 'inquirer/lib/ui/bottom-bar';
 
 interface Options {
 	silent?: boolean;
@@ -30,11 +29,14 @@ export class Scanner {
 	private readonly scannedDirs: string[] = [];
 	private exclusions!: string[];
 	private extensions!: string[];
-	private threshold!: number | string;
+	private threshold!: number;
 	private silent: boolean;
 	private path: string;
 
-	public constructor(options: Options, private bottomBar: BottomBar, private loaderInterval: number = 1000) {
+	public constructor(
+		options: Options,
+		private loaderInterval: number = 1000,
+	) {
 		if (options.exclusions) {
 			this.exclusions = Exclusions.process(options.exclusions);
 		}
@@ -123,17 +125,27 @@ export class Scanner {
 
 	private async initScan(path: string) {
 		let count = 0;
+
+		const clearLine = () => {
+			process.stdout.clearLine(0);
+			process.stdout.cursorTo(0);
+		};
+
 		const loader = setInterval(() => {
 			count++;
 			if (count > 10) {
 				count = 0;
+				clearLine();
+				return;
 			}
-			this.bottomBar.updateBottomBar('.'.repeat(count));
+
+			process.stdout.write('.');
 		}, this.loaderInterval);
 
 		const clearLoader = () => {
 			clearInterval(loader);
 			process.removeAllListeners('SIGTERM');
+			clearLine();
 		};
 
 		process.on('SIGTERM', () => {
@@ -151,7 +163,6 @@ export class Scanner {
 		}
 
 		clearLoader();
-		this.bottomBar.updateBottomBar('');
 		this.scannedDirs.push(path);
 	}
 }

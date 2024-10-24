@@ -1,15 +1,7 @@
-import { Question } from './question';
+import { confirm } from '@inquirer/prompts';
 
-export class ConfirmDuplicatePathQuestion extends Question {
-	public constructor() {
-		super(
-			'confirm-duplicate-path',
-			'This path has already been scanned. Are you sure you want to scan it again?',
-			'confirm'
-		);
-	}
-
+export class ConfirmDuplicatePathQuestion {
 	public async getAnswer(): Promise<boolean> {
-		return super.getAnswer();
+		return confirm({ message: 'This path has already been scanned. Are you sure you want to scan it again?' });
 	}
 }

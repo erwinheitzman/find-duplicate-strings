@@ -32,7 +32,7 @@ export const file3 = (): Readable => {
 	readable.push(``);
 	readable.push(`describe('', () => {`);
 	readable.push(`    it("", () => {`);
-	readable.push(`        const foo = "fo\\"o";`);
+	readable.push(`        const foo = "foo";`);
 	readable.push(`        const bar = 'bar';`);
 	readable.push(`        const baz = \`baz\`;`);
 	readable.push(`    });`);

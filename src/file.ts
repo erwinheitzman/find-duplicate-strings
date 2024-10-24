@@ -16,7 +16,7 @@ export class File {
 	}
 
 	private processLine(line: string): void {
-		const matches = line.match(/(?:("[^"\\]*(?:\\.[^"\\]*)*")|('[^'\\]*(?:\\.[^'\\]*)*'))/g);
+		const matches = line.match(/(?:("[^"\\]*(?:\\\\.[^"\\]*)*")|('[^'\\]*(?:\\\\.[^'\\]*)*'))/g);
 
 		if (matches) {
 			matches

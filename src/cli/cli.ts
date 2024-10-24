@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import { Scanner } from '../scanner';
+import { Scanner } from '../scanner/scanner';
 
 interface Options {
 	silent?: boolean;

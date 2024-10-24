@@ -4,9 +4,7 @@ const dummy = { key: 'someStringMatch', count: 0, files: [] };
 
 describe('Store', () => {
 	beforeEach(() => {
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		// @ts-expect-error
-		Store['store'] = new Map();
+		Store.clear();
 	});
 
 	it('should add a value', () => {

@@ -1,4 +1,4 @@
-import { Finding } from './finding';
+import { Finding } from '../typings/finding';
 
 const findings: Finding[] = [
 	{

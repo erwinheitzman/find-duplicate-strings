@@ -1,19 +1,19 @@
-import { Directory } from './directory';
-import { Store } from './store';
-import { File } from './file';
-import { Output } from './output';
-import { Exclusions } from './exclusions';
-import { Extensions } from './extensions';
+import { Directory } from '../directory/directory';
+import { Store } from '../store/store';
+import { File } from '../file/file';
+import { Output } from '../output/output';
+import { Exclusions } from '../exclusions/exclusions';
+import { Extensions } from '../extensions/extensions';
 import {
 	ConfirmDuplicatePathQuestion,
 	ExclusionsQuestion,
 	ExtensionsQuestion,
 	ThresholdQuestion,
-} from './cli/questions';
-import { Finding } from './finding';
+} from '../cli/questions';
+import { Finding } from '../typings/finding';
 import { existsSync, statSync } from 'node:fs';
 import { normalize, resolve } from 'node:path';
-import { PathQuestion } from './cli/questions/path';
+import { PathQuestion } from '../cli/questions/path';
 import process from 'node:process';
 
 interface Options {
@@ -107,7 +107,7 @@ export class Scanner {
 			return;
 		}
 
-		await new Output(duplicates as Finding[], this.output, this.interactive).output();
+		await new Output(duplicates as Finding[], this.output).output();
 	}
 
 	private async scanDir(path: string): Promise<void> {

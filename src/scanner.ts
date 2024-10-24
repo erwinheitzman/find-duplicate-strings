@@ -92,7 +92,6 @@ export class Scanner {
 
 		let shouldScan = true;
 
-		console.time('x');
 		if (this.scannedDirs.includes(path)) {
 			shouldScan = await new ConfirmDuplicatePathQuestion().getAnswer();
 		}
@@ -109,7 +108,6 @@ export class Scanner {
 		}
 
 		await new Output(duplicates as Finding[], this.output, this.interactive).output();
-		console.timeEnd('x');
 	}
 
 	private async scanDir(path: string): Promise<void> {

@@ -1,11 +1,7 @@
-import { Question } from './question';
+import { input } from '@inquirer/prompts';
 
-export class OutputQuestion extends Question {
-	public constructor() {
-		super('output', 'Please provide a filepath to store the output.');
-	}
-
+export class OutputQuestion {
 	public async getAnswer(): Promise<string> {
-		return super.getAnswer();
+		return input({ message: 'Please provide a filepath to store the output.' });
 	}
 }

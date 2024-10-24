@@ -6,7 +6,10 @@ import { Finding } from './finding';
 export class Output {
 	private data: Finding[];
 
-	public constructor(input: Finding[], private silent: boolean) {
+	public constructor(
+		input: Finding[],
+		private silent: boolean,
+	) {
 		this.data = input.sort((a, b) => b.count - a.count);
 	}
 

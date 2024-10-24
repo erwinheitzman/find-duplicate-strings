@@ -1,12 +1,12 @@
 import { Output } from './output';
 import { writeFileSync } from 'fs';
-import { prompt } from 'inquirer';
+import { input } from '@inquirer/prompts';
 import { findings, manyFindings } from './output.mocks';
 import { OutputQuestion } from './cli/questions';
 
 jest.mock('fs');
 jest.mock('path');
-jest.mock('inquirer');
+jest.mock('@inquirer/prompts');
 jest.mock('./cli/questions/output');
 
 console.table = jest.fn();
@@ -15,7 +15,7 @@ const OutputQuestionMock = OutputQuestion.prototype.getAnswer as jest.Mock;
 
 describe('Output', () => {
 	beforeEach(() => {
-		(prompt as unknown as jest.Mock)
+		(input as unknown as jest.Mock)
 			.mockResolvedValueOnce({
 				output: 'dummy1',
 			})

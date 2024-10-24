@@ -1,14 +1,9 @@
-import { Question } from './question';
+import { input } from '@inquirer/prompts';
 
-export class ExclusionsQuestion extends Question {
-	public constructor() {
-		super(
-			'exclusions',
-			'Please provide any directories or files that you would like to exclude (comma separated list)'
-		);
-	}
-
+export class ExclusionsQuestion {
 	public async getAnswer(): Promise<string> {
-		return super.getAnswer();
+		return input({
+			message: 'Please provide any directories or files that you would like to exclude (comma separated list)',
+		});
 	}
 }

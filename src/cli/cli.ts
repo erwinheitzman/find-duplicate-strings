@@ -1,8 +1,5 @@
 import { Command } from 'commander';
 import { Scanner } from '../scanner';
-import { ui } from 'inquirer';
-
-const bottomBar = new ui.BottomBar();
 
 interface Options {
 	silent?: boolean;
@@ -23,5 +20,5 @@ program
 	.parse();
 
 async function main(path: string, options: Options) {
-	await new Scanner({ ...options, path }, bottomBar).scan().catch((e) => console.error(e));
+	await new Scanner({ ...options, path }).scan().catch((e) => console.error(e));
 }

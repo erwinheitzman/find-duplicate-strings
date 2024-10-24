@@ -6,6 +6,7 @@ jest.mock('./store');
 jest.mock('fs');
 jest.mock('path');
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const promisesMock = ((promises as unknown) = { readdir: jest.fn(), realpath: jest.fn(), lstat: jest.fn() });
 const existsSyncMock = existsSync as jest.Mock;
 const isDirectoryMock = statSync as jest.Mock;
@@ -216,7 +217,7 @@ describe('Directory', () => {
 
 	it('should ignore broken symlinks', async () => {
 		promisesMock.readdir.mockReturnValueOnce([{ name: 'file1', isDirectory: () => false, isSymbolicLink: () => true }]);
-		promisesMock.realpath.mockRejectedValueOnce({ message: 'ENOENT' } as Error);
+		promisesMock.realpath.mockRejectedValueOnce(new Error('ENOENT'));
 		resolveMock.mockReturnValueOnce('dir').mockReturnValueOnce('dir/file2');
 		joinMock.mockReturnValueOnce('dir/file2');
 
@@ -238,6 +239,6 @@ describe('Directory', () => {
 
 		const files = directory.getFiles();
 
-		expect(async () => await files.next()).rejects.toThrowError('foo');
+		expect(async () => await files.next()).rejects.toThrow('foo');
 	});
 });

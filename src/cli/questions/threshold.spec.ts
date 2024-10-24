@@ -1,16 +1,12 @@
+import { input } from '@inquirer/prompts';
 import { ThresholdQuestion } from './threshold';
-import { Question } from './question';
 
-jest.mock('./question');
-
-const questionMock = Question as jest.Mock;
+jest.mock('@inquirer/prompts');
 
 describe('ThresholdQuestion', () => {
-	beforeEach(() => {
-		questionMock.prototype.getAnswer = jest.fn().mockResolvedValue('5');
-	});
-
 	it('should return the answer when it is found', async () => {
+		jest.mocked(input).mockResolvedValue('5');
+
 		const question = new ThresholdQuestion();
 
 		const answer = await question.getAnswer();

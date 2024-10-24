@@ -5,7 +5,7 @@ import { Store } from './store';
 export class File {
 	constructor(private readonly name: string) {}
 
-	processContent(): Promise<any> {
+	processContent(): Promise<unknown> {
 		return new Promise((resolve) => {
 			const rl = this.readlineInterface();
 			rl.on('line', (line) => this.processLine(line));

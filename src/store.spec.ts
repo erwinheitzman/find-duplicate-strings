@@ -43,10 +43,10 @@ describe('Store', () => {
 	it('should throw an error when adding a key that already exists', () => {
 		Store.add('dummy1', dummy);
 
-		expect(() => Store.add('dummy1', dummy)).toThrowError('Key dummy1 already exists');
+		expect(() => Store.add('dummy1', dummy)).toThrow('Key dummy1 already exists');
 	});
 
 	it("should throw an error when updating a key that doesn't exist", () => {
-		expect(() => Store.update('dummy1', dummy)).toThrowError('Key dummy1 does not exist');
+		expect(() => Store.update('dummy1', dummy)).toThrow('Key dummy1 does not exist');
 	});
 });

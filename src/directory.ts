@@ -1,5 +1,5 @@
-import { promises } from 'fs';
-import { extname, join } from 'path';
+import { promises } from 'node:fs';
+import { extname, join } from 'node:path';
 
 export class Directory {
 	constructor(
@@ -28,8 +28,6 @@ export class Directory {
 					fullPath = await promises.realpath(fullPath);
 					isLink = true;
 				} catch (error: unknown) {
-					console.log(error);
-
 					if (error instanceof Error && error.message.includes('ENOENT')) {
 						continue; // ignore broken symlinks
 					}

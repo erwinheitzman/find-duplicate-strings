@@ -1,5 +1,5 @@
-import { createInterface, Interface } from 'readline';
-import { createReadStream } from 'fs';
+import { createInterface, Interface } from 'node:readline';
+import { createReadStream } from 'node:fs';
 import { Store } from './store';
 
 export class File {
@@ -29,14 +29,21 @@ export class File {
 
 	private storeMatch(key: string, file: string): void {
 		const value = Store.find(key);
+		const cachedFile = Store.cache(file);
 
 		if (!value) {
-			Store.add(key, { key, count: 1, files: [file] });
+			Store.add(key, { key, count: 1, files: [cachedFile || file] });
 			return;
 		}
 
-		if (!value.files.includes(file)) {
-			value.files.push(file);
+		if (cachedFile) {
+			if (!value.files.includes(cachedFile)) {
+				value.files.push(cachedFile);
+			}
+		} else {
+			if (!value.files.includes(file)) {
+				value.files.push(file);
+			}
 		}
 
 		Store.update(key, { key, count: (value.count += 1), files: value.files });

@@ -2,7 +2,7 @@ import { Directory } from './directory';
 import { promises, existsSync, statSync } from 'node:fs';
 import { resolve, normalize, extname, join } from 'node:path';
 
-jest.mock('./store');
+jest.mock('../store/store');
 jest.mock('node:fs');
 jest.mock('node:path');
 

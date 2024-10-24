@@ -6,26 +6,26 @@ import {
 	ConfirmPathQuestion,
 	ConfirmDuplicatePathQuestion,
 	ThresholdQuestion,
-} from './cli/questions';
-import { Output } from './output';
-import { Directory } from './directory';
-import { Store } from './store';
-import { File } from './file';
+} from '../cli/questions';
+import { Output } from '../output/output';
+import { Directory } from '../directory/directory';
+import { Store } from '../store/store';
+import { File } from '../file/file';
 import { existsSync, statSync } from 'node:fs';
 import { normalize, resolve } from 'node:path';
 
-jest.mock('./cli/questions/confirm-path');
-jest.mock('./cli/questions/confirm-duplicate-path');
-jest.mock('./cli/questions/exclusions');
-jest.mock('./cli/questions/extensions');
-jest.mock('./cli/questions/threshold');
-jest.mock('./cli/questions/path');
-jest.mock('./directory');
-jest.mock('./store');
-jest.mock('./file');
+jest.mock('../cli/questions/confirm-path');
+jest.mock('../cli/questions/confirm-duplicate-path');
+jest.mock('../cli/questions/exclusions');
+jest.mock('../cli/questions/extensions');
+jest.mock('../cli/questions/threshold');
+jest.mock('../cli/questions/path');
+jest.mock('../directory/directory');
+jest.mock('../store/store');
+jest.mock('../file/file');
+jest.mock('../output/output');
 jest.mock('node:fs');
 jest.mock('node:path');
-jest.mock('./output');
 jest.mock('@inquirer/prompts');
 
 const getAllMock = Store.getAll as jest.Mock;

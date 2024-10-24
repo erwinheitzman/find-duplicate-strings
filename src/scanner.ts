@@ -6,51 +6,56 @@ import { Exclusions } from './exclusions';
 import { Extensions } from './extensions';
 import {
 	ConfirmDuplicatePathQuestion,
-	ConfirmPathQuestion,
 	ExclusionsQuestion,
 	ExtensionsQuestion,
 	ThresholdQuestion,
 } from './cli/questions';
 import { Finding } from './finding';
-import { existsSync, statSync } from 'fs';
-import { normalize, resolve } from 'path';
+import { existsSync, statSync } from 'node:fs';
+import { normalize, resolve } from 'node:path';
 import { PathQuestion } from './cli/questions/path';
-import process from 'process';
+import process from 'node:process';
 
 interface Options {
-	silent?: boolean;
 	exclusions?: string;
 	extensions?: string;
+	output?: string;
+	interactive?: boolean;
 	path?: string;
 	threshold?: number | string;
 }
 
 export class Scanner {
 	private readonly scannedDirs: string[] = [];
-	private exclusions!: string[];
-	private extensions!: string[];
-	private threshold!: number;
-	private silent: boolean;
+	private exclusions!: string[] | undefined;
+	private extensions!: string[] | undefined;
+	private threshold!: number | undefined;
+	private output!: string;
+	private interactive!: boolean;
 	private path: string;
 
 	public constructor(
 		options: Options,
 		private loaderInterval: number = 1000,
 	) {
-		if (options.exclusions) {
-			this.exclusions = Exclusions.process(options.exclusions);
-		}
-
-		if (options.extensions) {
-			this.extensions = Extensions.process(options.extensions);
-		}
-
-		if (options.threshold) {
-			this.threshold = parseInt(options.threshold as string, 10);
-		}
-
-		this.silent = !!options.silent;
-		this.path = options.path || '';
+		this.exclusions = options.exclusions
+			? Exclusions.process(options.exclusions)
+			: options.interactive
+				? undefined
+				: [];
+		this.extensions = options.extensions
+			? Extensions.process(options.extensions)
+			: options.interactive
+				? undefined
+				: [];
+		this.threshold = options.threshold
+			? parseInt(options.threshold as string, 10)
+			: options.interactive
+				? undefined
+				: 1;
+		this.output = options.output ?? 'fds-output';
+		this.interactive = options.interactive ?? false;
+		this.path = options.path ?? '';
 	}
 
 	public async scan(): Promise<void> {
@@ -65,35 +70,35 @@ export class Scanner {
 		const lstat = statSync(fullPath);
 
 		if (!this.exclusions && lstat.isDirectory()) {
-			const answer = await new ExclusionsQuestion().getAnswer();
-			this.exclusions = Exclusions.process(answer);
+			if (this.interactive) {
+				const answer = await new ExclusionsQuestion().getAnswer();
+				this.exclusions = Exclusions.process(answer);
+			}
 		}
 
 		if (!this.extensions && lstat.isDirectory()) {
-			const answer = await new ExtensionsQuestion().getAnswer();
-			this.extensions = Extensions.process(answer);
+			if (this.interactive) {
+				const answer = await new ExtensionsQuestion().getAnswer();
+				this.extensions = Extensions.process(answer);
+			}
 		}
 
 		if (!this.threshold) {
-			const answer = await new ThresholdQuestion().getAnswer();
-			this.threshold = parseInt(answer, 10);
+			if (this.interactive) {
+				const answer = await new ThresholdQuestion().getAnswer();
+				this.threshold = parseInt(answer, 10);
+			}
 		}
 
 		let shouldScan = true;
 
+		console.time('x');
 		if (this.scannedDirs.includes(path)) {
 			shouldScan = await new ConfirmDuplicatePathQuestion().getAnswer();
 		}
 
 		if (shouldScan) {
 			await this.initScan(path);
-		}
-
-		const continueScanning = await new ConfirmPathQuestion().getAnswer();
-
-		if (continueScanning) {
-			this.path = '';
-			return this.scan();
 		}
 
 		const duplicates = this.getDuplicates();
@@ -103,11 +108,12 @@ export class Scanner {
 			return;
 		}
 
-		await new Output(duplicates as Finding[], this.silent).output();
+		await new Output(duplicates as Finding[], this.output, this.interactive).output();
+		console.timeEnd('x');
 	}
 
 	private async scanDir(path: string): Promise<void> {
-		const directory = new Directory(path, this.exclusions, this.extensions);
+		const directory = new Directory(path, this.exclusions as string[], this.extensions as string[]);
 		const files = directory.getFiles();
 
 		for await (const file of files) {
@@ -120,7 +126,7 @@ export class Scanner {
 	}
 
 	private getDuplicates(): Finding[] {
-		return Store.getAll().filter((value) => value.count > this.threshold);
+		return Store.getAll().filter((value) => value.count > (this.threshold as number));
 	}
 
 	private async initScan(path: string) {

@@ -1,50 +1,40 @@
-import { resolve } from 'path';
-import { writeFileSync } from 'fs';
-import { OutputQuestion } from './cli/questions';
+import { resolve } from 'node:path';
+import { writeFileSync, existsSync } from 'node:fs';
 import { Finding } from './finding';
+import { OutputQuestion } from './cli/questions';
 
 export class Output {
 	private data: Finding[];
 
 	public constructor(
 		input: Finding[],
-		private silent: boolean,
+		private outputFileName: string = 'fds-output',
+		private interactive: boolean = false,
 	) {
 		this.data = input.sort((a, b) => b.count - a.count);
 	}
 
 	public async output(): Promise<void> {
-		if (!this.silent) {
-			this.outputToConsole(this.data);
+		let filename: string;
+		if (this.interactive) {
+			filename = await new OutputQuestion().getAnswer();
+		} else {
+			let count = 0;
+			const createFileName = (path: string) => {
+				if (existsSync(path)) {
+					return createFileName(resolve(process.cwd(), `${this.outputFileName}-${++count}.json`));
+				}
+				return path;
+			};
+
+			filename = createFileName(resolve(process.cwd(), `${this.outputFileName}.json`));
 		}
 
-		const fileName = await new OutputQuestion().getAnswer();
-
-		this.outputToFile(this.data, fileName);
+		this.outputToFile(this.data, filename);
 	}
 
-	private outputToConsole(output: Finding[]): void {
-		const outputCopy = JSON.parse(JSON.stringify(output.slice(0, 10))) as Finding[];
-
-		const consoleOutput: [string, number?][] = outputCopy.map(this.processFinding);
-
-		if (output.length > 10) {
-			consoleOutput.push(['...']);
-		}
-
-		console.table(consoleOutput);
-	}
-
-	private outputToFile(output: Finding[], filename: string): void {
-		const filePath = resolve(process.cwd(), filename);
+	private outputToFile(output: Finding[], filePath: string): void {
 		const data = JSON.stringify(output, null, 2);
-		writeFileSync(`${filePath}.json`, data, { encoding: 'utf8' });
-	}
-
-	private processFinding(finding: Finding): [string, number] {
-		if (finding.key.length > 32) {
-			finding.key = finding.key.substring(0, 32) + '...';
-		}
-		return [finding.key, finding.count];
+		writeFileSync(filePath, data, { encoding: 'utf8' });
 	}
 }

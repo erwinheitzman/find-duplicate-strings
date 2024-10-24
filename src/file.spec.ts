@@ -1,13 +1,13 @@
 import { File } from './file';
 import { Store } from './store';
-import { createReadStream } from 'fs';
+import { createReadStream } from 'node:fs';
 import { emptyFile, emptyStringsFile, noStringsFile, file1, file2, file3 } from './file.mocks';
 
 const path = 'dummy/path/';
 
 jest.mock('./store');
-jest.mock('fs');
-jest.mock('path', () => ({
+jest.mock('node:fs');
+jest.mock('node:path', () => ({
 	resolve: () => path,
 }));
 
@@ -21,8 +21,8 @@ describe('File', () => {
 
 		await new File(path).processContent();
 
-		expect(Store.add).toBeCalledTimes(2);
-		expect(Store.update).toBeCalledTimes(0);
+		expect(Store.add).toHaveBeenCalledTimes(2);
+		expect(Store.update).toHaveBeenCalledTimes(0);
 		expect(Store.add).toHaveBeenNthCalledWith(1, 'foo', { key: 'foo', files: [path], count: 1 });
 		expect(Store.add).toHaveBeenNthCalledWith(2, 'bar', { key: 'bar', files: [path], count: 1 });
 	});
@@ -33,8 +33,8 @@ describe('File', () => {
 
 		await new File(path).processContent();
 
-		expect(Store.add).toBeCalledTimes(0);
-		expect(Store.update).toBeCalledTimes(2);
+		expect(Store.add).toHaveBeenCalledTimes(0);
+		expect(Store.update).toHaveBeenCalledTimes(2);
 		expect(Store.update).toHaveBeenNthCalledWith(1, 'foo', { key: 'foo', files: [path], count: 2 });
 		expect(Store.update).toHaveBeenNthCalledWith(2, 'bar', { key: 'bar', files: [path], count: 2 });
 	});
@@ -45,8 +45,8 @@ describe('File', () => {
 
 		await new File(path).processContent();
 
-		expect(Store.add).toBeCalledTimes(0);
-		expect(Store.update).toBeCalledTimes(0);
+		expect(Store.add).toHaveBeenCalledTimes(0);
+		expect(Store.update).toHaveBeenCalledTimes(0);
 	});
 
 	it('should not store the same path path twice', async () => {
@@ -58,8 +58,8 @@ describe('File', () => {
 
 		await new File(path).processContent();
 
-		expect(Store.add).toBeCalledTimes(1);
-		expect(Store.update).toBeCalledTimes(2);
+		expect(Store.add).toHaveBeenCalledTimes(1);
+		expect(Store.update).toHaveBeenCalledTimes(2);
 		expect(Store.add).toHaveBeenNthCalledWith(1, 'foo', { key: 'foo', files: [path], count: 1 });
 		expect(Store.update).toHaveBeenNthCalledWith(1, 'foo', { key: 'foo', files: [path], count: 2 });
 		expect(Store.update).toHaveBeenNthCalledWith(2, 'foo', { key: 'foo', files: [path], count: 3 });
@@ -71,8 +71,8 @@ describe('File', () => {
 
 		await new File(path).processContent();
 
-		expect(Store.add).toBeCalledTimes(2);
-		expect(Store.update).toBeCalledTimes(1);
+		expect(Store.add).toHaveBeenCalledTimes(2);
+		expect(Store.update).toHaveBeenCalledTimes(1);
 		expect(Store.add).toHaveBeenNthCalledWith(1, 'foo', { key: 'foo', files: [path], count: 1 });
 		expect(Store.update).toHaveBeenNthCalledWith(1, 'foo', { key: 'foo', files: [path], count: 2 });
 		expect(Store.add).toHaveBeenNthCalledWith(2, 'bar', { key: 'bar', files: [path], count: 1 });
@@ -83,9 +83,9 @@ describe('File', () => {
 
 		await new File(path).processContent();
 
-		expect(Store.add).toBeCalledTimes(0);
-		expect(Store.update).toBeCalledTimes(0);
-		expect(Store.find).toBeCalledTimes(0);
+		expect(Store.add).toHaveBeenCalledTimes(0);
+		expect(Store.update).toHaveBeenCalledTimes(0);
+		expect(Store.find).toHaveBeenCalledTimes(0);
 	});
 
 	it('should not call the store when the file is empty', async () => {
@@ -93,8 +93,8 @@ describe('File', () => {
 
 		await new File(path).processContent();
 
-		expect(Store.add).toBeCalledTimes(0);
-		expect(Store.update).toBeCalledTimes(0);
-		expect(Store.find).toBeCalledTimes(0);
+		expect(Store.add).toHaveBeenCalledTimes(0);
+		expect(Store.update).toHaveBeenCalledTimes(0);
+		expect(Store.find).toHaveBeenCalledTimes(0);
 	});
 });

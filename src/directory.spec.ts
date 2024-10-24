@@ -1,10 +1,10 @@
 import { Directory } from './directory';
-import { promises, existsSync, statSync } from 'fs';
-import { resolve, normalize, extname, join } from 'path';
+import { promises, existsSync, statSync } from 'node:fs';
+import { resolve, normalize, extname, join } from 'node:path';
 
 jest.mock('./store');
-jest.mock('fs');
-jest.mock('path');
+jest.mock('node:fs');
+jest.mock('node:path');
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const promisesMock = ((promises as unknown) = { readdir: jest.fn(), realpath: jest.fn(), lstat: jest.fn() });
@@ -192,8 +192,8 @@ describe('Directory', () => {
 		await files.next();
 		await files.next();
 
-		expect(isDirentDirectoryMock).toBeCalledTimes(1);
-		expect(isLstatDirectoryMock).toBeCalledTimes(0);
+		expect(isDirentDirectoryMock).toHaveBeenCalledTimes(1);
+		expect(isLstatDirectoryMock).toHaveBeenCalledTimes(0);
 	});
 
 	it('should check for the isDirectory method on the lstat object when the file/directory is a symbolic link', async () => {
@@ -211,8 +211,8 @@ describe('Directory', () => {
 		await files.next();
 		await files.next();
 
-		expect(isDirentDirectoryMock).toBeCalledTimes(0);
-		expect(isLstatDirectoryMock).toBeCalledTimes(1);
+		expect(isDirentDirectoryMock).toHaveBeenCalledTimes(0);
+		expect(isLstatDirectoryMock).toHaveBeenCalledTimes(1);
 	});
 
 	it('should ignore broken symlinks', async () => {

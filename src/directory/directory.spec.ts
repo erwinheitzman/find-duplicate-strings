@@ -1,6 +1,7 @@
+import { existsSync, promises, statSync } from 'node:fs';
+import { extname, join, normalize, resolve } from 'node:path';
+
 import { Directory } from './directory';
-import { promises, existsSync, statSync } from 'node:fs';
-import { resolve, normalize, extname, join } from 'node:path';
 
 jest.mock('../store/store');
 jest.mock('node:fs');

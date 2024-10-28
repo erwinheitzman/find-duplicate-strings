@@ -1,6 +1,7 @@
+import { existsSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
-import { writeFileSync, existsSync } from 'node:fs';
-import { Finding } from '../typings/finding';
+
+import type { Finding } from '../typings/finding';
 
 export class Output {
 	private data: Finding[];
@@ -14,7 +15,7 @@ export class Output {
 		this.path = resolve(process.cwd(), `${this.outputFileName}.json`);
 	}
 
-	public async output(): Promise<void> {
+	public output(): void {
 		let count = 0;
 		const createFileName = (path: string) => {
 			if (existsSync(path)) {
@@ -23,9 +24,7 @@ export class Output {
 			return path;
 		};
 
-		this.path = createFileName(this.path);
-
-		this.outputToFile(this.data, this.path);
+		this.outputToFile(this.data, createFileName(this.path));
 	}
 
 	private outputToFile(output: Finding[], filePath: string): void {

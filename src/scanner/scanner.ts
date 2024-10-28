@@ -1,20 +1,22 @@
-import { Directory } from '../directory/directory';
-import { Store } from '../store/store';
-import { File } from '../file/file';
-import { Output } from '../output/output';
-import { Exclusions } from '../exclusions/exclusions';
-import { Extensions } from '../extensions/extensions';
+import { existsSync, statSync } from 'node:fs';
+import { normalize, resolve } from 'node:path';
+import process from 'node:process';
+
 import {
 	ConfirmDuplicatePathQuestion,
 	ExclusionsQuestion,
 	ExtensionsQuestion,
 	ThresholdQuestion,
 } from '../cli/questions';
-import { Finding } from '../typings/finding';
-import { existsSync, statSync } from 'node:fs';
-import { normalize, resolve } from 'node:path';
 import { PathQuestion } from '../cli/questions/path';
-import process from 'node:process';
+import { Directory } from '../directory/directory';
+import { Exclusions } from '../exclusions/exclusions';
+import { Extensions } from '../extensions/extensions';
+import { File } from '../file/file';
+import { Output } from '../output/output';
+import { Store } from '../store/store';
+import { Loader } from '../loader/loader';
+import type { Finding } from '../typings/finding';
 
 interface Options {
 	exclusions?: string;
@@ -107,7 +109,7 @@ export class Scanner {
 			return;
 		}
 
-		await new Output(duplicates as Finding[], this.output).output();
+		new Output(duplicates as Finding[], this.output).output();
 	}
 
 	private async scanDir(path: string): Promise<void> {
@@ -128,34 +130,7 @@ export class Scanner {
 	}
 
 	private async initScan(path: string) {
-		let count = 0;
-
-		const clearLine = () => {
-			process.stdout.clearLine(0);
-			process.stdout.cursorTo(0);
-		};
-
-		const loader = setInterval(() => {
-			count++;
-			if (count > 10) {
-				count = 0;
-				clearLine();
-				return;
-			}
-
-			process.stdout.write('.');
-		}, this.loaderInterval);
-
-		const clearLoader = () => {
-			clearInterval(loader);
-			process.removeAllListeners('SIGTERM');
-			clearLine();
-		};
-
-		process.on('SIGTERM', () => {
-			clearInterval(loader);
-		});
-
+		const loader = new Loader(this.loaderInterval);
 		const lstat = statSync(path);
 
 		if (lstat.isFile()) {
@@ -166,7 +141,7 @@ export class Scanner {
 			await this.scanDir(path);
 		}
 
-		clearLoader();
+		loader.destroy();
 		this.scannedDirs.push(path);
 	}
 }

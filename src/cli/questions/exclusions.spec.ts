@@ -1,4 +1,5 @@
 import { input } from '@inquirer/prompts';
+
 import { ExclusionsQuestion } from './exclusions';
 
 jest.mock('@inquirer/prompts');

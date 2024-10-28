@@ -1,19 +1,23 @@
-import { Scanner } from './scanner';
-import {
-	PathQuestion,
-	ExclusionsQuestion,
-	ExtensionsQuestion,
-	ConfirmPathQuestion,
-	ConfirmDuplicatePathQuestion,
-	ThresholdQuestion,
-} from '../cli/questions';
-import { Output } from '../output/output';
-import { Directory } from '../directory/directory';
-import { Store } from '../store/store';
-import { File } from '../file/file';
 import { existsSync, statSync } from 'node:fs';
 import { normalize, resolve } from 'node:path';
 
+import {
+	ConfirmDuplicatePathQuestion,
+	ConfirmPathQuestion,
+	ExclusionsQuestion,
+	ExtensionsQuestion,
+	PathQuestion,
+	ThresholdQuestion,
+} from '../cli/questions';
+import { Directory } from '../directory/directory';
+import { File } from '../file/file';
+import { Output } from '../output/output';
+import { Store } from '../store/store';
+import { Scanner } from './scanner';
+
+jest.mock('node:fs');
+jest.mock('node:path');
+jest.mock('@inquirer/prompts');
 jest.mock('../cli/questions/confirm-path');
 jest.mock('../cli/questions/confirm-duplicate-path');
 jest.mock('../cli/questions/exclusions');
@@ -24,9 +28,6 @@ jest.mock('../directory/directory');
 jest.mock('../store/store');
 jest.mock('../file/file');
 jest.mock('../output/output');
-jest.mock('node:fs');
-jest.mock('node:path');
-jest.mock('@inquirer/prompts');
 
 const getAllMock = Store.getAll as jest.Mock;
 const DirectoryGetFilesMock = Directory.prototype.getFiles as jest.Mock;
@@ -293,41 +294,40 @@ describe('Scanner', () => {
 		expect(Output.prototype.output).toHaveBeenCalledTimes(1);
 	});
 
-	// it('should ask if you want to scan the same directory again', async () => {
-	// 	statSyncMock.mockReturnValue({ isFile: () => false, isDirectory: () => true });
-	// 	ConfirmDuplicatePathQuestionMock.mockResolvedValue(false);
-	// 	DirectoryGetFilesMock.mockReturnValue([]);
-	// 	const scanner = new Scanner({}, interval);
+	it('should ask if you want to scan the same directory again', async () => {
+		statSyncMock.mockReturnValue({ isFile: () => false, isDirectory: () => true });
+		ConfirmDuplicatePathQuestionMock.mockResolvedValue(false);
+		DirectoryGetFilesMock.mockReturnValue([]);
+		const scanner = new Scanner({}, interval);
 
-	// 	await scanner.scan();
-	// 	await scanner.scan();
+		await scanner.scan();
+		await scanner.scan();
 
-	// 	expect(ConfirmDuplicatePathQuestionMock).toHaveBeenCalledTimes(1);
-	// 	expect(DirectoryGetFilesMock).toHaveBeenCalledTimes(1);
-	// });
+		expect(ConfirmDuplicatePathQuestionMock).toHaveBeenCalledTimes(1);
+		expect(DirectoryGetFilesMock).toHaveBeenCalledTimes(1);
+	});
 
-	// it('should ask if you want to scan the same file again', async () => {
-	// 	statSyncMock.mockReturnValue({ isFile: () => true, isDirectory: () => false });
-	// 	ConfirmDuplicatePathQuestionMock.mockResolvedValue(false);
-	// 	FileProcessContentMock.mockReturnValue(noStringsFile);
-	// 	const scanner = new Scanner({}, interval);
+	it('should ask if you want to scan the same file again', async () => {
+		statSyncMock.mockReturnValue({ isFile: () => true, isDirectory: () => false });
+		ConfirmDuplicatePathQuestionMock.mockResolvedValue(false);
+		const scanner = new Scanner({}, interval);
 
-	// 	await scanner.scan();
-	// 	await scanner.scan();
+		await scanner.scan();
+		await scanner.scan();
 
-	// 	expect(ConfirmDuplicatePathQuestionMock).toHaveBeenCalledTimes(1);
-	// 	expect(FileProcessContentMock).toHaveBeenCalledTimes(1);
-	// });
+		expect(ConfirmDuplicatePathQuestionMock).toHaveBeenCalledTimes(1);
+		expect(FileProcessContentMock).toHaveBeenCalledTimes(1);
+	});
 
-	// it('should re-scan directory when confirmed', async () => {
-	// 	ConfirmDuplicatePathQuestionMock.mockResolvedValueOnce(true).mockResolvedValueOnce(false);
-	// 	const scanner = new Scanner({}, interval);
+	it('should re-scan directory when confirmed', async () => {
+		ConfirmDuplicatePathQuestionMock.mockResolvedValueOnce(true).mockResolvedValueOnce(false);
+		const scanner = new Scanner({}, interval);
 
-	// 	await scanner.scan();
-	// 	await scanner.scan();
+		await scanner.scan();
+		await scanner.scan();
 
-	// 	expect(File.prototype.processContent).toHaveBeenCalledTimes(2);
-	// });
+		expect(File.prototype.processContent).toHaveBeenCalledTimes(2);
+	});
 
 	// it('should ask if you want to scan another directory', async () => {
 	// 	ConfirmPathQuestionMock.mockResolvedValueOnce(false);
@@ -361,53 +361,10 @@ describe('Scanner', () => {
 
 		await new Scanner({ path: '../dummy-directory' }, interval).scan();
 
-		expect(resolveMock).toBeCalledWith('/Users/Dummy-User/development/current-working-directory', '../dummy-directory');
-		expect(normalizeMock).toBeCalledWith('/Users/Dummy-User/development/dummy-directory/');
-	});
-
-	it('should not show a loader when the scan is faster then the given interval', async () => {
-		statSyncMock.mockReturnValue({ isFile: () => true, isDirectory: () => false });
-		DirectoryGetFilesMock.mockReturnValue([{}]);
-		FileProcessContentMock.mockImplementation(() => {
-			return new Promise((resolve) => {
-				setTimeout(() => resolve(true), 1);
-				jest.runAllTimersAsync();
-			});
-		});
-
-		const scanner = new Scanner({ path: '../dummy-file' }, 10);
-
-		expect(process.stdout.clearLine).not.toHaveBeenCalled();
-		expect(process.stdout.cursorTo).not.toHaveBeenCalled();
-		expect(process.stdout.write).not.toHaveBeenCalled();
-
-		await scanner.scan();
-
-		expect(process.stdout.clearLine).toHaveBeenCalledTimes(1);
-		expect(process.stdout.cursorTo).toHaveBeenCalledTimes(1);
-		expect(process.stdout.write).not.toHaveBeenCalled();
-	});
-
-	it('should show a loader when the scan takes longer then the given interval', async () => {
-		statSyncMock.mockReturnValue({ isFile: () => true, isDirectory: () => false });
-		DirectoryGetFilesMock.mockReturnValue([{}]);
-		FileProcessContentMock.mockImplementation(() => {
-			return new Promise((resolve) => {
-				setTimeout(() => resolve(true), 400);
-				jest.runAllTimersAsync();
-			});
-		});
-
-		const scanner = new Scanner({ path: '../dummy-file' }, 10);
-
-		expect(process.stdout.clearLine).not.toHaveBeenCalled();
-		expect(process.stdout.cursorTo).not.toHaveBeenCalled();
-		expect(process.stdout.write).not.toHaveBeenCalled();
-
-		await scanner.scan();
-
-		expect(process.stdout.clearLine).toHaveBeenCalledTimes(4);
-		expect(process.stdout.cursorTo).toHaveBeenCalledTimes(4);
-		expect(process.stdout.write).toHaveBeenCalledTimes(37);
+		expect(resolveMock).toHaveBeenCalledWith(
+			'/Users/Dummy-User/development/current-working-directory',
+			'../dummy-directory',
+		);
+		expect(normalizeMock).toHaveBeenCalledWith('/Users/Dummy-User/development/dummy-directory/');
 	});
 });

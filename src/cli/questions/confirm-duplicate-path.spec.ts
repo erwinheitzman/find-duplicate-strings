@@ -1,4 +1,5 @@
 import { confirm } from '@inquirer/prompts';
+
 import { ConfirmDuplicatePathQuestion } from './confirm-duplicate-path';
 
 jest.mock('@inquirer/prompts');

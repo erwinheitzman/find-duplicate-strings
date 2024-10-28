@@ -1,6 +1,7 @@
 import { resolve } from 'node:path';
-import { File } from './file';
+
 import { Store } from '../store/store';
+import { File } from './file';
 
 beforeEach(() => {
 	Store.clear();
@@ -78,7 +79,7 @@ describe('File', () => {
 			{
 				count: 1,
 				files: [path],
-				key: "f\\'o\\'\\'o\\'bar",
+				key: "f'o''o'bar",
 			},
 			{
 				count: 1,

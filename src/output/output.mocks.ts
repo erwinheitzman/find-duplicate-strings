@@ -1,6 +1,6 @@
-import { Finding } from '../typings/finding';
+import type { Finding } from '../typings/finding';
 
-const findings: Finding[] = [
+export const findings: Finding[] = [
 	{
 		count: 1,
 		files: ['dummy/path/1'],
@@ -13,10 +13,8 @@ const findings: Finding[] = [
 	},
 ];
 
-const manyFindings: Finding[] = Array.from({ length: 15 }).map((_, i) => ({
+export const manyFindings: Finding[] = Array.from({ length: 15 }).map((_, i) => ({
 	count: i + 1,
 	files: ['dummy/path/' + (i + 1)],
 	key: 'foo',
 }));
-
-export { findings, manyFindings };

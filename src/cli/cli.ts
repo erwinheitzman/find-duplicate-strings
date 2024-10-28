@@ -1,4 +1,5 @@
 import { Command } from 'commander';
+
 import { Scanner } from '../scanner/scanner';
 
 interface Options {

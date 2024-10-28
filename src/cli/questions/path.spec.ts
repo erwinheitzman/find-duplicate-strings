@@ -1,4 +1,5 @@
 import { input } from '@inquirer/prompts';
+
 import { PathQuestion } from './path';
 
 jest.mock('@inquirer/prompts');

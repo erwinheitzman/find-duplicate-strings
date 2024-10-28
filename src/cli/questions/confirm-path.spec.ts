@@ -1,4 +1,5 @@
 import { confirm } from '@inquirer/prompts';
+
 import { ConfirmPathQuestion } from './confirm-path';
 
 jest.mock('@inquirer/prompts');

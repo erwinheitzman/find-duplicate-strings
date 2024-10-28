@@ -1,4 +1,4 @@
-import { Finding } from '../typings/finding';
+import type { Finding } from '../typings/finding';
 
 export class Store {
 	private static store: Map<string, Finding> = new Map();

@@ -1,4 +1,5 @@
 import { input } from '@inquirer/prompts';
+
 import { ThresholdQuestion } from './threshold';
 
 jest.mock('@inquirer/prompts');

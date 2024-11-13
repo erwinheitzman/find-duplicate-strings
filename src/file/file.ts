@@ -6,12 +6,12 @@ import { Store } from '../store/store';
 export class File {
 	constructor(private readonly path: string) {}
 
-	processContent(): Promise<unknown> {
+	processContent(): Promise<void> {
 		return new Promise((resolve) => {
 			const rl = this.readlineInterface();
 			rl.on('line', (line) => this.processLine(line));
 			rl.on('close', () => {
-				resolve(true);
+				resolve();
 			});
 		});
 	}
@@ -45,6 +45,7 @@ export class File {
 		return createInterface({
 			input: createReadStream(this.path, { encoding: 'utf8' }),
 			terminal: false,
+			historySize: 0,
 		});
 	}
 }

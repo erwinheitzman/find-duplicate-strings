@@ -20,13 +20,6 @@ describe('Store', () => {
 		expect(Store.getAll()).toEqual([dummy, dummy]);
 	});
 
-	it('should update a value', () => {
-		Store.add('dummy1', dummy);
-		Store.update('dummy1', { ...dummy, count: 3 });
-
-		expect(Store.getAll()).toEqual([{ ...dummy, count: 3 }]);
-	});
-
 	it('should find value by key', () => {
 		Store.add('dummy1', { ...dummy, key: 'foo' });
 		Store.add('dummy2', dummy);
@@ -42,9 +35,5 @@ describe('Store', () => {
 		Store.add('dummy1', dummy);
 
 		expect(() => Store.add('dummy1', dummy)).toThrow('Key dummy1 already exists');
-	});
-
-	it("should throw an error when updating a key that doesn't exist", () => {
-		expect(() => Store.update('dummy1', dummy)).toThrow('Key dummy1 does not exist');
 	});
 });

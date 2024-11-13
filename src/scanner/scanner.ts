@@ -2,13 +2,7 @@ import { existsSync, statSync } from 'node:fs';
 import { normalize, resolve } from 'node:path';
 import process from 'node:process';
 
-import {
-	ConfirmDuplicatePathQuestion,
-	ExclusionsQuestion,
-	ExtensionsQuestion,
-	ThresholdQuestion,
-} from '../cli/questions';
-import { PathQuestion } from '../cli/questions/path';
+import { ExclusionsQuestion, ExtensionsQuestion, ThresholdQuestion } from '../cli/questions';
 import { Directory } from '../directory/directory';
 import { Exclusions } from '../exclusions/exclusions';
 import { Extensions } from '../extensions/extensions';
@@ -23,84 +17,53 @@ interface Options {
 	extensions?: string;
 	output?: string;
 	interactive?: boolean;
-	path?: string;
+	path: string;
 	threshold?: number | string;
 }
 
 export class Scanner {
-	private readonly scannedDirs: string[] = [];
-	private exclusions!: string[] | undefined;
-	private extensions!: string[] | undefined;
-	private threshold!: number | undefined;
+	private exclusions!: string[];
+	private extensions!: string[];
+	private threshold!: number;
 	private output!: string;
 	private interactive!: boolean;
 	private path: string;
 
 	public constructor(
-		options: Options,
+		private options: Options,
 		private loaderInterval: number = 1000,
 	) {
-		this.exclusions = options.exclusions
-			? Exclusions.process(options.exclusions)
-			: options.interactive
-				? undefined
-				: [];
-		this.extensions = options.extensions
-			? Extensions.process(options.extensions)
-			: options.interactive
-				? undefined
-				: [];
-		this.threshold = options.threshold
-			? parseInt(options.threshold as string, 10)
-			: options.interactive
-				? undefined
-				: 1;
+		this.exclusions = Exclusions.process(options.exclusions);
+		this.extensions = Extensions.process(options.extensions);
+		this.threshold = typeof options.threshold === 'string' ? parseInt(options.threshold, 10) : 1;
 		this.output = options.output ?? 'fds-output';
 		this.interactive = options.interactive ?? false;
-		this.path = options.path ?? '';
+		this.path = normalize(resolve(process.cwd(), options.path));
+
+		if (!existsSync(this.path)) {
+			throw new Error('Invalid path: No such directory or file.');
+		}
 	}
 
 	public async scan(): Promise<void> {
-		const path = this.path.length ? this.path : await new PathQuestion().getAnswer();
+		const isDirectory = statSync(this.path).isDirectory();
 
-		const fullPath = normalize(resolve(process.cwd(), path));
-
-		if (!existsSync(fullPath)) {
-			throw new Error('Invalid path: No such directory or file.');
+		if (!this.options.exclusions && isDirectory && this.interactive) {
+			const answer = await new ExclusionsQuestion().getAnswer();
+			this.exclusions = Exclusions.process(answer);
 		}
 
-		const lstat = statSync(fullPath);
-
-		if (!this.exclusions && lstat.isDirectory()) {
-			if (this.interactive) {
-				const answer = await new ExclusionsQuestion().getAnswer();
-				this.exclusions = Exclusions.process(answer);
-			}
+		if (!this.options.extensions && isDirectory && this.interactive) {
+			const answer = await new ExtensionsQuestion().getAnswer();
+			this.extensions = Extensions.process(answer);
 		}
 
-		if (!this.extensions && lstat.isDirectory()) {
-			if (this.interactive) {
-				const answer = await new ExtensionsQuestion().getAnswer();
-				this.extensions = Extensions.process(answer);
-			}
+		if (!this.options.threshold && this.interactive) {
+			const answer = await new ThresholdQuestion().getAnswer();
+			this.threshold = parseInt(answer, 10);
 		}
 
-		if (!this.threshold) {
-			if (this.interactive) {
-				const answer = await new ThresholdQuestion().getAnswer();
-				this.threshold = parseInt(answer, 10);
-			}
-		}
-
-		let shouldScan = true;
-
-		if (this.scannedDirs.includes(path)) {
-			shouldScan = await new ConfirmDuplicatePathQuestion().getAnswer();
-		}
-
-		if (shouldScan) {
-			await this.initScan(path);
-		}
+		await this.initScan(this.path);
 
 		const duplicates = this.getDuplicates();
 
@@ -109,24 +72,25 @@ export class Scanner {
 			return;
 		}
 
-		new Output(duplicates as Finding[], this.output).output();
+		new Output(duplicates, this.output).output();
 	}
 
-	private async scanDir(path: string): Promise<void> {
-		const directory = new Directory(path, this.exclusions as string[], this.extensions as string[]);
+	private async scanDir(path: string): Promise<PromiseSettledResult<void>[]> {
+		const directory = new Directory(path, this.exclusions, this.extensions);
 		const files = directory.getFiles();
-
+		const promises = [];
 		for await (const file of files) {
-			await this.scanFile(file);
+			promises.push(this.scanFile(file));
 		}
+		return Promise.allSettled(promises);
 	}
 
-	private async scanFile(path: string): Promise<void> {
-		await new File(path).processContent();
+	private scanFile(path: string): Promise<void> {
+		return new File(path).processContent();
 	}
 
 	private getDuplicates(): Finding[] {
-		return Store.getAll().filter((value) => value.count > (this.threshold as number));
+		return Store.getAll().filter((value) => value.count > this.threshold);
 	}
 
 	private async initScan(path: string) {
@@ -134,7 +98,7 @@ export class Scanner {
 		const lstat = statSync(path);
 
 		if (lstat.isFile()) {
-			await this.scanFile(path);
+			await new File(path).processContent();
 		}
 
 		if (lstat.isDirectory()) {
@@ -142,6 +106,5 @@ export class Scanner {
 		}
 
 		loader.destroy();
-		this.scannedDirs.push(path);
 	}
 }

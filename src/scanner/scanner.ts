@@ -1,16 +1,15 @@
-import { existsSync, statSync } from 'node:fs';
-import { normalize, resolve } from 'node:path';
-import process from 'node:process';
+import { getFiles } from '../getFiles/getFiles.js';
+import { File } from '../file/file.js';
+import { Output } from '../output/output.js';
+import { Store } from '../store/store.js';
+import { Loader } from '../loader/loader.js';
+import { Exclusions } from '../exclusions/exclusions.js';
+import { Extensions } from '../extensions/extensions.js';
+import { ExclusionsQuestion } from '../cli/questions/exclusions.js';
+import { ExtensionsQuestion } from '../cli/questions/extensions.js';
+import { ThresholdQuestion } from '../cli/questions/threshold.js';
 
-import { ExclusionsQuestion, ExtensionsQuestion, ThresholdQuestion } from '../cli/questions';
-import { Directory } from '../directory/directory';
-import { Exclusions } from '../exclusions/exclusions';
-import { Extensions } from '../extensions/extensions';
-import { File } from '../file/file';
-import { Output } from '../output/output';
-import { Store } from '../store/store';
-import { Loader } from '../loader/loader';
-import type { Finding } from '../typings/finding';
+import type { Finding } from '../typings/finding.js';
 
 interface Options {
 	exclusions?: string;
@@ -18,7 +17,7 @@ interface Options {
 	output?: string;
 	interactive?: boolean;
 	path: string;
-	threshold?: number | string;
+	threshold?: string;
 }
 
 export class Scanner {
@@ -38,22 +37,16 @@ export class Scanner {
 		this.threshold = typeof options.threshold === 'string' ? parseInt(options.threshold, 10) : 1;
 		this.output = options.output ?? 'fds-output';
 		this.interactive = options.interactive ?? false;
-		this.path = normalize(resolve(process.cwd(), options.path));
-
-		if (!existsSync(this.path)) {
-			throw new Error('Invalid path: No such directory or file.');
-		}
+		this.path = options.path;
 	}
 
 	public async scan(): Promise<void> {
-		const isDirectory = statSync(this.path).isDirectory();
-
-		if (!this.options.exclusions && isDirectory && this.interactive) {
+		if (!this.options.exclusions && this.interactive) {
 			const answer = await new ExclusionsQuestion().getAnswer();
 			this.exclusions = Exclusions.process(answer);
 		}
 
-		if (!this.options.extensions && isDirectory && this.interactive) {
+		if (!this.options.extensions && this.interactive) {
 			const answer = await new ExtensionsQuestion().getAnswer();
 			this.extensions = Extensions.process(answer);
 		}
@@ -63,7 +56,7 @@ export class Scanner {
 			this.threshold = parseInt(answer, 10);
 		}
 
-		await this.initScan(this.path);
+		await this.initScan();
 
 		const duplicates = this.getDuplicates();
 
@@ -75,14 +68,13 @@ export class Scanner {
 		new Output(duplicates, this.output).output();
 	}
 
-	private async scanDir(path: string): Promise<PromiseSettledResult<void>[]> {
-		const directory = new Directory(path, this.exclusions, this.extensions);
-		const files = directory.getFiles();
-		const promises = [];
-		for await (const file of files) {
-			promises.push(this.scanFile(file));
+	private async scanDir() {
+		const files = getFiles(this.path, this.exclusions, this.extensions);
+		const shard = `${files.length}`.length;
+		const chunkSize = Math.ceil(files.length / shard);
+		for (let i = 0; i < shard; i++) {
+			await Promise.allSettled(files.splice(i, chunkSize).map((path) => this.scanFile(path)));
 		}
-		return Promise.allSettled(promises);
 	}
 
 	private scanFile(path: string): Promise<void> {
@@ -93,18 +85,9 @@ export class Scanner {
 		return Store.getAll().filter((value) => value.count > this.threshold);
 	}
 
-	private async initScan(path: string) {
+	private async initScan() {
 		const loader = new Loader(this.loaderInterval);
-		const lstat = statSync(path);
-
-		if (lstat.isFile()) {
-			await new File(path).processContent();
-		}
-
-		if (lstat.isDirectory()) {
-			await this.scanDir(path);
-		}
-
+		await this.scanDir();
 		loader.destroy();
 	}
 }

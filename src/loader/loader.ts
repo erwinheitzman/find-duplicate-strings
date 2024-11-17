@@ -1,5 +1,5 @@
 export class Loader {
-	private loaderTimer: NodeJS.Timer;
+	private loaderTimer: NodeJS.Timeout;
 	private count = 0;
 
 	constructor(loaderInterval: number) {

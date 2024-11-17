@@ -1,4 +1,4 @@
-import type { Finding } from '../typings/finding';
+import type { Finding } from '../typings/finding.js';
 
 export const findings: Finding[] = [
 	{
@@ -13,8 +13,9 @@ export const findings: Finding[] = [
 	},
 ];
 
-export const manyFindings: Finding[] = Array.from({ length: 15 }).map((_, i) => ({
-	count: i + 1,
-	files: ['dummy/path/' + (i + 1)],
-	key: 'foo',
-}));
+export const manyFindings = (count: number) =>
+	Array.from({ length: count }).map((_, i) => ({
+		count: i + 1,
+		files: ['dummy/path/' + (i + 1)],
+		key: 'foo',
+	}));

@@ -1,4 +1,4 @@
-import { Store } from './store';
+import { Store } from './store.js';
 
 const dummy = { key: 'someStringMatch', count: 0, files: [] };
 

@@ -1,13 +1,13 @@
 import { resolve } from 'node:path';
 
-import { Store } from '../store/store';
-import { File } from './file';
-
-beforeEach(() => {
-	Store.clear();
-});
+import { Store } from '../store/store.js';
+import { File } from './file.js';
 
 describe('File', () => {
+	beforeEach(() => {
+		Store.clear();
+	});
+
 	it('should add and update matches to store', async () => {
 		const path1 = resolve(__dirname, './mocks/file1.js');
 		const path2 = resolve(__dirname, './mocks/file2.js');

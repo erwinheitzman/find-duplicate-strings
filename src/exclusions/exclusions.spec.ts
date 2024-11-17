@@ -1,4 +1,4 @@
-import { Exclusions } from './exclusions';
+import { Exclusions } from './exclusions.js';
 
 describe('Exclusions', () => {
 	it('should split the answer on a comma', async () => {

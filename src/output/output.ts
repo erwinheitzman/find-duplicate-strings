@@ -1,11 +1,12 @@
 import { existsSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-import type { Finding } from '../typings/finding';
+import type { Finding } from '../typings/finding.js';
 
 export class Output {
 	private data: Finding[];
 	private path: string;
+	private count = 0;
 
 	public constructor(
 		input: Finding[],
@@ -16,10 +17,9 @@ export class Output {
 	}
 
 	public output(): void {
-		let count = 0;
 		const createFileName = (path: string) => {
 			if (existsSync(path)) {
-				return createFileName(resolve(process.cwd(), `${this.outputFileName}-${++count}.json`));
+				return createFileName(resolve(process.cwd(), `${this.outputFileName}-${++this.count}.json`));
 			}
 			return path;
 		};
@@ -28,7 +28,19 @@ export class Output {
 	}
 
 	private outputToFile(output: Finding[], filePath: string): void {
-		const data = JSON.stringify(output, null, 2);
-		writeFileSync(filePath, data, { encoding: 'utf-8' });
+		try {
+			const data = JSON.stringify(output, null, 2);
+			writeFileSync(filePath, data, { encoding: 'utf-8' });
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		} catch (error) {
+			// file is too big and needs to be split into multiple files
+			const shard = `${output.length}`.length;
+			const chunkSize = Math.ceil(output.length / shard);
+			for (let i = 0; i < shard; i++) {
+				writeFileSync(filePath.replace('.json', `[${i}].json`), JSON.stringify(output.splice(0, chunkSize), null, 2), {
+					encoding: 'utf-8',
+				});
+			}
+		}
 	}
 }

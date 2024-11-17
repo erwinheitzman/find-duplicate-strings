@@ -1,6 +1,6 @@
 import { Command } from 'commander';
 
-import { Scanner } from '../scanner/scanner';
+import { Scanner } from '../scanner/scanner.js';
 
 interface Options {
 	silent?: boolean;
@@ -17,7 +17,7 @@ program
 	.option('--threshold [THRESHOLD]', 'results lower or equal to the threshold will be ignored', '1')
 	.option('--output [FILENAME]', 'filename for the output file', 'fds-output')
 	.option('--interactive', 'starts the program in interactive mode')
-	.argument('node:path', 'path to scan')
+	.argument('glob pattern', 'glob pattern for directories/files to scan')
 	.action(main)
 	.parse();
 

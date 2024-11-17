@@ -1,6 +1,6 @@
 import { input } from '@inquirer/prompts';
 
-import { ExtensionsQuestion } from './extensions';
+import { ExtensionsQuestion } from './extensions.js';
 
 jest.mock('@inquirer/prompts');
 

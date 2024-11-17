@@ -1,6 +1,6 @@
 import { input } from '@inquirer/prompts';
 
-import { ExclusionsQuestion } from './exclusions';
+import { ExclusionsQuestion } from './exclusions.js';
 
 jest.mock('@inquirer/prompts');
 

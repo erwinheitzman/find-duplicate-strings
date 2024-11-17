@@ -1,4 +1,4 @@
-import { Loader } from './loader';
+import { Loader } from './loader.js';
 
 process.stdout.clearLine = jest.fn();
 process.stdout.cursorTo = jest.fn();

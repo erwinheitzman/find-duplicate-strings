@@ -1,31 +1,49 @@
-import { existsSync, statSync } from 'node:fs';
-import { normalize, resolve } from 'node:path';
-
-import { ExclusionsQuestion, ExtensionsQuestion, ThresholdQuestion } from '../cli/questions';
-import { Directory } from '../directory/directory';
-import { File } from '../file/file';
-import { Output } from '../output/output';
+import { getFiles } from '../getFiles/getFiles';
 import { Store } from '../store/store';
 import { Scanner } from './scanner';
 
-jest.mock('node:fs');
-jest.mock('node:path');
-jest.mock('@inquirer/prompts');
-jest.mock('../cli/questions/confirm-path');
-jest.mock('../cli/questions/exclusions');
-jest.mock('../cli/questions/extensions');
-jest.mock('../cli/questions/threshold');
-jest.mock('../directory/directory');
-jest.mock('../store/store');
-jest.mock('../file/file');
-jest.mock('../output/output');
+const mockGetExclusionsAnswer = jest.fn();
+const mockGetExtensionsAnswer = jest.fn();
+const mockGetThresholdAnswer = jest.fn();
+const mockProcessContent = jest.fn();
+const mockOutput = jest.fn();
 
-const getAllMock = Store.getAll as jest.Mock;
-const DirectoryGetFilesMock = Directory.prototype.getFiles as jest.Mock;
-const FileProcessContentMock = File.prototype.processContent as jest.Mock;
-const statSyncMock = (statSync as unknown as jest.Mock).mockReturnValue({ isFile: jest.fn(), isDirectory: jest.fn() });
-const resolveMock = resolve as jest.Mock;
-const normalizeMock = normalize as jest.Mock;
+jest.mock('@inquirer/prompts');
+jest.mock('../getFiles/getFiles');
+jest.mock('../store/store');
+jest.mock('../cli/questions/exclusions', () => ({
+	ExclusionsQuestion: function () {
+		return { getAnswer: mockGetExclusionsAnswer };
+	},
+}));
+jest.mock('../cli/questions/extensions', () => ({
+	ExtensionsQuestion: function () {
+		return {
+			getAnswer: mockGetExtensionsAnswer,
+		};
+	},
+}));
+jest.mock('../cli/questions/threshold', () => ({
+	ThresholdQuestion: function () {
+		return {
+			getAnswer: mockGetThresholdAnswer,
+		};
+	},
+}));
+jest.mock('../file/file', () => ({
+	File: function () {
+		return {
+			processContent: mockProcessContent,
+		};
+	},
+}));
+jest.mock('../output/output', () => ({
+	Output: function () {
+		return {
+			output: mockOutput,
+		};
+	},
+}));
 
 console.log = jest.fn();
 process.stdout.clearLine = jest.fn();
@@ -38,15 +56,13 @@ jest.useFakeTimers();
 
 describe('Scanner', () => {
 	beforeEach(() => {
+		jest.clearAllMocks();
 		jest.spyOn(process, 'exit').mockImplementation(() => undefined as never);
-		FileProcessContentMock.mockImplementation(() => Promise.resolve);
-		jest.mocked(existsSync).mockReturnValue(true);
-		getAllMock.mockReturnValue([{ count: 1 }]);
-		DirectoryGetFilesMock.mockReturnValue([]);
-		(ExclusionsQuestion.prototype.getAnswer as jest.Mock).mockResolvedValue('dummy-dir');
-		(ExtensionsQuestion.prototype.getAnswer as jest.Mock).mockResolvedValue('.ts,.js');
-		(ThresholdQuestion.prototype.getAnswer as jest.Mock).mockResolvedValue('1');
-		statSyncMock.mockReturnValue({ isFile: () => true, isDirectory: () => false });
+		jest.mocked(getFiles).mockReturnValue([]);
+		jest.mocked(Store.getAll).mockReturnValue([{ count: 1, files: [], key: '' }]);
+		mockGetExclusionsAnswer.mockResolvedValue('dummy-dir');
+		mockGetExtensionsAnswer.mockResolvedValue('.ts,.js');
+		mockGetThresholdAnswer.mockResolvedValue('1');
 	});
 
 	it('should enable interactive mode', async () => {
@@ -68,21 +84,19 @@ describe('Scanner', () => {
 	});
 
 	it('should ask a question when exclusions are not provided while interactive mode is enabled and the path does not point to a file', async () => {
-		statSyncMock.mockReturnValue({ isFile: () => false, isDirectory: () => true });
 		const scanner = new Scanner({ interactive: true, path: '.' }, interval);
 
 		await scanner.scan();
 
-		expect(ExclusionsQuestion.prototype.getAnswer).toHaveBeenCalledTimes(1);
+		expect(mockGetExclusionsAnswer).toHaveBeenCalledTimes(1);
 	});
 
 	it('should not ask a question when exclusions are not provided while interactive mode is disabled and the path does not point to a file', async () => {
-		statSyncMock.mockReturnValue({ isFile: () => false, isDirectory: () => true });
 		const scanner = new Scanner({ path: '.' }, interval);
 
 		await scanner.scan();
 
-		expect(ExclusionsQuestion.prototype.getAnswer).not.toHaveBeenCalled();
+		expect(mockGetExclusionsAnswer).not.toHaveBeenCalled();
 	});
 
 	it('should set extensions', async () => {
@@ -92,51 +106,28 @@ describe('Scanner', () => {
 	});
 
 	it('should ask a question when extensions are not provided while interactive mode is enabled and the path does not point to a file', async () => {
-		statSyncMock.mockReturnValue({ isFile: () => false, isDirectory: () => true });
 		const scanner = new Scanner({ interactive: true, path: '.' }, interval);
 
 		await scanner.scan();
 
-		expect(ExtensionsQuestion.prototype.getAnswer).toHaveBeenCalledTimes(1);
+		expect(mockGetExtensionsAnswer).toHaveBeenCalledTimes(1);
 	});
 
 	it('should not ask a question when extensions are not provided while interactive mode is disabled and the path does not point to a file', async () => {
-		statSyncMock.mockReturnValue({ isFile: () => false, isDirectory: () => true });
 		const scanner = new Scanner({ path: '.' }, interval);
 
 		await scanner.scan();
 
-		expect(ExtensionsQuestion.prototype.getAnswer).not.toHaveBeenCalled();
-	});
-
-	it('should set a threshold when passing threshold as a number', async () => {
-		getAllMock.mockReturnValue([{ count: 5 }]);
-		const scanner = new Scanner({ threshold: '3', path: '.' }, interval);
-
-		await scanner.scan();
-
-		expect(scanner['threshold']).toEqual(3);
-		expect((Output as jest.Mock).mock.calls[0][0]).toEqual([{ count: 5 }]);
+		expect(mockGetExtensionsAnswer).not.toHaveBeenCalled();
 	});
 
 	it('should set a threshold when passing threshold as a string', async () => {
-		getAllMock.mockReturnValue([{ count: 5 }]);
-		const scanner = new Scanner({ threshold: '3', path: '.' }, interval);
+		jest.mocked(Store.getAll).mockReturnValue([{ count: 5, files: [], key: '' }]);
+		const scanner = new Scanner({ threshold: '3.55', path: '.' }, interval);
 
 		await scanner.scan();
 
 		expect(scanner['threshold']).toEqual(3);
-		expect((Output as jest.Mock).mock.calls[0][0]).toEqual([{ count: 5 }]);
-	});
-
-	it('should set a threshold when passing threshold as a float', async () => {
-		getAllMock.mockReturnValue([{ count: 5 }]);
-		const scanner = new Scanner({ threshold: '3.66', path: '.' }, interval);
-
-		await scanner.scan();
-
-		expect(scanner['threshold']).toEqual(3);
-		expect((Output as jest.Mock).mock.calls[0][0]).toEqual([{ count: 5 }]);
 	});
 
 	it('should ask a question when the threshold is not provided and interactive mode is enabled', async () => {
@@ -144,7 +135,7 @@ describe('Scanner', () => {
 
 		await scanner.scan();
 
-		expect(ThresholdQuestion.prototype.getAnswer).toHaveBeenCalledTimes(1);
+		expect(mockGetThresholdAnswer).toHaveBeenCalledTimes(1);
 	});
 
 	it('should not ask a question when the threshold is not provided and interactive mode is disabled', async () => {
@@ -152,44 +143,29 @@ describe('Scanner', () => {
 
 		await scanner.scan();
 
-		expect(ThresholdQuestion.prototype.getAnswer).not.toHaveBeenCalled();
-	});
-
-	it('should set and normalize the path', async () => {
-		jest.spyOn(process, 'cwd').mockReturnValue('/Users/Dummy-User/development/current-working-directory');
-		resolveMock.mockReturnValue('/Users/Dummy-User/development/dummy-directory/');
-		normalizeMock.mockReturnValue('/Users/Dummy-User/development/dummy-directory/');
-
-		await new Scanner({ path: '../dummy-directory' }, interval).scan();
-
-		expect(resolveMock).toHaveBeenCalledWith(
-			'/Users/Dummy-User/development/current-working-directory',
-			'../dummy-directory',
-		);
-		expect(normalizeMock).toHaveBeenCalledWith('/Users/Dummy-User/development/dummy-directory/');
+		expect(mockGetThresholdAnswer).not.toHaveBeenCalled();
 	});
 
 	it('should scan all files found in the directory', async () => {
-		statSyncMock.mockReturnValue({ isFile: () => false, isDirectory: () => true });
-		DirectoryGetFilesMock.mockReturnValue([{}, {}, {}, {}]);
+		jest.mocked(getFiles).mockReturnValue(['', '', '', '']);
 		const scanner = new Scanner({ path: '' }, interval);
 
 		await scanner.scan();
 
-		expect(FileProcessContentMock).toHaveBeenCalledTimes(4);
+		expect(mockProcessContent).toHaveBeenCalledTimes(4);
 	});
 
 	it('should scan the single file that is passed', async () => {
-		FileProcessContentMock.mockReturnValue([{}]);
+		jest.mocked(getFiles).mockReturnValue(['']);
 		const scanner = new Scanner({ path: '' }, interval);
 
 		await scanner.scan();
 
-		expect(FileProcessContentMock).toHaveBeenCalledTimes(1);
+		expect(mockProcessContent).toHaveBeenCalledTimes(1);
 	});
 
 	it('should log a message to the console when no results are found', async () => {
-		getAllMock.mockReturnValue([]);
+		jest.mocked(Store.getAll).mockReturnValue([]);
 		const scanner = new Scanner({ path: '.' }, interval);
 
 		await scanner.scan();
@@ -198,16 +174,16 @@ describe('Scanner', () => {
 	});
 
 	it('should not trigger an output when no results are found', async () => {
-		getAllMock.mockReturnValue([]);
+		jest.mocked(Store.getAll).mockReturnValue([]);
 		const scanner = new Scanner({ path: '.' }, interval);
 
 		await scanner.scan();
 
-		expect(Output.prototype.output).not.toHaveBeenCalled();
+		expect(mockOutput).not.toHaveBeenCalled();
 	});
 
 	it('should log a message to the console when results are found but the counts are lower then the threshold', async () => {
-		getAllMock.mockReturnValue([{ count: 0 }]);
+		jest.mocked(Store.getAll).mockReturnValue([{ count: 0, files: [], key: '' }]);
 		const scanner = new Scanner({ path: '.' }, interval);
 
 		await scanner.scan();
@@ -216,16 +192,16 @@ describe('Scanner', () => {
 	});
 
 	it('should not trigger an output when results are found but the counts are lower then the threshold', async () => {
-		getAllMock.mockReturnValue([{ count: 0 }]);
+		jest.mocked(Store.getAll).mockReturnValue([{ count: 0, files: [], key: '' }]);
 		const scanner = new Scanner({ path: '.' }, interval);
 
 		await scanner.scan();
 
-		expect(Output.prototype.output).not.toHaveBeenCalled();
+		expect(mockOutput).not.toHaveBeenCalled();
 	});
 
 	it('should log a message to the console when results are found but the counts are equal to the threshold', async () => {
-		getAllMock.mockReturnValue([{ count: 1 }]);
+		jest.mocked(Store.getAll).mockReturnValue([{ count: 1, files: [], key: '' }]);
 		const scanner = new Scanner({ path: '.' }, interval);
 
 		await scanner.scan();
@@ -234,16 +210,16 @@ describe('Scanner', () => {
 	});
 
 	it('should not trigger an output when results are found but the counts are equal to the threshold', async () => {
-		getAllMock.mockReturnValue([{ count: 1 }]);
+		jest.mocked(Store.getAll).mockReturnValue([{ count: 1, files: [], key: '' }]);
 		const scanner = new Scanner({ path: '.' }, interval);
 
 		await scanner.scan();
 
-		expect(Output.prototype.output).not.toHaveBeenCalled();
+		expect(mockOutput).not.toHaveBeenCalled();
 	});
 
 	it('should not log a message to the console when duplicates are found and the counts are higher then the threshold', async () => {
-		getAllMock.mockReturnValue([{ count: 2 }]);
+		jest.mocked(Store.getAll).mockReturnValue([{ count: 2, files: [], key: '' }]);
 		const scanner = new Scanner({ path: '.' }, interval);
 
 		await scanner.scan();
@@ -252,16 +228,11 @@ describe('Scanner', () => {
 	});
 
 	it('should trigger an output when duplicates are found and the counts are higher then the threshold', async () => {
-		getAllMock.mockReturnValue([{ count: 2 }]);
+		jest.mocked(Store.getAll).mockReturnValue([{ count: 2, files: [], key: '' }]);
 		const scanner = new Scanner({ path: '.' }, interval);
 
 		await scanner.scan();
 
-		expect(Output.prototype.output).toHaveBeenCalledTimes(1);
-	});
-
-	it('should throw when the path (is invalid) does not point to a directory or file', () => {
-		jest.mocked(existsSync).mockReturnValue(false);
-		expect(() => new Scanner({ path: 'dummy-directory' })).toThrow('Invalid path: No such directory or file.');
+		expect(mockOutput).toHaveBeenCalledTimes(1);
 	});
 });

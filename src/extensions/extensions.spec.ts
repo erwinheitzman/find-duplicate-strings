@@ -1,4 +1,4 @@
-import { Extensions } from './extensions';
+import { Extensions } from './extensions.js';
 
 describe('Extensions', () => {
 	it('should split the answer on a comma', async () => {

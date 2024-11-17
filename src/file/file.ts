@@ -1,7 +1,7 @@
 import { createReadStream } from 'node:fs';
 import { createInterface, type Interface } from 'node:readline';
 
-import { Store } from '../store/store';
+import { Store } from '../store/store.js';
 
 export class File {
 	constructor(private readonly path: string) {}
@@ -45,7 +45,6 @@ export class File {
 		return createInterface({
 			input: createReadStream(this.path, { encoding: 'utf8' }),
 			terminal: false,
-			historySize: 0,
 		});
 	}
 }

@@ -1,4 +1,6 @@
-import { resolve } from 'node:path';
+import { expect, describe, it } from '@jest/globals';
+import { resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 import { Store } from '../store/store.js';
 import { File } from './file.js';
@@ -9,8 +11,8 @@ describe('File', () => {
 	});
 
 	it('should add and update matches to store', async () => {
-		const path1 = resolve(__dirname, './mocks/file1.js');
-		const path2 = resolve(__dirname, './mocks/file2.js');
+		const path1 = resolve(dirname(fileURLToPath(import.meta.url)), './mocks/file1.js');
+		const path2 = resolve(dirname(fileURLToPath(import.meta.url)), './mocks/file2.js');
 
 		await new File(path1).processContent();
 
@@ -44,7 +46,7 @@ describe('File', () => {
 	});
 
 	it('should not store empty string values', async () => {
-		const path = resolve(__dirname, './mocks/empty-strings-file.js');
+		const path = resolve(dirname(fileURLToPath(import.meta.url)), './mocks/empty-strings-file.js');
 
 		await new File(path).processContent();
 
@@ -52,7 +54,7 @@ describe('File', () => {
 	});
 
 	it('should not store the same path path twice', async () => {
-		const path = resolve(__dirname, './mocks/file2.js');
+		const path = resolve(dirname(fileURLToPath(import.meta.url)), './mocks/file2.js');
 
 		await new File(path).processContent();
 
@@ -66,7 +68,7 @@ describe('File', () => {
 	});
 
 	it('should store all matches', async () => {
-		const path = resolve(__dirname, './mocks/file3.js');
+		const path = resolve(dirname(fileURLToPath(import.meta.url)), './mocks/file3.js');
 
 		await new File(path).processContent();
 
@@ -90,7 +92,7 @@ describe('File', () => {
 	});
 
 	it('should not call the store when there are no strings/matches', async () => {
-		const path = resolve(__dirname, './mocks/no-strings-file');
+		const path = resolve(dirname(fileURLToPath(import.meta.url)), './mocks/no-strings-file');
 
 		await new File(path).processContent();
 
@@ -98,7 +100,7 @@ describe('File', () => {
 	});
 
 	it('should not call the store when the file is empty', async () => {
-		const path = resolve(__dirname, './mocks/empty-file');
+		const path = resolve(dirname(fileURLToPath(import.meta.url)), './mocks/empty-file');
 
 		await new File(path).processContent();
 

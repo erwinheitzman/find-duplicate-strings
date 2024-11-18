@@ -1,10 +1,14 @@
-import { existsSync, writeFileSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { expect, jest, describe, it } from '@jest/globals';
 
-import { Output } from './output.js';
-import { findings, manyFindings } from './output.mocks.js';
+jest.unstable_mockModule('node:fs', () => ({
+	existsSync: jest.fn(),
+	writeFileSync: jest.fn(),
+}));
 
-jest.mock('node:fs');
+const { resolve } = await import('node:path');
+const { existsSync, writeFileSync } = await import('node:fs');
+const { Output } = await import('./output.js');
+const { findings, manyFindings } = await import('./output.mocks.js');
 
 const expectedOutput = JSON.stringify(
 	findings.sort((a, b) => b.count - a.count),

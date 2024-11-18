@@ -1,8 +1,9 @@
+import { expect, jest, describe, it } from '@jest/globals';
 import { Loader } from './loader.js';
 
-process.stdout.clearLine = jest.fn();
-process.stdout.cursorTo = jest.fn();
-process.stdout.write = jest.fn();
+process.stdout.clearLine = jest.fn() as jest.Mock<() => boolean>;
+process.stdout.cursorTo = jest.fn() as jest.Mock<() => boolean>;
+process.stdout.write = jest.fn() as jest.Mock<() => boolean>;
 
 jest.useFakeTimers();
 
@@ -65,12 +66,12 @@ describe('Loader', () => {
 
 	it('should destroy when the process is terminated', async () => {
 		const processEvents: { [key: string]: () => void } = {};
-		process.on = jest.fn((signal, cb) => {
-			processEvents[signal as string] = cb;
+		process.on = jest.fn((signal: string, cb: () => void) => {
+			processEvents[signal] = cb;
 			return process;
 		});
-		process.kill = jest.fn((_pid, signal) => {
-			processEvents[signal as keyof typeof processEvents]();
+		process.kill = jest.fn((_pid: number, signal: keyof typeof processEvents): true => {
+			processEvents[signal]();
 			return true;
 		});
 		loader = new Loader(15);
@@ -83,12 +84,12 @@ describe('Loader', () => {
 
 	it('should destroy when the user presses CTRL/CMD + C to end the program', async () => {
 		const processEvents: { [key: string]: () => void } = {};
-		process.on = jest.fn((signal, cb) => {
-			processEvents[signal as string] = cb;
+		process.on = jest.fn((signal: string, cb: () => void) => {
+			processEvents[signal] = cb;
 			return process;
 		});
-		process.kill = jest.fn((_pid, signal) => {
-			processEvents[signal as keyof typeof processEvents]();
+		process.kill = jest.fn((_pid: number, signal: keyof typeof processEvents): true => {
+			processEvents[signal]();
 			return true;
 		});
 		loader = new Loader(15);

@@ -8,13 +8,14 @@
 	"main": "lib/cli/index.js",
 	"types": "lib/cli/index.d.ts",
 	"bin": "lib/cli/index.js",
+	"type": "module",
 	"files": [
 		"/lib"
 	],
 	"scripts": {
 		"prepare": "husky || true",
 		"prepublishOnly": "tsc",
-		"test": "jest"
+		"test": "node --experimental-vm-modules node_modules/.bin/jest"
 	},
 	"repository": {
 		"type": "git",
@@ -35,11 +36,14 @@
 	},
 	"dependencies": {
 		"@inquirer/prompts": "^7.0.0",
+		"@types/node": "^22.9.0",
 		"commander": "^12.1.0",
 		"glob": "^11.0.0"
 	},
 	"devDependencies": {
+		"@babel/preset-typescript": "^7.26.0",
 		"@eslint/js": "^9.12.0",
+		"@jest/globals": "^29.7.0",
 		"@types/eslint__js": "^8.42.3",
 		"@types/jest": "^29.5.13",
 		"eslint": "^9.12.0",
@@ -49,6 +53,7 @@
 		"lint-staged": "^15.2.10",
 		"prettier": "^3.3.3",
 		"ts-jest": "^29.2.5",
+		"ts-node": "^10.9.2",
 		"typescript": "^5.6.3",
 		"typescript-eslint": "^8.10.0"
 	},

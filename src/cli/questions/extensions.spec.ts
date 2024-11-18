@@ -1,8 +1,12 @@
-import { input } from '@inquirer/prompts';
+import { expect, jest, describe, it } from '@jest/globals';
 
-import { ExtensionsQuestion } from './extensions.js';
+jest.unstable_mockModule('@inquirer/prompts', () => ({
+	input: jest.fn(),
+}));
 
-jest.mock('@inquirer/prompts');
+const { input } = await import('@inquirer/prompts');
+
+const { ExtensionsQuestion } = await import('./extensions.js');
 
 describe('ExtensionsQuestion', () => {
 	it('should return the answer when it is found', async () => {

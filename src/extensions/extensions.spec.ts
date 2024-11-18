@@ -1,3 +1,5 @@
+import { expect, describe, it } from '@jest/globals';
+
 import { Extensions } from './extensions.js';
 
 describe('Extensions', () => {

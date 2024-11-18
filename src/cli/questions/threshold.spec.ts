@@ -1,8 +1,12 @@
-import { input } from '@inquirer/prompts';
+import { expect, jest, describe, it } from '@jest/globals';
 
-import { ThresholdQuestion } from './threshold.js';
+jest.unstable_mockModule('@inquirer/prompts', () => ({
+	input: jest.fn(),
+}));
 
-jest.mock('@inquirer/prompts');
+const { input } = await import('@inquirer/prompts');
+
+const { ThresholdQuestion } = await import('./threshold.js');
 
 describe('ThresholdQuestion', () => {
 	it('should return the answer when it is found', async () => {

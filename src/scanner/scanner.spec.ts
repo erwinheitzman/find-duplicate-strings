@@ -1,6 +1,4 @@
-import { getFiles } from '../getFiles/getFiles';
-import { Store } from '../store/store';
-import { Scanner } from './scanner';
+import { expect, jest, describe, it } from '@jest/globals';
 
 const mockGetExclusionsAnswer = jest.fn();
 const mockGetExtensionsAnswer = jest.fn();
@@ -8,36 +6,39 @@ const mockGetThresholdAnswer = jest.fn();
 const mockProcessContent = jest.fn();
 const mockOutput = jest.fn();
 
-jest.mock('@inquirer/prompts');
-jest.mock('../getFiles/getFiles');
-jest.mock('../store/store');
-jest.mock('../cli/questions/exclusions', () => ({
+jest.unstable_mockModule('../getFiles/getFiles.js', () => ({
+	getFiles: jest.fn(),
+}));
+jest.unstable_mockModule('../store/store.js', () => ({
+	Store: { getAll: jest.fn() },
+}));
+jest.unstable_mockModule('../cli/questions/exclusions.js', () => ({
 	ExclusionsQuestion: function () {
 		return { getAnswer: mockGetExclusionsAnswer };
 	},
 }));
-jest.mock('../cli/questions/extensions', () => ({
+jest.unstable_mockModule('../cli/questions/extensions.js', () => ({
 	ExtensionsQuestion: function () {
 		return {
 			getAnswer: mockGetExtensionsAnswer,
 		};
 	},
 }));
-jest.mock('../cli/questions/threshold', () => ({
+jest.unstable_mockModule('../cli/questions/threshold.js', () => ({
 	ThresholdQuestion: function () {
 		return {
 			getAnswer: mockGetThresholdAnswer,
 		};
 	},
 }));
-jest.mock('../file/file', () => ({
+jest.unstable_mockModule('../file/file.js', () => ({
 	File: function () {
 		return {
 			processContent: mockProcessContent,
 		};
 	},
 }));
-jest.mock('../output/output', () => ({
+jest.unstable_mockModule('../output/output.js', () => ({
 	Output: function () {
 		return {
 			output: mockOutput,
@@ -45,10 +46,14 @@ jest.mock('../output/output', () => ({
 	},
 }));
 
+const { Scanner } = await import('./scanner.js');
+const { getFiles } = await import('../getFiles/getFiles.js');
+const { Store } = await import('../store/store.js');
+
 console.log = jest.fn();
-process.stdout.clearLine = jest.fn();
-process.stdout.cursorTo = jest.fn();
-process.stdout.write = jest.fn();
+process.stdout.clearLine = jest.fn() as jest.Mock<() => boolean>;
+process.stdout.cursorTo = jest.fn() as jest.Mock<() => boolean>;
+process.stdout.write = jest.fn() as jest.Mock<() => boolean>;
 
 const interval = 1;
 
@@ -60,9 +65,9 @@ describe('Scanner', () => {
 		jest.spyOn(process, 'exit').mockImplementation(() => undefined as never);
 		jest.mocked(getFiles).mockReturnValue([]);
 		jest.mocked(Store.getAll).mockReturnValue([{ count: 1, files: [], key: '' }]);
-		mockGetExclusionsAnswer.mockResolvedValue('dummy-dir');
-		mockGetExtensionsAnswer.mockResolvedValue('.ts,.js');
-		mockGetThresholdAnswer.mockResolvedValue('1');
+		mockGetExclusionsAnswer.mockReturnValue(Promise.resolve('dummy-dir'));
+		mockGetExtensionsAnswer.mockReturnValue(Promise.resolve('.ts,.js'));
+		mockGetThresholdAnswer.mockReturnValue(Promise.resolve('1'));
 	});
 
 	it('should enable interactive mode', async () => {

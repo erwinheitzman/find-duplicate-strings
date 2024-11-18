@@ -1,10 +1,16 @@
-import { existsSync } from 'node:fs';
-import { globSync } from 'glob';
+import { expect, jest, describe, it } from '@jest/globals';
 
-import { getFiles } from './getFiles.js';
+jest.unstable_mockModule('glob', () => ({
+	globSync: jest.fn(),
+}));
+jest.unstable_mockModule('node:fs', () => ({
+	existsSync: jest.fn(),
+}));
 
-jest.mock('glob');
-jest.mock('node:fs');
+const { globSync } = await import('glob');
+const { existsSync } = await import('node:fs');
+
+const { getFiles } = await import('./getFiles.js');
 
 describe('Directory', () => {
 	beforeEach(() => {

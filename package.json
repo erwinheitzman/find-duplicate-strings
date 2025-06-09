@@ -33,13 +33,13 @@
 		"url": "https://github.com/erwinheitzman/find-duplicate-strings/issues"
 	},
 	"dependencies": {
-		"@inquirer/prompts": "^7.4.1",
-		"@types/node": "^22.14.0",
-		"commander": "^13.1.0",
-		"glob": "^11.0.1"
+		"@inquirer/prompts": "7.5.3",
+		"commander": "14.0.0",
+		"glob": "11.0.2"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
+		"@types/node": "22.15.30",
 		"husky": "^9.1.7",
 		"lint-staged": "^16.1.0",
 		"tsx": "^4.19.4",

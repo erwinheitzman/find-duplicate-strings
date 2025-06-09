@@ -1,58 +1,64 @@
-import { describe, expect, it, jest } from "@jest/globals";
+import { deepEqual } from "node:assert";
+import { beforeEach, describe, it, mock } from "node:test";
 
-jest.unstable_mockModule("glob", () => ({
-	globSync: jest.fn(),
-}));
-jest.unstable_mockModule("node:fs", () => ({
-	existsSync: jest.fn(),
-}));
+const mockGlobSync = mock.fn((): string[] => []);
+const mockExistsSync = mock.fn(() => true);
 
-const { globSync } = await import("glob");
-const { existsSync } = await import("node:fs");
+mock.module("glob", {
+	namedExports: {
+		globSync: mockGlobSync,
+	},
+});
+mock.module("node:fs", {
+	namedExports: {
+		existsSync: mockExistsSync,
+	},
+});
 
 const { getFiles } = await import("./getFiles.js");
 
 describe("Directory", () => {
 	beforeEach(() => {
-		jest.clearAllMocks();
-		jest.mocked(existsSync).mockReturnValue(true);
+		mockExistsSync.mock.resetCalls();
 	});
 
 	it("should return files", async () => {
-		jest.mocked(globSync).mockReturnValue(["file1", "file2"]);
+		mockGlobSync.mock.mockImplementation(() => ["file1", "file2"]);
 		const files = getFiles("dummy-directory", []);
 
-		expect(files).toEqual(["file1", "file2"]);
+		deepEqual(files, ["file1", "file2"]);
 	});
 
 	it("should exclude file: file.log", async () => {
-		jest.mocked(globSync).mockReturnValue(["file.log", "file"]);
+		mockGlobSync.mock.mockImplementation(() => ["file.log", "file"]);
 		const files = getFiles("dummy-directory", ["file.log"]);
 
-		expect(files).toEqual(["file"]);
+		deepEqual(files, ["file"]);
 	});
 
-	it("should exclude files from directory: node_modules", async () => {
-		jest
-			.mocked(globSync)
-			.mockReturnValue(["./foo/node_modules/file.log", "file"]);
+	it("should exclude files from directory: node_modules", () => {
+		mockGlobSync.mock.mockImplementation(() => [
+			"./foo/node_modules/file.log",
+			"file",
+		]);
 		const files = getFiles("dummy-directory", ["node_modules"]);
 
-		expect(files).toEqual(["file"]);
+		deepEqual(files, ["file"]);
 	});
 
-	it("should return existing files only", async () => {
-		jest
-			.mocked(existsSync)
-			.mockReturnValueOnce(false)
-			.mockReturnValueOnce(true)
-			.mockReturnValueOnce(false)
-			.mockReturnValueOnce(true);
-		jest
-			.mocked(globSync)
-			.mockReturnValue(["file1.ts", "file2", "file3.ts", "file4.log"]);
+	it("should return existing files only", () => {
+		mockExistsSync.mock.mockImplementationOnce(() => false, 0);
+		mockExistsSync.mock.mockImplementationOnce(() => true, 1);
+		mockExistsSync.mock.mockImplementationOnce(() => false, 2);
+		mockExistsSync.mock.mockImplementationOnce(() => true, 3);
+		mockGlobSync.mock.mockImplementation(() => [
+			"file1.ts",
+			"file2",
+			"file3.ts",
+			"file4.log",
+		]);
 		const files = getFiles("dummy-directory", []);
 
-		expect(files).toEqual(["file2", "file4.log"]);
+		deepEqual(files, ["file2", "file4.log"]);
 	});
 });

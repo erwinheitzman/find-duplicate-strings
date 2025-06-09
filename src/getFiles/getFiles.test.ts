@@ -1,5 +1,5 @@
 import { deepEqual } from "node:assert";
-import { beforeEach, describe, it, mock } from "node:test";
+import { beforeEach, mock, suite, test } from "node:test";
 
 const mockGlobSync = mock.fn((): string[] => []);
 const mockExistsSync = mock.fn(() => true);
@@ -17,26 +17,26 @@ mock.module("node:fs", {
 
 const { getFiles } = await import("./getFiles.js");
 
-describe("Directory", () => {
+suite("Directory", () => {
 	beforeEach(() => {
 		mockExistsSync.mock.resetCalls();
 	});
 
-	it("should return files", async () => {
+	test("should return files", async () => {
 		mockGlobSync.mock.mockImplementation(() => ["file1", "file2"]);
 		const files = getFiles("dummy-directory", []);
 
 		deepEqual(files, ["file1", "file2"]);
 	});
 
-	it("should exclude file: file.log", async () => {
+	test("should exclude file: file.log", async () => {
 		mockGlobSync.mock.mockImplementation(() => ["file.log", "file"]);
 		const files = getFiles("dummy-directory", ["file.log"]);
 
 		deepEqual(files, ["file"]);
 	});
 
-	it("should exclude files from directory: node_modules", () => {
+	test("should exclude files from directory: node_modules", () => {
 		mockGlobSync.mock.mockImplementation(() => [
 			"./foo/node_modules/file.log",
 			"file",
@@ -46,7 +46,7 @@ describe("Directory", () => {
 		deepEqual(files, ["file"]);
 	});
 
-	it("should return existing files only", () => {
+	test("should return existing files only", () => {
 		mockExistsSync.mock.mockImplementationOnce(() => false, 0);
 		mockExistsSync.mock.mockImplementationOnce(() => true, 1);
 		mockExistsSync.mock.mockImplementationOnce(() => false, 2);

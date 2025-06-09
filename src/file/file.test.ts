@@ -1,16 +1,17 @@
+import { deepEqual } from "node:assert";
 import { dirname, resolve } from "node:path";
+import { beforeEach, suite, test } from "node:test";
 import { fileURLToPath } from "node:url";
-import { describe, expect, it } from "@jest/globals";
 
-import { Store } from "../store/store.js";
+import { store } from "../store/store.js";
 import { File } from "./file.js";
 
-describe("File", () => {
+suite("File", () => {
 	beforeEach(() => {
-		Store.clear();
+		store.clear();
 	});
 
-	it("should add and update matches to store", async () => {
+	test("should add and update matches to store", async () => {
 		const path1 = resolve(
 			dirname(fileURLToPath(import.meta.url)),
 			"./mocks/file1.js",
@@ -22,7 +23,7 @@ describe("File", () => {
 
 		await new File(path1).processContent();
 
-		expect(Store.getAll()).toEqual([
+		deepEqual(store.getAll(), [
 			{
 				count: 1,
 				files: [path1],
@@ -37,7 +38,7 @@ describe("File", () => {
 
 		await new File(path2).processContent();
 
-		expect(Store.getAll()).toEqual([
+		deepEqual(store.getAll(), [
 			{
 				count: 4,
 				files: [path1, path2],
@@ -51,7 +52,7 @@ describe("File", () => {
 		]);
 	});
 
-	it("should not store empty string values", async () => {
+	test("should not store empty string values", async () => {
 		const path = resolve(
 			dirname(fileURLToPath(import.meta.url)),
 			"./mocks/empty-strings-file.js",
@@ -59,10 +60,10 @@ describe("File", () => {
 
 		await new File(path).processContent();
 
-		expect(Store.getAll()).toEqual([]);
+		deepEqual(store.getAll(), []);
 	});
 
-	it("should not store the same path path twice", async () => {
+	test("should not store the same path path twice", async () => {
 		const path = resolve(
 			dirname(fileURLToPath(import.meta.url)),
 			"./mocks/file2.js",
@@ -70,7 +71,7 @@ describe("File", () => {
 
 		await new File(path).processContent();
 
-		expect(Store.getAll()).toEqual([
+		deepEqual(store.getAll(), [
 			{
 				count: 3,
 				files: [path],
@@ -79,7 +80,7 @@ describe("File", () => {
 		]);
 	});
 
-	it("should store all matches", async () => {
+	test("should store all matches", async () => {
 		const path = resolve(
 			dirname(fileURLToPath(import.meta.url)),
 			"./mocks/file3.js",
@@ -87,7 +88,7 @@ describe("File", () => {
 
 		await new File(path).processContent();
 
-		expect(Store.getAll()).toEqual([
+		deepEqual(store.getAll(), [
 			{
 				count: 2,
 				files: [path],
@@ -106,7 +107,7 @@ describe("File", () => {
 		]);
 	});
 
-	it("should not call the store when there are no strings/matches", async () => {
+	test("should not call the store when there are no strings/matches", async () => {
 		const path = resolve(
 			dirname(fileURLToPath(import.meta.url)),
 			"./mocks/no-strings-file",
@@ -114,10 +115,10 @@ describe("File", () => {
 
 		await new File(path).processContent();
 
-		expect(Store.getAll()).toEqual([]);
+		deepEqual(store.getAll(), []);
 	});
 
-	it("should not call the store when the file is empty", async () => {
+	test("should not call the store when the file is empty", async () => {
 		const path = resolve(
 			dirname(fileURLToPath(import.meta.url)),
 			"./mocks/empty-file",
@@ -125,6 +126,6 @@ describe("File", () => {
 
 		await new File(path).processContent();
 
-		expect(Store.getAll()).toEqual([]);
+		deepEqual(store.getAll(), []);
 	});
 });

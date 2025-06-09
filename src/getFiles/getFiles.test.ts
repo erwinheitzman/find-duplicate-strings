@@ -1,4 +1,6 @@
 import { deepEqual } from "node:assert";
+import { platform } from "node:os";
+import { resolve } from "node:path";
 import { beforeEach, mock, suite, test } from "node:test";
 
 const mockGlobSync = mock.fn((): string[] => []);
@@ -38,7 +40,7 @@ suite("Directory", () => {
 
 	test("should exclude files from directory: node_modules", () => {
 		mockGlobSync.mock.mockImplementation(() => [
-			"./foo/node_modules/file.log",
+			resolve("./foo/node_modules/file.log"),
 			"file",
 		]);
 		const files = getFiles("dummy-directory", ["node_modules"]);

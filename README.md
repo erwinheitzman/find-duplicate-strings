@@ -18,24 +18,21 @@ npm i -g find-duplicate-strings
 Run:
 
 ```bash
-find-duplicate-strings ./
+find-duplicate-strings './**/*.js'
 ```
+
+The result of the scan will be stored in file called fds-output.json or fds-output-<num>.json if it already exists.
 
 Breakdown of flags:
 
-- `--exclusions` excludes any files and directories that match
-- `--extensions` includes any files that match these extensions
+- `--ignore` ignore files and directories that match
 - `--treshold` only output strings that are duplicated for at least this number of times
 - `--output` this allows you to change the default filename for the output
 - `--interactive` runs the program in interactive mode mode
 
 Breakdown of arguments:
 
-- `./example/path` this is the path to scan (can be absolute or relative)
-
-For information about what arguments and flags are supported, use the `--help` flag.
-
-The result of the scan will be stored in file called fds-output.json or fds-output-<num>.json if it already exists.
+- `'./example/path/**/*.{js,ts}'` this is the path to scan (glob pattern)
 
 ## Help
 

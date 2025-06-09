@@ -1,19 +1,16 @@
-import { getFiles } from '../getFiles/getFiles.js';
-import { File } from '../file/file.js';
-import { Output } from '../output/output.js';
-import { Store } from '../store/store.js';
-import { Loader } from '../loader/loader.js';
-import { Exclusions } from '../exclusions/exclusions.js';
-import { Extensions } from '../extensions/extensions.js';
-import { ExclusionsQuestion } from '../cli/questions/exclusions.js';
-import { ExtensionsQuestion } from '../cli/questions/extensions.js';
-import { ThresholdQuestion } from '../cli/questions/threshold.js';
+import { ExclusionsQuestion } from "../cli/questions/exclusions.js";
+import { ThresholdQuestion } from "../cli/questions/threshold.js";
+import { Exclusions } from "../exclusions/exclusions.js";
+import { File } from "../file/file.js";
+import { getFiles } from "../getFiles/getFiles.js";
+import { Loader } from "../loader/loader.js";
+import { Output } from "../output/output.js";
+import { Store } from "../store/store.js";
 
-import type { Finding } from '../typings/finding.js';
+import type { Finding } from "../typings/finding.js";
 
 interface Options {
-	exclusions?: string;
-	extensions?: string;
+	ignore?: string;
 	output?: string;
 	interactive?: boolean;
 	path: string;
@@ -21,8 +18,7 @@ interface Options {
 }
 
 export class Scanner {
-	private exclusions!: string[];
-	private extensions!: string[];
+	private ignore!: string[];
 	private threshold!: number;
 	private output!: string;
 	private interactive!: boolean;
@@ -30,30 +26,27 @@ export class Scanner {
 
 	public constructor(
 		private options: Options,
-		private loaderInterval: number = 1000,
+		private loaderInterval = 1000,
 	) {
-		this.exclusions = Exclusions.process(options.exclusions);
-		this.extensions = Extensions.process(options.extensions);
-		this.threshold = typeof options.threshold === 'string' ? parseInt(options.threshold, 10) : 1;
-		this.output = options.output ?? 'fds-output';
+		this.ignore = Exclusions.process(options.ignore);
+		this.threshold =
+			typeof options.threshold === "string"
+				? Number.parseInt(options.threshold, 10)
+				: 1;
+		this.output = options.output ?? "fds-output";
 		this.interactive = options.interactive ?? false;
 		this.path = options.path;
 	}
 
 	public async scan(): Promise<void> {
-		if (!this.options.exclusions && this.interactive) {
+		if (!this.options.ignore && this.interactive) {
 			const answer = await new ExclusionsQuestion().getAnswer();
-			this.exclusions = Exclusions.process(answer);
-		}
-
-		if (!this.options.extensions && this.interactive) {
-			const answer = await new ExtensionsQuestion().getAnswer();
-			this.extensions = Extensions.process(answer);
+			this.ignore = Exclusions.process(answer);
 		}
 
 		if (!this.options.threshold && this.interactive) {
 			const answer = await new ThresholdQuestion().getAnswer();
-			this.threshold = parseInt(answer, 10);
+			this.threshold = Number.parseInt(answer, 10);
 		}
 
 		await this.initScan();
@@ -61,7 +54,7 @@ export class Scanner {
 		const duplicates = this.getDuplicates();
 
 		if (!duplicates.length) {
-			console.log('No duplicates where found.');
+			console.log("No duplicates where found.");
 			return;
 		}
 
@@ -69,11 +62,13 @@ export class Scanner {
 	}
 
 	private async scanDir() {
-		const files = getFiles(this.path, this.exclusions, this.extensions);
+		const files = getFiles(this.path, this.ignore);
 		const shard = `${files.length}`.length;
 		const chunkSize = Math.ceil(files.length / shard);
 		for (let i = 0; i < shard; i++) {
-			await Promise.allSettled(files.splice(i, chunkSize).map((path) => this.scanFile(path)));
+			await Promise.allSettled(
+				files.splice(i, chunkSize).map((path) => this.scanFile(path)),
+			);
 		}
 	}
 

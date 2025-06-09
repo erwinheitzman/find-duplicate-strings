@@ -5,7 +5,7 @@ import { File } from "../file/file.js";
 import { getFiles } from "../getFiles/getFiles.js";
 import { Loader } from "../loader/loader.js";
 import { Output } from "../output/output.js";
-import { Store } from "../store/store.js";
+import { store } from "../store/store.js";
 
 import type { Finding } from "../typings/finding.js";
 
@@ -77,7 +77,7 @@ export class Scanner {
 	}
 
 	private getDuplicates(): Finding[] {
-		return Store.getAll().filter((value) => value.count > this.threshold);
+		return store.getAll().filter((value) => value.count > this.threshold);
 	}
 
 	private async initScan() {

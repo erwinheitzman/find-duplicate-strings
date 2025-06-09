@@ -1,7 +1,7 @@
 import { createReadStream } from "node:fs";
 import { type Interface, createInterface } from "node:readline";
 
-import { Store } from "../store/store.js";
+import { store } from "../store/store.js";
 
 export class File {
 	constructor(private readonly path: string) {}
@@ -32,10 +32,10 @@ export class File {
 	}
 
 	private storeMatch(key: string): void {
-		const value = Store.find(key);
+		const value = store.find(key);
 
 		if (!value) {
-			Store.add(key, { key, count: 1, files: [this.path] });
+			store.add(key, { key, count: 1, files: [this.path] });
 			return;
 		}
 

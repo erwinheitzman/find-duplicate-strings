@@ -1,25 +1,22 @@
 import type { Finding } from "../typings/finding.js";
 
-export class Store {
-	static #store: Map<string, Finding> = new Map();
+let findings: Map<string, Finding> = new Map();
 
-	static add(key: string, value: Finding): void {
-		if (Store.#store.has(key)) {
+export const store = {
+	add(key: string, value: Finding): void {
+		if (findings.has(key)) {
 			throw new Error(`Key ${key} already exists`);
 		}
 
-		Store.#store.set(key, value);
-	}
-
-	static find(key: string): Finding | null {
-		return Store.#store.get(key) || null;
-	}
-
-	static getAll(): Finding[] {
-		return Array.from(Store.#store.values());
-	}
-
-	static clear() {
-		Store.#store = new Map();
-	}
-}
+		findings.set(key, value);
+	},
+	find(key: string): Finding | null {
+		return findings.get(key) || null;
+	},
+	getAll(): Finding[] {
+		return Array.from(findings.values());
+	},
+	clear() {
+		findings = new Map();
+	},
+};

@@ -1,5 +1,5 @@
 import { existsSync } from "node:fs";
-import { extname, sep } from "node:path";
+import { sep } from "node:path";
 import { globSync } from "glob";
 
 export function getFiles(path: string, ignore: string[]): string[] {

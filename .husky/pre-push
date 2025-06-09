@@ -1,1 +1,1 @@
-
+node --import=tsx --experimental-test-module-mocks --test src/getFiles/getFiles.spec.ts

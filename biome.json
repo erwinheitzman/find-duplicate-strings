@@ -1,13 +1,13 @@
 {
 	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
 	"vcs": {
-		"enabled": true,
+		"enabled": false,
 		"clientKind": "git",
-		"useIgnoreFile": true
+		"useIgnoreFile": false
 	},
 	"files": {
 		"ignoreUnknown": true,
-		"ignore": ["coverage", "lib", "node_modules"],
+		"ignore": ["coverage", "lib", "node_modules", "src/file/mocks"],
 		"maxSize": 10000000000
 	},
 	"formatter": {
@@ -22,7 +22,9 @@
 		"rules": {
 			"recommended": true,
 			"complexity": {
-				"useLiteralKeys": "off"
+				"useLiteralKeys": "off",
+				"noStaticOnlyClass": "off",
+				"noForEach": "off"
 			}
 		}
 	}

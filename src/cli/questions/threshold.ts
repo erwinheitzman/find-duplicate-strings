@@ -1,10 +1,11 @@
-import { input } from '@inquirer/prompts';
+import { input } from "@inquirer/prompts";
 
 export class ThresholdQuestion {
 	public getAnswer(): Promise<string> {
 		return input({
-			message: 'Please provide a threshold (only results that apear more often then the threshold will be output)',
-			default: '1',
+			message:
+				"Please provide a threshold (only results that apear more often then the threshold will be output)",
+			default: "1",
 		});
 	}
 }

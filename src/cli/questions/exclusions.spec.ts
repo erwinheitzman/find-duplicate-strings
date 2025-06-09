@@ -1,21 +1,21 @@
-import { expect, jest, describe, it } from '@jest/globals';
+import { describe, expect, it, jest } from "@jest/globals";
 
-jest.unstable_mockModule('@inquirer/prompts', () => ({
+jest.unstable_mockModule("@inquirer/prompts", () => ({
 	input: jest.fn(),
 }));
 
-const { input } = await import('@inquirer/prompts');
+const { input } = await import("@inquirer/prompts");
 
-const { ExclusionsQuestion } = await import('./exclusions.js');
+const { ExclusionsQuestion } = await import("./exclusions.js");
 
-describe('ExclusionsQuestion', () => {
-	it('should return the answer when it is found', async () => {
-		jest.mocked(input).mockResolvedValue('dummy');
+describe("ExclusionsQuestion", () => {
+	it("should return the answer when it is found", async () => {
+		jest.mocked(input).mockResolvedValue("dummy");
 
 		const question = new ExclusionsQuestion();
 
 		const answer = await question.getAnswer();
 
-		expect(answer).toEqual('dummy');
+		expect(answer).toEqual("dummy");
 	});
 });

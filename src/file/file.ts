@@ -1,7 +1,7 @@
-import { createReadStream } from 'node:fs';
-import { createInterface, type Interface } from 'node:readline';
+import { createReadStream } from "node:fs";
+import { type Interface, createInterface } from "node:readline";
 
-import { Store } from '../store/store.js';
+import { Store } from "../store/store.js";
 
 export class File {
 	constructor(private readonly path: string) {}
@@ -9,20 +9,24 @@ export class File {
 	processContent(): Promise<void> {
 		return new Promise((resolve) => {
 			const rl = this.readlineInterface();
-			rl.on('line', (line) => this.processLine(line));
-			rl.on('close', () => {
+			rl.on("line", (line) => this.processLine(line));
+			rl.on("close", () => {
 				resolve();
 			});
 		});
 	}
 
 	private processLine(line: string): void {
-		const matches = line.match(/(?:("[^"\\]*(?:\\.[^"\\]*)*")|('[^'\\]*(?:\\.[^'\\]*)*'))/g);
-		const isNotEmpty = (s: string) => s && s.length > 2;
+		const matches = line.match(
+			/(?:("[^"\\]*(?:\\.[^"\\]*)*")|('[^'\\]*(?:\\.[^'\\]*)*'))/g,
+		);
 
 		if (matches) {
-			matches.filter(isNotEmpty).forEach((match) => {
-				this.storeMatch(match.substring(1, match.length - 1));
+			matches.forEach((match) => {
+				const isNotEmpty = match && match.length > 2;
+				if (isNotEmpty) {
+					this.storeMatch(match.substring(1, match.length - 1));
+				}
 			});
 		}
 	}
@@ -43,7 +47,7 @@ export class File {
 
 	private readlineInterface(): Interface {
 		return createInterface({
-			input: createReadStream(this.path, { encoding: 'utf8' }),
+			input: createReadStream(this.path, { encoding: "utf8" }),
 			terminal: false,
 		});
 	}

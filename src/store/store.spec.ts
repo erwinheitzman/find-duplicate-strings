@@ -1,40 +1,42 @@
-import { expect, describe, it } from '@jest/globals';
-import { Store } from './store.js';
+import { describe, expect, it } from "@jest/globals";
+import { Store } from "./store.js";
 
-const dummy = { key: 'someStringMatch', count: 0, files: [] };
+const dummy = { key: "someStringMatch", count: 0, files: [] };
 
-describe('Store', () => {
+describe("Store", () => {
 	beforeEach(() => {
 		Store.clear();
 	});
 
-	it('should add a value', () => {
-		Store.add('dummy1', dummy);
+	it("should add a value", () => {
+		Store.add("dummy1", dummy);
 
 		expect(Store.getAll()).toEqual([dummy]);
 	});
 
-	it('should add two values', () => {
-		Store.add('dummy1', dummy);
-		Store.add('dummy2', dummy);
+	it("should add two values", () => {
+		Store.add("dummy1", dummy);
+		Store.add("dummy2", dummy);
 
 		expect(Store.getAll()).toEqual([dummy, dummy]);
 	});
 
-	it('should find value by key', () => {
-		Store.add('dummy1', { ...dummy, key: 'foo' });
-		Store.add('dummy2', dummy);
+	it("should find value by key", () => {
+		Store.add("dummy1", { ...dummy, key: "foo" });
+		Store.add("dummy2", dummy);
 
-		expect(Store.find('dummy2')).toEqual(dummy);
+		expect(Store.find("dummy2")).toEqual(dummy);
 	});
 
-	it('should return null when the key is not found', () => {
-		expect(Store.find('dummy2')).toEqual(null);
+	it("should return null when the key is not found", () => {
+		expect(Store.find("dummy2")).toEqual(null);
 	});
 
-	it('should throw an error when adding a key that already exists', () => {
-		Store.add('dummy1', dummy);
+	it("should throw an error when adding a key that already exists", () => {
+		Store.add("dummy1", dummy);
 
-		expect(() => Store.add('dummy1', dummy)).toThrow('Key dummy1 already exists');
+		expect(() => Store.add("dummy1", dummy)).toThrow(
+			"Key dummy1 already exists",
+		);
 	});
 });

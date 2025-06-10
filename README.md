@@ -3,7 +3,7 @@
 
 # find-duplicate-strings
 
-**Easy to use CLI that finds duplicate strings in a directory or file and stores the results in a external file for easy reference**
+**Easy to use CLI that finds duplicate strings in a directory or file and stores the results in an external file for easy reference**
 
 Note that this does not find matches in files like grep does, instead it searches for (double/single) quoted characters. In other words, this tool can be used by development teams that want to know if there's any duplicate string values in their project and if so, where these can be found.
 

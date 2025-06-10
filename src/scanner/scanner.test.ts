@@ -49,8 +49,6 @@ mock.module("../output/output.js", {
 });
 
 const { Scanner } = await import("./scanner.js");
-// const { getFiles } = await import("../getFiles/getFiles.js");
-// const { store } = await import("../store/store.js");
 
 console.log = mockConsoleLog;
 process.stdout.clearLine = mock.fn();

@@ -8,8 +8,6 @@ mock.module("@inquirer/prompts", {
 	},
 });
 
-const { input } = await import("@inquirer/prompts");
-
 const { ThresholdQuestion } = await import("./threshold.js");
 
 suite("ThresholdQuestion", () => {

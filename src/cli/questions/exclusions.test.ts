@@ -8,8 +8,6 @@ mock.module("@inquirer/prompts", {
 	},
 });
 
-const { input } = await import("@inquirer/prompts");
-
 const { ExclusionsQuestion } = await import("./exclusions.js");
 
 suite("ExclusionsQuestion", () => {

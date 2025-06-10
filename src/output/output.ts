@@ -33,8 +33,7 @@ export class Output {
 		try {
 			const data = JSON.stringify(output, null, 2);
 			writeFileSync(filePath, data, { encoding: "utf-8" });
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		} catch (error) {
+		} catch {
 			// file is too big and needs to be split into multiple files
 			const shard = `${output.length}`.length;
 			const chunkSize = Math.ceil(output.length / shard);

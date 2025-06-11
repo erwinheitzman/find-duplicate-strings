@@ -13,7 +13,7 @@ mock.module("node:fs", {
 
 const { resolve } = await import("node:path");
 const { Output } = await import("./output.js");
-const { findings, manyFindings } = await import("./output.mocks.js");
+const { findings, manyFindings } = await import("./mocks/output.mocks.js");
 
 const expectedOutput = JSON.stringify(
 	findings.sort((a, b) => b.count - a.count),

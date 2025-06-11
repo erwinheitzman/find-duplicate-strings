@@ -25,14 +25,16 @@ suite("File", () => {
 
 		deepEqual(store.getAll(), [
 			{
-				count: 1,
-				files: [path1],
 				key: "foo",
+				count: 1,
+				fileCount: 1,
+				files: [path1],
 			},
 			{
-				count: 1,
-				files: [path1],
 				key: "bar",
+				count: 1,
+				fileCount: 1,
+				files: [path1],
 			},
 		]);
 
@@ -40,14 +42,16 @@ suite("File", () => {
 
 		deepEqual(store.getAll(), [
 			{
-				count: 4,
-				files: [path1, path2],
 				key: "foo",
+				count: 4,
+				fileCount: 2,
+				files: [path1, path2],
 			},
 			{
-				count: 1,
-				files: [path1],
 				key: "bar",
+				count: 1,
+				fileCount: 1,
+				files: [path1],
 			},
 		]);
 	});
@@ -73,9 +77,10 @@ suite("File", () => {
 
 		deepEqual(store.getAll(), [
 			{
-				count: 3,
-				files: [path],
 				key: "foo",
+				count: 3,
+				fileCount: 1,
+				files: [path],
 			},
 		]);
 	});
@@ -90,19 +95,22 @@ suite("File", () => {
 
 		deepEqual(store.getAll(), [
 			{
-				count: 2,
-				files: [path],
 				key: "foo",
+				count: 2,
+				fileCount: 1,
+				files: [path],
 			},
 			{
-				count: 1,
-				files: [path],
 				key: "f'o''o'bar",
+				count: 1,
+				fileCount: 1,
+				files: [path],
 			},
 			{
-				count: 1,
-				files: [path],
 				key: "bar",
+				count: 1,
+				fileCount: 1,
+				files: [path],
 			},
 		]);
 	});

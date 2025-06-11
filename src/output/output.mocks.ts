@@ -2,14 +2,16 @@ import type { Finding } from "../typings/finding.js";
 
 export const findings: Finding[] = [
 	{
-		count: 1,
-		files: ["dummy/path/1"],
 		key: "foo",
+		count: 1,
+		fileCount: 1,
+		files: ["dummy/path/1"],
 	},
 	{
-		count: 2,
-		files: ["dummy/path/2"],
 		key: "foo",
+		count: 2,
+		fileCount: 1,
+		files: ["dummy/path/2"],
 	},
 ];
 

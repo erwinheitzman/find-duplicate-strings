@@ -1,4 +1,4 @@
-import { existsSync, writeFileSync } from "node:fs";
+import { createWriteStream, existsSync } from "node:fs";
 import { resolve } from "node:path";
 
 import type { Finding } from "../typings/finding.js";
@@ -30,22 +30,16 @@ export class Output {
 	}
 
 	private outputToFile(output: Finding[], filePath: string): void {
-		try {
-			const data = JSON.stringify(output, null, 2);
-			writeFileSync(filePath, data, { encoding: "utf-8" });
-		} catch {
-			// file is too big and needs to be split into multiple files
-			const shard = `${output.length}`.length;
-			const chunkSize = Math.ceil(output.length / shard);
-			for (let i = 0; i < shard; i++) {
-				writeFileSync(
-					filePath.replace(".json", `[${i}].json`),
-					JSON.stringify(output.splice(0, chunkSize), null, 2),
-					{
-						encoding: "utf-8",
-					},
-				);
+		const writeStream = createWriteStream(filePath, {
+			flags: "w",
+		});
+		writeStream.write("[");
+		output.forEach((finding, i) => {
+			writeStream.write(JSON.stringify(finding, null, 2));
+			if (i !== output.length - 1) {
+				writeStream.write(",");
 			}
-		}
+		});
+		writeStream.write("]");
 	}
 }

@@ -1,9 +1,9 @@
 import { deepEqual, equal } from "node:assert";
 import { beforeEach, mock, suite, test } from "node:test";
 
-const mockGetExclusionsAnswer = mock.fn(() => Promise.resolve("dummy-dir"));
+const mockGetIgnoreQuestionAnswer = mock.fn(() => Promise.resolve("dummy-dir"));
 const mockGetThresholdAnswer = mock.fn(() => Promise.resolve("1"));
-const mockProcessContent = mock.fn();
+const mockProcessFile = mock.fn();
 const mockOutput = mock.fn();
 const mockGetFiles = mock.fn((): string[] => []);
 const mockGetAll = mock.fn(() => [{ count: 1, files: [], key: "" }]);
@@ -19,25 +19,19 @@ mock.module("../store/store.js", {
 		store: { getAll: mockGetAll },
 	},
 });
-mock.module("../cli/questions/exclusions.js", {
+mock.module("../cli/questions/getIgnoreAnswer.js", {
 	namedExports: {
-		ExclusionsQuestion: class {
-			getAnswer = mockGetExclusionsAnswer;
-		},
+		getIgnoreAnswer: mockGetIgnoreQuestionAnswer,
 	},
 });
-mock.module("../cli/questions/threshold.js", {
+mock.module("../cli/questions/getThresholdAnswer.js", {
 	namedExports: {
-		ThresholdQuestion: class {
-			getAnswer = mockGetThresholdAnswer;
-		},
+		getThresholdAnswer: mockGetThresholdAnswer,
 	},
 });
-mock.module("../file/file.js", {
+mock.module("../processFile/processFile.js", {
 	namedExports: {
-		File: class {
-			processContent = mockProcessContent;
-		},
+		processFile: mockProcessFile,
 	},
 });
 mock.module("../output/output.js", {
@@ -62,11 +56,11 @@ mock.timers.enable({ apis: ["setInterval"] });
 suite("Scanner", () => {
 	beforeEach(() => {
 		process.exit = mock.fn(() => undefined as never);
-		mockGetExclusionsAnswer.mock.resetCalls();
+		mockGetIgnoreQuestionAnswer.mock.resetCalls();
 		mockGetThresholdAnswer.mock.resetCalls();
 		mockConsoleLog.mock.resetCalls();
 		mockGetFiles.mock.resetCalls();
-		mockProcessContent.mock.resetCalls();
+		mockProcessFile.mock.resetCalls();
 		mockOutput.mock.resetCalls();
 	});
 
@@ -96,7 +90,7 @@ suite("Scanner", () => {
 
 		await scanner.scan();
 
-		equal(mockGetExclusionsAnswer.mock.callCount(), 1);
+		equal(mockGetIgnoreQuestionAnswer.mock.callCount(), 1);
 	});
 
 	test("should not ask a question when ignore is not provided while interactive mode is disabled and the path does not point to a file", async () => {
@@ -104,7 +98,7 @@ suite("Scanner", () => {
 
 		await scanner.scan();
 
-		equal(mockGetExclusionsAnswer.mock.callCount(), 0);
+		equal(mockGetIgnoreQuestionAnswer.mock.callCount(), 0);
 	});
 
 	test("should set a threshold when passing threshold as a string", async () => {
@@ -140,7 +134,7 @@ suite("Scanner", () => {
 
 		await scanner.scan();
 
-		equal(mockProcessContent.mock.callCount(), 4);
+		equal(mockProcessFile.mock.callCount(), 4);
 	});
 
 	test("should scan the single file that is passed", async () => {
@@ -149,7 +143,7 @@ suite("Scanner", () => {
 
 		await scanner.scan();
 
-		equal(mockProcessContent.mock.callCount(), 1);
+		equal(mockProcessFile.mock.callCount(), 1);
 	});
 
 	test("should log a message to the console when no results are found", async () => {
@@ -157,7 +151,6 @@ suite("Scanner", () => {
 		const scanner = new Scanner({ path: "." }, interval);
 
 		await scanner.scan();
-
 		equal(
 			mockConsoleLog.mock.calls.at(0)?.arguments,
 			"No duplicates where found.",

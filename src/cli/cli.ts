@@ -13,7 +13,7 @@ const program = new Command();
 program
 	.option(
 		"--ignore [IGNORE]",
-		"comma separated list of directories and/or files to ignore (optional)",
+		"comma separated list of glob patterns for directories/files to ignore (optional)",
 	)
 	.option(
 		"--threshold [THRESHOLD]",

@@ -4,9 +4,9 @@ import { beforeEach, suite, test } from "node:test";
 import { fileURLToPath } from "node:url";
 
 import { store } from "../store/store.js";
-import { File } from "./file.js";
+import { processFile } from "./processFile.js";
 
-suite("File", () => {
+suite("processFile", () => {
 	beforeEach(() => {
 		store.clear();
 	});
@@ -21,7 +21,7 @@ suite("File", () => {
 			"./mocks/file2.js",
 		);
 
-		await new File(path1).processContent();
+		await processFile(path1);
 
 		deepEqual(store.getAll(), [
 			{
@@ -38,7 +38,7 @@ suite("File", () => {
 			},
 		]);
 
-		await new File(path2).processContent();
+		await processFile(path2);
 
 		deepEqual(store.getAll(), [
 			{
@@ -62,7 +62,7 @@ suite("File", () => {
 			"./mocks/empty-strings-file.js",
 		);
 
-		await new File(path).processContent();
+		await processFile(path);
 
 		deepEqual(store.getAll(), []);
 	});
@@ -73,7 +73,7 @@ suite("File", () => {
 			"./mocks/file2.js",
 		);
 
-		await new File(path).processContent();
+		await processFile(path);
 
 		deepEqual(store.getAll(), [
 			{
@@ -91,7 +91,7 @@ suite("File", () => {
 			"./mocks/file3.js",
 		);
 
-		await new File(path).processContent();
+		await processFile(path);
 
 		deepEqual(store.getAll(), [
 			{
@@ -121,7 +121,7 @@ suite("File", () => {
 			"./mocks/no-strings-file",
 		);
 
-		await new File(path).processContent();
+		await processFile(path);
 
 		deepEqual(store.getAll(), []);
 	});
@@ -132,7 +132,7 @@ suite("File", () => {
 			"./mocks/empty-file",
 		);
 
-		await new File(path).processContent();
+		await processFile(path);
 
 		deepEqual(store.getAll(), []);
 	});

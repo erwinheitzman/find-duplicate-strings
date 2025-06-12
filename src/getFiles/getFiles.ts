@@ -1,5 +1,3 @@
-import { existsSync } from "node:fs";
-import { sep } from "node:path";
 import { globSync } from "glob";
 
 export function getFiles(path: string, ignore: string[]): string[] {
@@ -8,15 +6,6 @@ export function getFiles(path: string, ignore: string[]): string[] {
 		realpath: true,
 		absolute: true,
 		matchBase: true,
-	}).filter((path) => {
-		return (
-			path &&
-			existsSync(path) &&
-			path
-				.split(sep)
-				.every((part) =>
-					ignore.length ? ignore.some((e) => part !== e) : true,
-				)
-		);
-	}) as string[];
+		ignore,
+	});
 }

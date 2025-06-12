@@ -1,10 +1,10 @@
-import { ExclusionsQuestion } from "../cli/questions/exclusions.js";
-import { ThresholdQuestion } from "../cli/questions/threshold.js";
-import { Exclusions } from "../exclusions/exclusions.js";
-import { File } from "../file/file.js";
+import { getIgnoreAnswer } from "../cli/questions/getIgnoreAnswer.js";
+import { getThresholdAnswer } from "../cli/questions/getThresholdAnswer.js";
 import { getFiles } from "../getFiles/getFiles.js";
+import { getPathsToIgnore } from "../getPathsToIgnore/getPathsToIgnore.js";
 import { Loader } from "../loader/loader.js";
 import { Output } from "../output/output.js";
+import { processFile } from "../processFile/processFile.js";
 import { store } from "../store/store.js";
 
 import type { Finding } from "../typings/finding.js";
@@ -28,7 +28,7 @@ export class Scanner {
 		private options: Options,
 		private loaderInterval = 1000,
 	) {
-		this.ignore = Exclusions.process(options.ignore);
+		this.ignore = getPathsToIgnore(options.ignore);
 		this.threshold =
 			typeof options.threshold === "string"
 				? Number.parseInt(options.threshold, 10)
@@ -40,12 +40,12 @@ export class Scanner {
 
 	public async scan(): Promise<void> {
 		if (!this.options.ignore && this.interactive) {
-			const answer = await new ExclusionsQuestion().getAnswer();
-			this.ignore = Exclusions.process(answer);
+			const answer = await getIgnoreAnswer();
+			this.ignore = getPathsToIgnore(answer);
 		}
 
 		if (!this.options.threshold && this.interactive) {
-			const answer = await new ThresholdQuestion().getAnswer();
+			const answer = await getThresholdAnswer();
 			this.threshold = Number.parseInt(answer, 10);
 		}
 
@@ -66,14 +66,12 @@ export class Scanner {
 		const shard = `${files.length}`.length;
 		const chunkSize = Math.ceil(files.length / shard);
 		for (let i = 0; i < shard; i++) {
-			await Promise.allSettled(
-				files.splice(i, chunkSize).map((path) => this.scanFile(path)),
-			);
+			await Promise.allSettled(files.splice(i, chunkSize).map(this.scanFile));
 		}
 	}
 
 	private scanFile(path: string): Promise<void> {
-		return new File(path).processContent();
+		return processFile(path);
 	}
 
 	private getDuplicates(): Finding[] {

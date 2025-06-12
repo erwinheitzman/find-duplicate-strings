@@ -8,13 +8,11 @@ mock.module("@inquirer/prompts", {
 	},
 });
 
-const { ThresholdQuestion } = await import("./threshold.js");
+const { getThresholdAnswer } = await import("./getThresholdAnswer.js");
 
-suite("ThresholdQuestion", () => {
+suite("getThresholdAnswer", () => {
 	test("should return the answer when it is found", async () => {
-		const question = new ThresholdQuestion();
-
-		const answer = await question.getAnswer();
+		const answer = await getThresholdAnswer();
 
 		equal(answer, "5");
 	});

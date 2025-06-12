@@ -8,13 +8,11 @@ mock.module("@inquirer/prompts", {
 	},
 });
 
-const { ExclusionsQuestion } = await import("./exclusions.js");
+const { getIgnoreAnswer } = await import("./getIgnoreAnswer.js");
 
-suite("ExclusionsQuestion", () => {
+suite("getIgnoreAnswer", () => {
 	test("should return the answer when it is found", async () => {
-		const question = new ExclusionsQuestion();
-
-		const answer = await question.getAnswer();
+		const answer = await getIgnoreAnswer();
 
 		equal(answer, "dummy");
 	});

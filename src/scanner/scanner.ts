@@ -63,10 +63,11 @@ export class Scanner {
 
 	private async scanDir() {
 		const files = getFiles(this.path, this.ignore);
-		const shard = `${files.length}`.length;
-		const chunkSize = Math.ceil(files.length / shard);
+		const openFilesLimit = 1024;
+		const shard = Math.ceil(files.length / openFilesLimit);
+
 		for (let i = 0; i < shard; i++) {
-			await Promise.allSettled(files.splice(i, chunkSize).map(this.scanFile));
+			await Promise.all(files.splice(i, openFilesLimit).map(this.scanFile));
 		}
 	}
 
